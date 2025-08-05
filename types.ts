@@ -448,7 +448,7 @@ export interface StoryData {
 /**
  * Defines the main views the player can navigate between.
  */
-export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'timeSpent';
+export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'timeSpent' | 'tokens' | 'blankTimeline';
 
 /**
  * Enumerates player actions for context-aware AI analysis.

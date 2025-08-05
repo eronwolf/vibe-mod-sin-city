@@ -10,8 +10,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import PeopleList from './PeopleList';
 import LocationsList from './LocationsList';
-import TimelineView from './TimelineView';
 import TokensView from './TokensView';
+import BlankTimelineView from './BlankTimelineView';
 import CharacterCard from '../organisms/CharacterCard';
 import ObjectCard from '../organisms/ObjectCard';
 import LocationCard from '../organisms/LocationCard';
@@ -27,8 +27,10 @@ import { selectCharacterById, selectLocationById, selectObjectById, selectEviden
 const VIEW_COMPONENTS: { [key in Exclude<ViewType, 'card'>]: React.FC } = {
   people: PeopleList,
   locations: LocationsList,
-  timeline: TimelineView,
+  timeline: BlankTimelineView, // Changed to BlankTimelineView
   tokens: TokensView,
+  timeSpent: TokensView, // Assuming TokensView can be used for timeSpent or a new component will be created
+  blankTimeline: BlankTimelineView,
 };
 
 const GameScreen: React.FC = () => {

@@ -44,40 +44,7 @@ const ClueCard: React.FC<{ clue: Clue; isSelected: boolean; onClick: () => void;
     </div>
 ));
 
-// --- Sub-Component: EvidencePool ---
-const EvidencePool: React.FC = React.memo(() => {
-  const dispatch = useDispatch<AppDispatch>();
-  const clues = useSelector(selectUnplacedClues);
-  const { selectedClueId } = useSelector(selectCaseFileState);
-  const isComplete = useSelector(selectIsInvestigationComplete);
-
-  const handleSolve = () => dispatch(showModal({ type: 'caseSolved' }));
-  const handleReset = () => dispatch(resetInvestigation());
-
-  return (
-    <div className="mt-8 pt-6 border-t-2 border-brand-border">
-      <h3 className="text-2xl font-oswald text-brand-primary mb-4 uppercase">Evidence Pool</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {clues.map(clue => (
-          <ClueCard
-            key={clue.id}
-            clue={clue}
-            isSelected={clue.id === selectedClueId}
-            onClick={() => dispatch(setSelectedClueId(clue.id === selectedClueId ? null : clue.id))}
-          />
-        ))}
-      </div>
-      <div className="mt-6 flex flex-col sm:flex-row gap-3">
-        <Button onClick={handleSolve} disabled={!isComplete} className="w-full flex items-center justify-center gap-2">
-          <FileCheck size={18} /> Solve The Case
-        </Button>
-        <Button onClick={handleReset} variant="secondary" className="w-full sm:w-auto flex items-center justify-center gap-2">
-          <RefreshCw size={18} /> Reset
-        </Button>
-      </div>
-    </div>
-  );
-});
+import EvidencePool from '../molecules/EvidencePool';
 
 // --- Sub-Component: Slot ---
 const Slot: React.FC<{ slotId: string; isPrimary?: boolean; isDisabled?: boolean; }> = React.memo(({ slotId, isPrimary = false, isDisabled = false }) => {
@@ -163,7 +130,6 @@ const Workspace: React.FC = () => {
         ))}
       </div>
       {activeAnchor && <AnchorDisplay anchor={activeAnchor} />}
-      <EvidencePool />
     </div>
   );
 };
