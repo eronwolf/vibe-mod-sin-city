@@ -13,7 +13,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import { Character, StoryObject } from '../../types';
-import { useAppDispatch } from '../../hooks/useAppDispatch'; // Assuming this hook exists or creating it
+import { useAppDispatch } from '@/hooks/useAppDispatch';
 
 // Define ItemTypes for drag and drop
 const ItemTypes = {
@@ -46,16 +46,16 @@ const DraggableSymbol: React.FC<DraggableSymbolProps> = ({ id, type, label, imag
   return (
     <div
       ref={drag}
-      className={`relative w-16 h-16 flex items-center justify-center text-white cursor-grab
+      className={`relative w-16 h-16 flex items-center justify-center text-white cursor-grab flex-shrink-0
                   ${shapeClasses[type]} ${isDragging ? 'opacity-50' : 'opacity-100'}
-                  bg-brand-primary border-2 border-brand-primary-dark shadow-lg overflow-hidden`}
+                  bg-brand-surface-200 border-2 border-brand-primary-dark shadow-lg overflow-hidden`}
       style={type === 'item' ? { transform: 'rotate(45deg)' } : {}}
     >
       {imageUrl ? (
         <img src={imageUrl} alt={label} className={type === 'item' ? 'w-full h-full object-cover rotate-[-45deg]' : 'w-full h-full object-cover'} />
       ) : (
-        <div className={type === 'item' ? 'rotate-[-45deg]' : ''}>
-          <span className="text-xs">{label.substring(0, 5)}...</span>
+        <div className={`flex items-center justify-center w-full h-full ${type === 'item' ? 'rotate-[-45deg]' : ''}`}>
+          <span className="text-xs text-brand-text-muted text-center p-1">{label.substring(0, 5)}...</span>
         </div>
       )}
       <span className="absolute bottom-[-20px] text-xs text-brand-text-muted">{label}</span>
@@ -94,17 +94,17 @@ const DroppableSlot: React.FC<DroppableSlotProps> = ({ slot, onDropSymbol, place
   return (
     <div
       ref={drop}
-      className={`relative w-16 h-16 flex items-center justify-center border-2 border-dashed
+      className={`relative w-16 h-16 flex items-center justify-center border-2 border-dashed flex-shrink-0
                   ${shapeClasses[slot.symbolType]}
                   ${isActive ? 'border-green-400 bg-green-400/20' : canDrop ? 'border-brand-border' : 'border-brand-border/50'}
-                  ${placedSymbolId ? 'bg-brand-surface border-brand-primary' : 'bg-black/30'} overflow-hidden`}
+                  ${placedSymbolId ? 'bg-brand-surface-200 border-brand-primary' : 'bg-black/30'} overflow-hidden`}
       style={slot.symbolType === 'item' ? { transform: 'rotate(45deg)' } : {}}
     >
       {placedSymbolImageUrl ? (
         <img src={placedSymbolImageUrl} alt="placed symbol" className={slot.symbolType === 'item' ? 'w-full h-full object-cover rotate-[-45deg]' : 'w-full h-full object-cover'} />
       ) : (
-        <div className={slot.symbolType === 'item' ? 'rotate-[-45deg]' : ''}>
-          <span className="text-brand-text-muted text-xs">Empty</span>
+        <div className={`flex items-center justify-center w-full h-full ${slot.symbolType === 'item' ? 'rotate-[-45deg]' : ''}`}>
+          <span className="text-brand-text-muted text-xs text-center p-1">Empty</span>
         </div>
       )}
     </div>
