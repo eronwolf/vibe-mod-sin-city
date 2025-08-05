@@ -153,9 +153,9 @@ const TimelineView: React.FC = () => {
 
   return (
     <DndProvider backend={backend}>
-      <div className="flex flex-col h-full p-4">
+      <div className="flex flex-col h-full p-4 overflow-y-hidden">
         {/* Top Part: Timeline */}
-        <div className="flex-grow bg-brand-surface/20 rounded-lg p-4 mb-4 overflow-auto">
+        <div className="flex-grow bg-brand-surface/20 rounded-lg p-4 mb-4 overflow-x-auto h-0 min-h-0">
           <h2 className="text-2xl font-oswald text-white mb-4">Timeline</h2>
           <div className="relative">
             {/* Time Tick Marks */}
@@ -206,7 +206,7 @@ const TimelineView: React.FC = () => {
         {/* Bottom Part: Draggable Symbols */}
         <div className="flex-shrink-0 bg-brand-surface/20 rounded-lg p-4">
           <h2 className="text-2xl font-oswald text-white mb-4">Symbols</h2>
-          <div className="flex justify-around gap-4">
+          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 p-2">
             {persons.map((p) => (
               <DraggableSymbol key={p.id} id={p.id} type="person" label={p.name} imageUrl={imageUrls[p.id]} />
             ))}
