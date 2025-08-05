@@ -185,9 +185,7 @@ const DialogueCard: React.FC<DialogueCardProps> = ({ character }) => {
       return (
         <QuestionSelectView
           character={character}
-          linesOfInquiry={dialogueData.interrogation.linesOfInquiry}
           status={loiStatus}
-          onSelect={handleSelectLoi}
           onEndInterrogation={() => dispatch(goBack())}
         />
       );

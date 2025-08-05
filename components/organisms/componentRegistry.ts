@@ -49,8 +49,10 @@ export const COMPONENT_REGISTRY: { [key: string]: ComponentRegistryEntry } = {
   cctv: { Icon: Video, label: 'CCTV' },
   records: { Icon: Landmark, label: 'Gov & Bank Records' },
   file: { Icon: Shield, label: 'Police File' },
-  
-  // --- Object Components (still use modals) ---
-  purchaseInfo: { Icon: Receipt, label: 'Purchase Info', modal: 'purchaseInfo' },
+ recordsOliver: { Icon: Landmark, label: 'Gov Records' },
+ socialMediaOliver: { Icon: AtSign, label: 'Social' },
+ policeFileOliver: { Icon: Shield, label: 'Police File' },
+ // --- Object Components (still use modals) ---
+ purchaseInfo: { Icon: Receipt, label: 'Purchase Info', modal: 'purchaseInfo' },
   interaction: { Icon: KeyRound, label: 'Interact', modal: 'interaction' },
 };

@@ -11,20 +11,26 @@ import { Character, LineOfInquiryData } from '../../types';
 import ImageWithLoader from '../molecules/ImageWithLoader';
 import { useCardImage } from '../../hooks/useCardImage';
 import { GAME_MECHANICS } from '../../config';
+import { daisyTremblyInterview } from '../../data/DaisyTrembly';
+import { kermitInterview } from '../../data/Kermit';
+import InterviewCard from './InterviewCard';
 
 interface QuestionSelectViewProps {
   character: Character;
-  linesOfInquiry: LineOfInquiryData[];
   status: Record<string, 'completed'>;
-  onSelect: (loi: LineOfInquiryData) => void;
   onEndInterrogation: () => void;
 }
 
-const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, linesOfInquiry, status, onSelect, onEndInterrogation }) => {
+const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, status, onEndInterrogation }) => {
   const { imageUrl, isLoading } = useCardImage(character, 'selectiveColor');
   const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
   const questionTimeAddition = GAME_MECHANICS.QUESTION_TIME_ADDITION;
   // No longer checking for affordability as there is no limit to time spent.
+  //const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
+  //const questionCost = GAME_MECHANICS.QUESTION_COST;
+  //const canAfford = playerTokens >= GAME_MECHANICS.QUESTION_COST;
+  const [selectedQuestion, setSelectedQuestion] = React.useState(null);
+  const [selectedAnswer, setSelectedAnswer] = React.useState(null);
 
   const renderStatusIcon = (loiId: string) => {
     const loiStatus = status[loiId];
@@ -60,7 +66,7 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, line
         </div>
 
         <div className="space-y-3">
-            {linesOfInquiry.map((loi) => {
+            {/* {linesOfInquiry.map((loi) => {
               const loiStatus = status[loi.id];
               const isDisabled = loiStatus === 'completed'; // Only disable if completed
               
@@ -69,25 +75,30 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, line
                   statusClasses = 'border-brand-accent/50 bg-brand-accent/10 text-brand-accent opacity-70 cursor-default';
               }
               // No longer need to add opacity/cursor-not-allowed for affordability
-
+ */}
+            {(character.name === "Daisy Trembly" ? daisyTremblyInterview.suspects : kermitInterview.questions).map((qa, index) => {
               return (
                   <button
-                      key={loi.id}
-                      onClick={() => onSelect(loi)}
-                      disabled={isDisabled}
+                      key={index}
+                      onClick={() => {
+                        setSelectedQuestion(qa.question);
+                        setSelectedAnswer(qa.answer);
+                      }}
                       className={`w-full p-4 bg-brand-surface rounded-lg text-left font-oswald uppercase tracking-wider text-lg
                                 flex justify-between items-center
-                                transition-all duration-200 ease-in-out 
+                                transition-all duration-200 ease-in-out
                                 border-l-4
-                                ${statusClasses}`}
+                                border-brand-border hover:border-brand-primary hover:bg-brand-primary/10`}
                   >
-                      <span>{loi.label}</span>
-                      {renderStatusIcon(loi.id)}
+                      <span>{qa.question}</span>
                   </button>
               );
             })}
         </div>
        {/* No longer displaying "Insufficient tokens" message as there is no limit */}
+        {selectedQuestion && selectedAnswer && (
+          <InterviewCard character={character} question={selectedQuestion} answer={selectedAnswer} />
+        )}
     </div>
   );
 };
