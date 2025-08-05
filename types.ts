@@ -275,8 +275,8 @@ export interface StoryObject {
   authorCharacterId?: string;
   /** The owner, if this object is derived from a character's component (e.g., a phone record). */
   ownerCharacterId?: string;
-  /** The cost in tokens to turn this object into evidence. */
-  costToUnlock?: number;
+  /** The amount of time to add to the player's total when this object is turned into evidence. */
+  timeToAdd?: number;
   /** Tracks if the object has been unlocked at least once to prevent repeat charges. */
   hasBeenUnlocked?: boolean;
   components: DataComponent[]; // Holds all historical/forensic data components.
@@ -448,7 +448,7 @@ export interface StoryData {
 /**
  * Defines the main views the player can navigate between.
  */
-export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'tokens';
+export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'timeSpent';
 
 /**
  * Enumerates player actions for context-aware AI analysis.

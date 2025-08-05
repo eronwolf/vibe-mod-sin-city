@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { goBack, showModal, hideModal } from '../../store/uiSlice';
 import { Character, DialogueData, Insight, LineOfInquiryData, WitnessResponse, DialogueChunkData, ActiveFeedback } from '../../types';
-import { createEvidenceFromTestimony, deductTokens } from '../../store/storySlice';
+import { createEvidenceFromTestimony, addTimeSpent } from '../../store/storySlice';
 import { useInterrogationAI } from '../../hooks/useInterrogationAI';
 import ChatLog from './ChatLog';
 import InterrogationActions from '../molecules/InterrogationActions'; // New component
@@ -72,7 +72,7 @@ const DialogueCard: React.FC<DialogueCardProps> = ({ character }) => {
   }, [dialogueData, character.id]);
 
   const handleSelectLoi = useCallback((loi: LineOfInquiryData) => {
-    dispatch(deductTokens(GAME_MECHANICS.QUESTION_COST));
+    dispatch(addTimeSpent(GAME_MECHANICS.QUESTION_TIME_ADDITION));
     setActiveLoi(loi);
     setPhaseProgress(0);
     setMessages([]);
@@ -89,7 +89,7 @@ const DialogueCard: React.FC<DialogueCardProps> = ({ character }) => {
     if (dialogueData.mode === 'interrogation') {
         if (!activeLoi) return;
         if (!initialQuestions) {
-            dispatch(deductTokens(GAME_MECHANICS.QUESTION_COST));
+            dispatch(addTimeSpent(GAME_MECHANICS.QUESTION_TIME_ADDITION));
         }
         if (initialQuestions) setInitialQuestions(null);
     }

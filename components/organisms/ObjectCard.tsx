@@ -7,7 +7,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StoryObject, PlayerAction, DataComponent, PurchaseInfo, Interaction } from '../../types';
-import { addToTimeline, removeFromTimeline, selectPlayerTokens } from '../../store/storySlice';
+import { addToTimeline, removeFromTimeline, selectTimeSpent } from '../../store/storySlice';
 import { AppDispatch, RootState } from '../../store';
 import { goBack, showModal, checkMilestoneProgress, addNewlyAddedEvidenceId } from '../../store/uiSlice';
 import ImageWithLoader from '../molecules/ImageWithLoader';
@@ -25,9 +25,9 @@ import { RARITY_CONFIG } from '../../config';
 const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
   const dispatch = useDispatch<AppDispatch>();
   const triggerADA = useADA();
-  const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
+  const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
   
-  const canAfford = typeof object.costToUnlock === 'number' ? playerTokens >= object.costToUnlock : true;
+  // No longer checking for affordability as there is no limit to time spent.
 
   const handleGoBack = () => {
     dispatch(goBack());
@@ -45,10 +45,7 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
 
       const isFirstUnlock = !object.hasBeenUnlocked;
 
-      if (isFirstUnlock && !canAfford) {
-        console.warn("Player cannot afford to unlock this item.");
-        return;
-      }
+      // No longer checking for affordability as there is no limit to time spent.
       
       // The state update for tokens and flags happens here
       dispatch(addToTimeline(object.id));
@@ -163,17 +160,17 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
         <div className="flex items-center justify-between gap-4 mb-4 bg-black/30 p-3 rounded-lg border border-brand-border">
           <label className="font-oswald text-brand-text uppercase tracking-wider">Add to Timeline</label>
           <div className="flex items-center gap-4">
-            {!object.isEvidence && typeof object.costToUnlock === 'number' && object.costToUnlock > 0 && (
-                <div className="flex items-center gap-2 text-yellow-400 font-mono text-lg" title={`Cost: ${object.costToUnlock} tokens`}>
+            {!object.isEvidence && typeof object.timeToAdd === 'number' && object.timeToAdd > 0 && (
+                <div className="flex items-center gap-2 text-yellow-400 font-mono text-lg" title={`Time Added: ${object.timeToAdd}`}>
                     <Coins size={20} className="animate-sparkle-glow" />
-                    <span className="font-bold">{object.costToUnlock}</span>
+                    <span className="font-bold">{object.timeToAdd}</span>
                 </div>
             )}
             <ToggleButton
               accessibleLabel={`Toggle ${object.name} on timeline`}
               toggled={object.isEvidence}
               onToggle={handleEvidenceToggle}
-              disabled={!object.isEvidence && !canAfford}
+              disabled={object.isEvidence} // Only disable if already evidence
             />
           </div>
         </div>

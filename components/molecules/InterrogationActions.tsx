@@ -7,7 +7,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { selectPlayerTokens } from '../../store/storySlice';
+import { selectTimeSpent } from '../../store/storySlice';
 import { ChevronRight, Coins } from 'lucide-react';
 import { GAME_MECHANICS } from '../../config';
 
@@ -24,12 +24,12 @@ const InterrogationActions: React.FC<InterrogationActionsProps> = ({
   isAiResponding,
   onSendMessage,
 }) => {
-  const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
-  const questionCost = GAME_MECHANICS.QUESTION_COST;
-  const canAfford = playerTokens >= questionCost;
+  const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
+  const questionTimeAddition = GAME_MECHANICS.QUESTION_TIME_ADDITION;
+  // No longer checking for affordability as there is no limit to time spent.
 
   // A helper to determine if an action should be disabled.
-  const isDisabled = isAiResponding || !canAfford;
+  const isDisabled = isAiResponding; // Only disable if AI is responding
 
   // Render initial questions if they exist for the start of a phase.
   if (initialQuestions) {
@@ -75,16 +75,12 @@ const InterrogationActions: React.FC<InterrogationActionsProps> = ({
                 <span className="font-mono">{q}</span>
                  <div className="flex items-center gap-2 text-yellow-400 font-mono text-xs flex-shrink-0">
                     <Coins size={14} />
-                    <span>{questionCost}</span>
+                    <span>{questionTimeAddition}</span>
                 </div>
               </button>
             ))}
         </div>
-        {!canAfford && (
-            <div className="mt-3 text-center text-yellow-500 text-xs p-2 bg-yellow-900/50 rounded-md">
-                Insufficient tokens to ask another question.
-            </div>
-        )}
+        {/* No longer displaying "Insufficient tokens" message as there is no limit */}
     </div>
   );
 };

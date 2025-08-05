@@ -21,7 +21,7 @@ const BountyCard: React.FC<BountyCardProps> = ({ title, description, reward, onC
         <p className="text-sm text-brand-text-muted mb-3">{description}</p>
         <div className="flex items-center gap-2 text-yellow-400 font-bold">
           <Coins size={16} />
-          <span>{reward} Tokens</span>
+          <span>{reward} Time Reduction</span>
         </div>
       </div>
       <Button onClick={onClick} className="flex-shrink-0 text-sm">

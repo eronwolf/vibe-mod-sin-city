@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { selectPlayerTokens } from '../../store/storySlice';
+import { selectTimeSpent } from '../../store/storySlice';
 import { NotebookPen, Send, ChevronRight, Coins } from 'lucide-react';
 import Button from '../atoms/Button';
 import { GAME_MECHANICS } from '../../config';
@@ -20,24 +20,24 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({ suggestedQuestions, isAiResponding, onSendMessage, mode, initialQuestions }) => {
   const [inputValue, setInputValue] = useState('');
-  const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
-  const questionCost = GAME_MECHANICS.QUESTION_COST;
-  const canAfford = playerTokens >= questionCost;
+  const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
+  const questionTimeAddition = GAME_MECHANICS.QUESTION_TIME_ADDITION;
+  // No longer checking for affordability as there is no limit to time spent.
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isAiResponding || !inputValue.trim() || !canAfford) return;
+    if (isAiResponding || !inputValue.trim()) return; // No longer checking for affordability
     onSendMessage(inputValue);
     setInputValue('');
   };
 
   const handleSuggestedClick = (question: string) => {
-    if (isAiResponding || !canAfford) return;
+    if (isAiResponding) return; // No longer checking for affordability
     onSendMessage(question);
   };
   
   // A helper to determine if an action should be disabled.
-  const isDisabled = isAiResponding || !canAfford;
+  const isDisabled = isAiResponding; // Only disable if AI is responding
 
   // Render initial questions if they exist.
   if (initialQuestions) {
@@ -89,7 +89,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ suggestedQuestions, isAiRespondin
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder={canAfford ? "Ask a follow-up..." : "Insufficient Tokens"}
+            placeholder={"Enter your question..."} // No longer "Insufficient Tokens"
             disabled={isDisabled}
             className="w-full bg-transparent focus:outline-none text-white placeholder:text-brand-text-muted disabled:opacity-50"
           />
@@ -106,10 +106,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ suggestedQuestions, isAiRespondin
             )}
         </Button>
       </form>
-       {/* Persistent Cost Indicator */}
+       {/* Persistent Time Addition Indicator */}
        <div className="text-center text-xs text-brand-text-muted mt-2 flex items-center justify-center gap-2">
           <Coins size={14} className="text-yellow-400" />
-          <span>Cost per question: {questionCost} Tokens</span>
+          <span>Time added per question: {questionTimeAddition}</span>
         </div>
     </div>
   );

@@ -77,7 +77,7 @@ export const createEvidenceFromTestimony = createAsyncThunk<
         const { chunk, character } = args;
 
         // 1. Deduct the token cost for creating the evidence.
-        dispatch(deductTokens(GAME_MECHANICS.CREATE_TESTIMONY_EVIDENCE_COST));
+        dispatch(addTimeSpent(GAME_MECHANICS.CREATE_TESTIMONY_TIME_ADDITION));
 
         // 2. Create the new evidence object from the testimony chunk.
         const newEvidenceId = `obj-testimony-${chunk.id}`;
@@ -133,7 +133,7 @@ interface StoryState {
   imageGenerationQueue: ImageGenerationRequest[];
   isProcessingQueue: boolean;
   hasDiscoveredPaint: boolean; // Tracks if the player has found the key evidence
-  playerTokens: number; // The player's currency for unlocking evidence.
+  timeSpent: number; // The player's accumulated time spent.
   // Configuration for game mechanics. Centralized here for easy balancing.
   milestoneThreshold: number; 
   accusationThreshold: number;
@@ -244,7 +244,7 @@ const createInitialState = (data: StoryData): StoryState => {
     imageGenerationQueue: [],
     isProcessingQueue: false,
     hasDiscoveredPaint: false,
-    playerTokens: GAME_MECHANICS.INITIAL_PLAYER_TOKENS,
+    timeSpent: GAME_MECHANICS.INITIAL_PLAYER_TIME_SPENT,
     // Centralized game configuration for easier balancing.
     milestoneThreshold: GAME_MECHANICS.MILESTONE_THRESHOLD, 
     accusationThreshold: GAME_MECHANICS.ACCUSATION_THRESHOLD,
@@ -284,22 +284,16 @@ const storySlice = createSlice({
       
       // Case 1: The item has NEVER been unlocked before. This is its first time on the timeline.
       if (!item.hasBeenUnlocked) {
-        const cost = item.costToUnlock ?? 0;
+        const cost = item.timeToAdd ?? 0;
         
-        // Safeguard: Check if the player can afford to unlock the item.
-        if (state.playerTokens < cost) {
-            console.warn(`Player cannot afford to unlock ${item.name}. Needs ${cost}, has ${state.playerTokens}.`);
-            return; // Abort if player cannot afford.
-        }
-
-        // Deduct cost and mark as unlocked permanently.
-        state.playerTokens -= cost;
-        objectsAdapter.updateOne(state.objects, { 
-          id, 
-          changes: { 
-            isEvidence: true, 
+        // Time is now added, not deducted, and there is no limit.
+        state.timeSpent += cost;
+        objectsAdapter.updateOne(state.objects, {
+          id,
+          changes: {
+            isEvidence: true,
             hasBeenUnlocked: true // This is the key change to prevent repeat charges.
-          } 
+          }
         });
 
       // Case 2: The item HAS been unlocked before but was removed. Re-adding it is free.
@@ -386,18 +380,18 @@ const storySlice = createSlice({
         objectsAdapter.addOne(state.objects, action.payload);
     },
     /**
-     * A reusable reducer to deduct tokens from the player's balance.
-     * @param {number} action.payload The amount of tokens to deduct.
+     * A reusable reducer to add time spent to the player's total.
+     * @param {number} action.payload The amount of time to add.
      */
-    deductTokens(state, action: PayloadAction<number>) {
-        state.playerTokens = Math.max(0, state.playerTokens - action.payload);
+    addTimeSpent(state, action: PayloadAction<number>) {
+        state.timeSpent += action.payload;
     },
     /**
-     * A reusable reducer to add tokens to the player's balance.
-     * @param {number} action.payload The amount of tokens to add.
+     * A reusable reducer to subtract time spent from the player's total (e.g., for bounties).
+     * @param {number} action.payload The amount of time to subtract.
      */
-    addTokens(state, action: PayloadAction<number>) {
-        state.playerTokens += action.payload;
+    subtractTimeSpent(state, action: PayloadAction<number>) {
+        state.timeSpent = Math.max(0, state.timeSpent - action.payload);
     },
     /**
      * Caches the AI-generated coordinates for a location's hotspots.
@@ -424,8 +418,8 @@ export const {
     setImageError,
     setHasDiscoveredPaint,
     addDynamicObject,
-    deductTokens,
-    addTokens,
+    addTimeSpent,
+    subtractTimeSpent,
     setDynamicHotspotCoords,
 } = storySlice.actions;
 
@@ -440,7 +434,7 @@ export const selectImageErrors = (state: RootState) => state.story.imageErrors;
 export const selectImageGenerationQueue = (state: RootState) => state.story.imageGenerationQueue;
 export const selectCanonicalTimeline = (state: RootState) => state.story.canonicalTimeline;
 export const selectEvidenceStacks = (state: RootState) => state.story.evidenceStacks;
-export const selectPlayerTokens = (state: RootState) => state.story.playerTokens;
+export const selectTimeSpent = (state: RootState) => state.story.timeSpent;
 export const selectDynamicHotspotsForLocation = (state: RootState, locationId: string) => state.story.dynamicHotspotCoords[locationId];
 
 

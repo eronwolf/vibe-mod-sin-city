@@ -8,7 +8,7 @@ import { RootState } from '../../store';
 import { Lightbulb, Coins } from 'lucide-react';
 import { DialogueChunkData } from '../../types';
 import { GAME_MECHANICS } from '../../config';
-import { selectPlayerTokens } from '../../store/storySlice';
+import { selectTimeSpent } from '../../store/storySlice';
 import ToggleButton from '../atoms/ToggleButton';
 
 interface InterrogationDialogueChunkProps {
@@ -20,10 +20,10 @@ interface InterrogationDialogueChunkProps {
 
 const InterrogationDialogueChunk: React.FC<InterrogationDialogueChunkProps> = ({ chunk, onCreateEvidence, isEvidence, isRevealed }) => {
   const isGreeting = chunk.id.includes('-opening');
-  const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
+  const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
   
-  const cost = GAME_MECHANICS.CREATE_TESTIMONY_EVIDENCE_COST;
-  const canAfford = playerTokens >= cost;
+  const timeToAdd = GAME_MECHANICS.CREATE_TESTIMONY_TIME_ADDITION;
+  // No longer checking for affordability as there is no limit to time spent.
 
   const containerClasses = isRevealed
     ? 'bg-yellow-900/20 border-yellow-500/80 shadow-lg shadow-yellow-500/10'
@@ -31,7 +31,7 @@ const InterrogationDialogueChunk: React.FC<InterrogationDialogueChunkProps> = ({
     
   // New handler for the toggle switch
   const handleToggle = (toggled: boolean) => {
-    if (toggled && !isEvidence && canAfford) {
+    if (toggled && !isEvidence) { // No longer checking for affordability
         onCreateEvidence(chunk);
     }
   };
@@ -63,16 +63,16 @@ const InterrogationDialogueChunk: React.FC<InterrogationDialogueChunkProps> = ({
                   <label className="font-oswald text-brand-text uppercase tracking-wider text-sm">Add to Timeline</label>
                   <div className="flex items-center gap-4">
                     {!isEvidence && (
-                        <div className="flex items-center gap-2 text-yellow-400 font-mono text-base" title={`Cost: ${cost} tokens`}>
+                        <div className="flex items-center gap-2 text-yellow-400 font-mono text-base" title={`Time Added: ${timeToAdd}`}>
                             <Coins size={18} />
-                            <span className="font-bold">{cost}</span>
+                            <span className="font-bold">{timeToAdd}</span>
                         </div>
                     )}
                     <ToggleButton
                       accessibleLabel={`Toggle statement as evidence`}
                       toggled={isEvidence}
                       onToggle={handleToggle}
-                      disabled={isEvidence || !canAfford}
+                      disabled={isEvidence} // Only disable if already evidence
                     />
                   </div>
                 </div>

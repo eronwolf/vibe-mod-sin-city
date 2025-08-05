@@ -22,16 +22,16 @@ export const GAME_MECHANICS = {
   MILESTONE_THRESHOLD: 3,
   /** The minimum number of evidence items a player must have to make an accusation against a suspect. */
   ACCUSATION_THRESHOLD: 5,
-  /** The number of tokens the player starts the game with. */
-  INITIAL_PLAYER_TOKENS: 200,
-  /** The cost in tokens to ask a single question (initial or follow-up) during an interrogation. */
-  QUESTION_COST: 2,
+  /** The initial time spent by the player at the start of the game. */
+  INITIAL_PLAYER_TIME_SPENT: 0,
+  /** The amount of time added for asking a single question (initial or follow-up) during an interrogation. */
+  QUESTION_TIME_ADDITION: 2,
   /** The value required to fill the progress meter and complete an interrogation phase. */
   PHASE_COMPLETION_GOAL: 100,
   /** The progress awarded for turning a piece of testimony into evidence. */
   EVIDENCE_CREATION_PROGRESS: 25,
-  /** The cost in tokens to turn a piece of testimony into formal evidence. */
-  CREATE_TESTIMONY_EVIDENCE_COST: 15,
+  /** The amount of time added to turn a piece of testimony into formal evidence. */
+  CREATE_TESTIMONY_TIME_ADDITION: 15,
 };
 
 /**
@@ -76,10 +76,10 @@ export const ADA_CONFIG = {
  * for easy editing by writers or designers without needing to change React components.
  */
 export const TOKENS_VIEW_COPY = {
-  ABOUT_TITLE: "About Processing Tokens",
-  ABOUT_BODY: "Turning objects into evidence requires significant computational power for ADA to perform forensic analysis. Tokens represent this processing power. Spend them wisely to build your case.",
+  ABOUT_TITLE: "About Time Spent",
+  ABOUT_BODY: "Turning objects into evidence and asking questions adds to your total time spent on the case. There is no limit to how much time can be spent.",
   BOUNTY_TITLE: "Available Bounties",
-  BOUNTY_BODY: "ADA is working to solve cases across the city. By helping her crack these codes and solve these puzzles, you're assisting with active forensic work—and she'll reward you with more processing tokens for your own investigation."
+  BOUNTY_BODY: "ADA is working to solve cases across the city. By helping her crack these codes and solve these puzzles, you're assisting with active forensic work—and she'll help you reduce the time spent on your own investigation."
 };
 
 

@@ -5,7 +5,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { selectPlayerTokens } from '../../store/storySlice';
+import { selectTimeSpent } from '../../store/storySlice';
 import { ChevronRight, X, CheckCircle, ShieldQuestion, Coins } from 'lucide-react';
 import { Character, LineOfInquiryData } from '../../types';
 import ImageWithLoader from '../molecules/ImageWithLoader';
@@ -22,9 +22,9 @@ interface QuestionSelectViewProps {
 
 const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, linesOfInquiry, status, onSelect, onEndInterrogation }) => {
   const { imageUrl, isLoading } = useCardImage(character, 'selectiveColor');
-  const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
-  const questionCost = GAME_MECHANICS.QUESTION_COST;
-  const canAfford = playerTokens >= questionCost;
+  const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
+  const questionTimeAddition = GAME_MECHANICS.QUESTION_TIME_ADDITION;
+  // No longer checking for affordability as there is no limit to time spent.
 
   const renderStatusIcon = (loiId: string) => {
     const loiStatus = status[loiId];
@@ -55,22 +55,20 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, line
         <div className="p-3 rounded-lg bg-brand-surface border border-brand-border flex items-center gap-3 mb-6">
             <ShieldQuestion size={24} className="text-brand-primary flex-shrink-0" />
             <p className="text-sm text-brand-text-muted">
-                Choose a line of inquiry to pursue. Each new line costs <span className="text-yellow-400 font-bold">{questionCost} tokens</span>.
+                Choose a line of inquiry to pursue. Each new line adds <span className="text-yellow-400 font-bold">{questionTimeAddition} to time spent</span>.
             </p>
         </div>
 
         <div className="space-y-3">
             {linesOfInquiry.map((loi) => {
               const loiStatus = status[loi.id];
-              const isDisabled = loiStatus === 'completed' || (!canAfford && loiStatus !== 'completed');
+              const isDisabled = loiStatus === 'completed'; // Only disable if completed
               
               let statusClasses = 'border-brand-border hover:border-brand-primary hover:bg-brand-primary/10';
               if (loiStatus === 'completed') {
                   statusClasses = 'border-brand-accent/50 bg-brand-accent/10 text-brand-accent opacity-70 cursor-default';
               }
-              if (isDisabled && loiStatus !== 'completed') {
-                  statusClasses += ' opacity-50 cursor-not-allowed';
-              }
+              // No longer need to add opacity/cursor-not-allowed for affordability
 
               return (
                   <button
@@ -89,11 +87,7 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, line
               );
             })}
         </div>
-        {!canAfford && (
-            <div className="mt-4 text-center text-yellow-500 font-semibold p-2 bg-yellow-900/50 rounded-lg">
-                Insufficient tokens to pursue a new line of inquiry.
-            </div>
-        )}
+       {/* No longer displaying "Insufficient tokens" message as there is no limit */}
     </div>
   );
 };
