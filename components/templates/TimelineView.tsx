@@ -4,198 +4,222 @@
  * It orchestrates the entire puzzle-solving experience, including switching between
  * the workspace and the full timeline view, managing state, and rendering all sub-components.
  */
-import React, { useMemo, useCallback, useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from '../../store';
-import {
-  setViewMode,
-  setActiveTab,
-  setSelectedClueId,
-  placeClueInSlot,
-  clearLastIncorrectSlot,
-  resetInvestigation,
-  selectCaseFileState,
-  selectClueById,
-  selectSlotById,
-  selectAllClues,
-  selectActiveAnchor,
-  selectIsPrimarySlotFilledForActiveAnchor,
-  selectIsInvestigationComplete,
-  selectSlotEntities,
-  selectClueEntities,
-  selectUnplacedClues,
-} from '../../store/caseFileSlice';
-import { showModal } from '../../store/uiSlice';
-import { Clue, EvidenceSlot, TimelineAnchor, TimelineAnchorCategory } from '../../types';
-import Button from '../atoms/Button';
-import { FileCheck, RefreshCw, Eye, Edit } from 'lucide-react';
+import React, { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { selectAllCharacters, selectAllObjects, selectImageUrls, queueImageGeneration } from '../../store/storySlice';
+import { defaultTimelineConfig, TimelineSlot, TimelineSymbolType } from '../../config/timelineConfig';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
+import { Character, StoryObject } from '../../types';
+import { useAppDispatch } from '../../hooks/useAppDispatch'; // Assuming this hook exists or creating it
 
-// --- Sub-Component: ClueCard ---
-const ClueCard: React.FC<{ clue: Clue; isSelected: boolean; onClick: () => void; }> = React.memo(({ clue, isSelected, onClick }) => (
-    <div
-      onClick={onClick}
-      className={`p-3 rounded-lg cursor-pointer transition-all duration-200 border-2 ${isSelected ? 'bg-brand-primary/20 border-brand-primary scale-105' : 'bg-brand-surface border-brand-border hover:border-brand-primary/50'}`}
-    >
-      <p className="text-sm text-white">{clue.text}</p>
-      <div className="flex justify-between items-center mt-2">
-        <span className={`text-xs font-bold uppercase px-2 py-0.5 rounded ${clue.type === 'PRIMARY' ? 'bg-yellow-500 text-black' : 'bg-gray-500 text-white'}`}>{clue.type}</span>
-        <span className="text-sm font-mono font-bold text-yellow-400">{clue.points} pts</span>
-      </div>
-    </div>
-));
+// Define ItemTypes for drag and drop
+const ItemTypes = {
+  SYMBOL: 'symbol',
+};
 
-import EvidencePool from '../molecules/EvidencePool';
+// Draggable Symbol Component (Person, Item, Event)
+interface DraggableSymbolProps {
+  id: string;
+  type: TimelineSymbolType;
+  label: string;
+  imageUrl?: string;
+}
 
-// --- Sub-Component: Slot ---
-const Slot: React.FC<{ slotId: string; isPrimary?: boolean; isDisabled?: boolean; }> = React.memo(({ slotId, isPrimary = false, isDisabled = false }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const slot = useSelector((state: RootState) => selectSlotById(state, slotId));
-  const placedClue = useSelector((state: RootState) => slot?.placedClueId ? selectClueById(state, slot.placedClueId) : null);
-  const { lastIncorrectSlotId } = useSelector(selectCaseFileState);
+const DraggableSymbol: React.FC<DraggableSymbolProps> = ({ id, type, label, imageUrl }) => {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: ItemTypes.SYMBOL,
+    item: { id, type },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
 
-  const isIncorrect = lastIncorrectSlotId === slotId;
-  const animationClass = isIncorrect ? 'animate-shake' : '';
-
-  useEffect(() => {
-    if (isIncorrect) {
-      const timer = setTimeout(() => dispatch(clearLastIncorrectSlot()), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [isIncorrect, dispatch]);
-
-  const handleClick = () => {
-    if (!placedClue && !isDisabled) {
-      dispatch(placeClueInSlot({ slotId }));
-    }
+  const shapeClasses = {
+    person: 'rounded-full',
+    item: 'rotate-45', // Diamond shape
+    event: 'rounded-none', // Square shape
   };
 
-  const baseClasses = "w-full p-4 rounded-lg transition-all duration-200 border-2 min-h-[80px]";
-  const stateClasses = placedClue
-    ? `bg-brand-surface border-brand-primary`
-    : isDisabled
-      ? `bg-black/20 border-brand-border/50 text-brand-text-muted/50 cursor-not-allowed`
-      : `bg-black/30 border-dashed border-brand-border hover:border-brand-primary hover:bg-brand-primary/10 cursor-pointer`;
-  
-  const text = placedClue ? placedClue.text : (isPrimary ? "Place Primary Clue..." : "Place Supporting Clue...");
-
   return (
-    <div onClick={handleClick} className={`${baseClasses} ${stateClasses} ${animationClass}`}>
-      <p className={`text-sm ${placedClue ? 'text-white' : 'text-brand-text-muted'}`}>{text}</p>
-    </div>
-  );
-});
-
-// --- Sub-Component: AnchorDisplay ---
-const AnchorDisplay: React.FC<{ anchor: TimelineAnchor; }> = React.memo(({ anchor }) => {
-  const isPrimaryFilled = useSelector(selectIsPrimarySlotFilledForActiveAnchor);
-
-  return (
-    <div className="mt-6">
-      <header className="mb-3">
-        <h2 className="text-3xl font-oswald text-white uppercase">{anchor.title}</h2>
-        <p className="text-brand-text-muted font-mono">{anchor.timeLabel}</p>
-      </header>
-      <div className="space-y-3">
-        <Slot slotId={anchor.primarySlot.slotId} isPrimary />
-        {isPrimaryFilled && anchor.supportingSlots.map(slot => (
-          <Slot key={slot.slotId} slotId={slot.slotId} />
-        ))}
-        {!isPrimaryFilled && anchor.supportingSlots.map(slot => (
-           <Slot key={slot.slotId} slotId={slot.slotId} isDisabled={true} />
-        ))}
-      </div>
-    </div>
-  );
-});
-
-// --- Sub-Component: Workspace ---
-const Workspace: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { activeTab } = useSelector(selectCaseFileState);
-  const activeAnchor = useSelector(selectActiveAnchor);
-  const TABS: TimelineAnchorCategory[] = ['motive', 'opportunity', 'means'];
-
-  return (
-    <div className="animate-fade-in">
-      <div className="bg-brand-surface/50 p-1 rounded-lg flex space-x-1 border border-brand-border mb-4">
-        {TABS.map(tab => (
-          <Button
-            key={tab}
-            onClick={() => dispatch(setActiveTab(tab))}
-            variant={activeTab === tab ? 'primary' : 'secondary'}
-            className={`flex-1 capitalize ${activeTab !== tab && 'bg-transparent text-brand-text-muted hover:bg-white/10'}`}
-          >
-            {tab}
-          </Button>
-        ))}
-      </div>
-      {activeAnchor && <AnchorDisplay anchor={activeAnchor} />}
+    <div
+      ref={drag}
+      className={`relative w-16 h-16 flex items-center justify-center text-white cursor-grab
+                  ${shapeClasses[type]} ${isDragging ? 'opacity-50' : 'opacity-100'}
+                  bg-brand-primary border-2 border-brand-primary-dark shadow-lg overflow-hidden`}
+      style={type === 'item' ? { transform: 'rotate(45deg)' } : {}}
+    >
+      {imageUrl ? (
+        <img src={imageUrl} alt={label} className={type === 'item' ? 'w-full h-full object-cover rotate-[-45deg]' : 'w-full h-full object-cover'} />
+      ) : (
+        <div className={type === 'item' ? 'rotate-[-45deg]' : ''}>
+          <span className="text-xs">{label.substring(0, 5)}...</span>
+        </div>
+      )}
+      <span className="absolute bottom-[-20px] text-xs text-brand-text-muted">{label}</span>
     </div>
   );
 };
 
-// --- Sub-Component: FullTimeline ---
-const FullTimeline: React.FC = React.memo(() => {
-    const anchors = useSelector((state: RootState) => state.caseFile.anchors);
-    const slots = useSelector(selectSlotEntities);
-    const clues = useSelector(selectClueEntities);
+// Droppable Slot Component
+interface DroppableSlotProps {
+  slot: TimelineSlot;
+  onDropSymbol: (slotId: string, symbolId: string) => void;
+  placedSymbolId?: string;
+  symbolImageUrls: { [id: string]: string };
+}
 
-    const renderSlot = (slot: EvidenceSlot) => {
-        const placedClue = slot.placedClueId ? clues[slot.placedClueId] : null;
-        return (
-            <div key={slot.slotId} className={`p-3 rounded-lg border-2 ${placedClue ? 'bg-brand-surface border-brand-primary/50' : 'bg-black/30 border-dashed border-brand-border/50'}`}>
-                <p className={`text-sm ${placedClue ? 'text-white' : 'text-brand-text-muted'}`}>{placedClue ? placedClue.text : 'Empty Slot'}</p>
-            </div>
-        );
-    };
+const DroppableSlot: React.FC<DroppableSlotProps> = ({ slot, onDropSymbol, placedSymbolId, symbolImageUrls }) => {
+  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+    accept: ItemTypes.SYMBOL,
+    canDrop: (item) => item.type === slot.symbolType,
+    drop: (item: { id: string; type: TimelineSymbolType }) => onDropSymbol(slot.id, item.id),
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  }));
 
-    return (
-        <div className="animate-fade-in space-y-6 relative">
-            <div className="absolute top-12 bottom-12 left-4 w-0.5 bg-brand-border/50"></div>
-            {anchors.map(anchor => (
-                <div key={anchor.id} className="flex items-start gap-4">
-                    <div className="flex-shrink-0 flex flex-col items-center">
-                        <div className="w-8 h-8 rounded-full bg-brand-primary border-4 border-brand-surface flex items-center justify-center z-10"></div>
-                    </div>
-                    <div className="flex-1 mt-[-8px]">
-                        <h3 className="text-2xl font-oswald uppercase text-white">{anchor.title}</h3>
-                        <p className="text-brand-text-muted mb-3">{anchor.timeLabel}</p>
-                        <div className="space-y-2">
-                           {renderSlot(slots[anchor.primarySlot.slotId]!)}
-                           {anchor.supportingSlots.map(s => renderSlot(slots[s.slotId]!))}
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    );
-});
+  const isActive = isOver && canDrop;
+  const shapeClasses = {
+    person: 'rounded-full',
+    item: 'rotate-45',
+    event: 'rounded-none',
+  };
 
-
-// --- Main Component: TimelineView ---
-const TimelineView: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { viewMode, score } = useSelector(selectCaseFileState);
+  const placedSymbolImageUrl = placedSymbolId ? symbolImageUrls[placedSymbolId] : undefined;
 
   return (
-    <div className="p-4 pb-40 h-full overflow-y-auto">
-      <header className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-4xl font-oswald text-brand-accent uppercase">Case File</h1>
-          <p className="text-yellow-400 font-bold font-mono">Score: {score}</p>
+    <div
+      ref={drop}
+      className={`relative w-16 h-16 flex items-center justify-center border-2 border-dashed
+                  ${shapeClasses[slot.symbolType]}
+                  ${isActive ? 'border-green-400 bg-green-400/20' : canDrop ? 'border-brand-border' : 'border-brand-border/50'}
+                  ${placedSymbolId ? 'bg-brand-surface border-brand-primary' : 'bg-black/30'} overflow-hidden`}
+      style={slot.symbolType === 'item' ? { transform: 'rotate(45deg)' } : {}}
+    >
+      {placedSymbolImageUrl ? (
+        <img src={placedSymbolImageUrl} alt="placed symbol" className={slot.symbolType === 'item' ? 'w-full h-full object-cover rotate-[-45deg]' : 'w-full h-full object-cover'} />
+      ) : (
+        <div className={slot.symbolType === 'item' ? 'rotate-[-45deg]' : ''}>
+          <span className="text-brand-text-muted text-xs">Empty</span>
         </div>
-        <div className="bg-brand-surface p-1 rounded-lg flex space-x-1 border border-brand-border">
-          <button onClick={() => dispatch(setViewMode('workspace'))} className={`p-2 rounded-md ${viewMode === 'workspace' ? 'bg-brand-primary text-white' : 'text-brand-text-muted'}`}>
-              <Edit size={20} />
-          </button>
-          <button onClick={() => dispatch(setViewMode('fullTimeline'))} className={`p-2 rounded-md ${viewMode === 'fullTimeline' ? 'bg-brand-primary text-white' : 'text-brand-text-muted'}`}>
-              <Eye size={20} />
-          </button>
-        </div>
-      </header>
-
-      {viewMode === 'workspace' ? <Workspace /> : <FullTimeline />}
+      )}
     </div>
+  );
+};
+
+// Main TimelineView Component
+const TimelineView: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const [timelineSlots, setTimelineSlots] = useState<TimelineSlot[]>(defaultTimelineConfig.slots);
+
+  const allCharacters = useSelector(selectAllCharacters);
+  const allObjects = useSelector(selectAllObjects);
+  const imageUrls = useSelector(selectImageUrls);
+
+  // Filter characters for persons (excluding victim, as per typical game logic)
+  const persons = allCharacters.filter(c => c.role !== 'victim' && c.role !== 'client');
+  // Filter objects for items and events based on category or tags
+  const items = allObjects.filter(o => o.category === 'physical' || o.category === 'document');
+  const events = allObjects.filter(o => o.category === 'cctv_sighting' || o.category === 'testimony_fragment');
+
+  // Queue image generation for all draggable symbols
+  React.useEffect(() => {
+    [...persons, ...items, ...events].forEach(symbol => {
+      if (!imageUrls[symbol.id]) {
+        dispatch(queueImageGeneration({
+          cardId: symbol.id,
+          prompt: symbol.imagePrompt,
+          colorTreatment: 'monochrome', // Assuming monochrome for symbols
+        }));
+      }
+    });
+  }, [persons, items, events, imageUrls, dispatch]);
+
+
+  const handleDropSymbol = useCallback((slotId: string, symbolId: string) => {
+    setTimelineSlots((prevSlots) =>
+      prevSlots.map((slot) =>
+        slot.id === slotId ? { ...slot, initialSymbolId: symbolId } : slot
+      )
+    );
+  }, []);
+
+  const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const backend = isTouchDevice() ? TouchBackend : HTML5Backend;
+
+  return (
+    <DndProvider backend={backend}>
+      <div className="flex flex-col h-full p-4">
+        {/* Top Part: Timeline */}
+        <div className="flex-grow bg-brand-surface/20 rounded-lg p-4 mb-4 overflow-auto">
+          <h2 className="text-2xl font-oswald text-white mb-4">Timeline</h2>
+          <div className="relative">
+            {/* Time Tick Marks */}
+            <div className="flex justify-around mb-4">
+              {defaultTimelineConfig.times.map((time) => (
+                <div key={time.id} className="text-brand-text-muted text-xs text-center">
+                  {time.label}
+                </div>
+              ))}
+            </div>
+
+            {/* Location Lines and Slots */}
+            <div className="space-y-6">
+              {defaultTimelineConfig.locations.map((location) => (
+                <div key={location.id} className="relative flex items-center">
+                  <span className="absolute left-0 w-24 text-right pr-4 text-brand-text-muted text-sm">
+                    {location.label}
+                  </span>
+                  <div className="flex-grow border-t border-brand-border ml-28 relative">
+                    {timelineSlots
+                      .filter(slot => slot.locationId === location.id)
+                      .map(slot => {
+                        const timeIndex = defaultTimelineConfig.times.findIndex(t => t.id === slot.timeId);
+                        const totalTimes = defaultTimelineConfig.times.length;
+                        const leftPosition = (timeIndex / (totalTimes - 1)) * 100;
+                        return (
+                          <div
+                            key={slot.id}
+                            className="absolute top-1/2 -translate-y-1/2"
+                            style={{ left: `${leftPosition}%` }}
+                          >
+                            <DroppableSlot
+                              slot={slot}
+                              onDropSymbol={handleDropSymbol}
+                              placedSymbolId={slot.initialSymbolId}
+                              symbolImageUrls={imageUrls}
+                            />
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Part: Draggable Symbols */}
+        <div className="flex-shrink-0 bg-brand-surface/20 rounded-lg p-4">
+          <h2 className="text-2xl font-oswald text-white mb-4">Symbols</h2>
+          <div className="flex justify-around gap-4">
+            {persons.map((p) => (
+              <DraggableSymbol key={p.id} id={p.id} type="person" label={p.name} imageUrl={imageUrls[p.id]} />
+            ))}
+            {items.map((i) => (
+              <DraggableSymbol key={i.id} id={i.id} type="item" label={i.name} imageUrl={imageUrls[i.id]} />
+            ))}
+            {events.map((e) => (
+              <DraggableSymbol key={e.id} id={e.id} type="event" label={e.name} imageUrl={imageUrls[e.id]} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </DndProvider>
   );
 };
 

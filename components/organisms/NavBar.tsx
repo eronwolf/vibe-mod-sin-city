@@ -66,10 +66,10 @@ const NavBar: React.FC = () => {
       <NavButton view="locations" label="Locations" icon={<Map size={24} />} isActive={activeView === 'locations'} onClick={handleNavClick} />
       <NavButton view="people" label="People" icon={<Users size={24} />} isActive={activeView === 'people'} onClick={handleNavClick} />
       <NavButton 
-        view="blankTimeline"
+        view="timeline"
         label="Timeline"
         icon={<BookOpen size={24} />}
-        isActive={activeView === 'blankTimeline'}
+        isActive={activeView === 'timeline'}
         onClick={handleNavClick}
         notificationCount={timelineMessages.length}
       />
