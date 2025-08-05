@@ -148,6 +148,8 @@ const TimelineView: React.FC = () => {
     );
   }, []);
 
+  const allSlotsFilled = timelineSlots.every(slot => slot.initialSymbolId !== undefined);
+
   const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   const backend = isTouchDevice() ? TouchBackend : HTML5Backend;
 
@@ -217,6 +219,18 @@ const TimelineView: React.FC = () => {
               <DraggableSymbol key={e.id} id={e.id} type="event" label={e.name} imageUrl={imageUrls[e.id]} />
             ))}
           </div>
+        </div>
+
+        {/* Accuse Button */}
+        <div className="flex-shrink-0 mt-4">
+          <button
+            className={`w-full py-3 rounded-lg text-white font-bold text-lg transition-colors
+              ${allSlotsFilled ? 'bg-brand-primary hover:bg-brand-primary-dark' : 'bg-gray-600 cursor-not-allowed'}`}
+            disabled={!allSlotsFilled}
+            onClick={() => alert('Accuse button clicked!')} // Placeholder for now
+          >
+            Accuse
+          </button>
         </div>
       </div>
     </DndProvider>
