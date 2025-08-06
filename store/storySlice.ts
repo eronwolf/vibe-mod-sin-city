@@ -35,8 +35,8 @@ export const hydrateImageCache = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     try {
       const cachedImages = await dbService.getAllImages();
-      const urls: { [id: string]: string } = {};
-      const existingUrls = (getState() as RootState).story.imageUrls;
+      const blobs: { [id: string]: string } = {};
+      const existingBlobs = (getState() as RootState).story.imageBlobs;
 
       for (const item of cachedImages) {
         // --- CRITICAL FIX: Idempotent Hydration ---
@@ -127,7 +127,7 @@ interface StoryState {
   testimonies: Testimony[];
   canonicalTimeline: CanonicalTimeline | null;
   evidenceStacks: EvidenceStack[] | null;
-  imageUrls: { [id: string]: string };
+  imageBlobs: { [id: string]: string };
   imageLoading: { [id: string]: boolean };
   imageErrors: { [id: string]: boolean };
   imageGenerationQueue: ImageGenerationRequest[];
