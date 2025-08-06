@@ -47,7 +47,7 @@ const DraggableSymbol: React.FC<DraggableSymbolProps> = ({ id, type, label, imag
   return (
     <div
       ref={drag}
-      className={`relative w-16 h-16 flex items-center justify-center text-white cursor-grab flex-shrink-0
+      className={`relative w-20 h-20 flex items-center justify-center text-white cursor-grab flex-shrink-0
                   ${shapeClasses[type]} ${isDragging ? 'opacity-50' : 'opacity-100'}
                   bg-brand-surface-200 border-2 border-brand-primary-dark shadow-lg overflow-hidden`}
       style={type === 'item' ? { transform: 'rotate(45deg)' } : {}}
@@ -56,10 +56,10 @@ const DraggableSymbol: React.FC<DraggableSymbolProps> = ({ id, type, label, imag
         <img src={imageUrl} alt={label} className={type === 'item' ? 'w-full h-full object-cover rotate-[-45deg]' : 'w-full h-full object-cover'} />
       ) : (
         <div className={`flex items-center justify-center w-full h-full ${type === 'item' ? 'rotate-[-45deg]' : ''}`}>
-          <span className="text-xs text-brand-text-muted text-center p-1">{label.substring(0, 5)}...</span>
+          <span className="text-xs text-brand-text-muted text-center p-1">{label.substring(0, 6)}...</span>
         </div>
       )}
-      <span className="absolute bottom-[-20px] text-xs text-brand-text-muted">{label}</span>
+      <span className="absolute -bottom-6 text-xs text-brand-text-muted text-center w-full truncate">{label}</span>
     </div>
   );
 };
@@ -95,7 +95,7 @@ const DroppableSlot: React.FC<DroppableSlotProps> = ({ slot, onDropSymbol, place
   return (
     <div
       ref={drop}
-      className={`relative w-16 h-16 flex items-center justify-center border-2 border-dashed flex-shrink-0
+      className={`relative w-20 h-20 flex items-center justify-center border-2 border-dashed flex-shrink-0
                   ${shapeClasses[slot.symbolType]}
                   ${isActive ? 'border-green-400 bg-green-400/20' : canDrop ? 'border-brand-border' : 'border-brand-border/50'}
                   ${placedSymbolId ? 'bg-brand-surface-200 border-brand-primary' : 'bg-black/30'} overflow-hidden`}
@@ -145,7 +145,6 @@ const TimelineView: React.FC = () => {
     });
   }, [visiblePersons, visibleItems, visibleEvents, imageUrls, dispatch]);
 
-
   const handleDropSymbol = useCallback((slotId: string, symbolId: string) => {
     setTimelineSlots((prevSlots) =>
       prevSlots.map((slot) =>
@@ -161,49 +160,110 @@ const TimelineView: React.FC = () => {
 
   return (
     <DndProvider backend={backend}>
-      <div className="flex flex-col h-full p-4 overflow-y-hidden">
-        {/* Top Part: Timeline */}
-        <div className="flex-grow bg-brand-surface/20 rounded-lg p-4 mb-4 overflow-x-auto h-0 min-h-0">
-          <h2 className="text-2xl font-oswald text-white mb-4">Timeline</h2>
-          <div className="relative">
-            {/* Time Tick Marks */}
-            <div className="flex justify-around mb-4">
-              {defaultTimelineConfig.times.map((time) => (
-                <div key={time.id} className="text-brand-text-muted text-xs text-center">
-                  {time.label}
-                </div>
-              ))}
+      <div className="flex flex-col h-full bg-black">
+        {/* Header */}
+        <div className="flex-shrink-0 p-4 border-b border-brand-border">
+          <h1 className="text-3xl font-oswald text-white uppercase tracking-wider">Timeline Puzzle</h1>
+          <p className="text-brand-text-muted text-sm mt-1">Drag symbols to reconstruct the crime timeline</p>
+        </div>
+
+        {/* Main Timeline Area */}
+        <div className="flex-1 p-4 overflow-x-auto">
+          <div className="h-full bg-brand-surface/10 rounded-lg border border-brand-border p-6" style={{ minWidth: '1200px', width: '1200px' }}>
+            {/* Time Labels - Dynamic width based on slots */}
+            <div className="flex mb-8 relative">
+              <div className="w-32 flex-shrink-0"></div> {/* Spacer for location labels */}
+              <div className="flex px-4">
+                {defaultTimelineConfig.times.map((time, index) => {
+                  // Calculate how many slots exist at this time across all locations
+                  const slotsAtThisTime = timelineSlots.filter(slot => slot.timeId === time.id);
+                  const maxSlotsAtLocation = Math.max(
+                    ...defaultTimelineConfig.locations.map(loc => 
+                      timelineSlots.filter(slot => slot.timeId === time.id && slot.locationId === loc.id).length
+                    )
+                  );
+                  
+                  // Calculate minimum width needed for this time section
+                  const baseWidth = 120; // Base width in pixels
+                  const slotWidth = 80; // Width per slot
+                  const minWidth = Math.max(baseWidth, maxSlotsAtLocation * slotWidth + 40); // 40px padding
+                  
+                  return (
+                    <div key={time.id} className="text-center flex-shrink-0" style={{ minWidth: `${minWidth}px` }}>
+                      <div className="text-brand-text-muted text-xs font-medium mb-2">{time.label}</div>
+                      <div className="w-1 h-1 bg-brand-border rounded-full mx-auto"></div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Location Lines and Slots */}
-            <div className="space-y-6">
+            {/* Timeline Grid */}
+            <div className="space-y-8">
               {defaultTimelineConfig.locations.map((location) => (
-                <div key={location.id} className="relative flex items-center">
-                  <span className="absolute left-0 w-24 text-right pr-4 text-brand-text-muted text-sm">
-                    {location.label}
-                  </span>
-                  <div className="flex-grow border-t border-brand-border ml-28 relative">
-                    {timelineSlots
-                      .filter(slot => slot.locationId === location.id)
-                      .map(slot => {
-                        const timeIndex = defaultTimelineConfig.times.findIndex(t => t.id === slot.timeId);
-                        const totalTimes = defaultTimelineConfig.times.length;
-                        const leftPosition = (timeIndex / (totalTimes - 1)) * 100;
-                        return (
-                          <div
-                            key={slot.id}
-                            className="absolute top-1/2 -translate-y-1/2"
-                            style={{ left: `${leftPosition}%` }}
-                          >
-                            <DroppableSlot
-                              slot={slot}
-                              onDropSymbol={handleDropSymbol}
-                              placedSymbolId={slot.initialSymbolId}
-                              symbolImageUrls={imageUrls}
-                            />
-                          </div>
-                        );
-                      })}
+                <div key={location.id} className="flex items-center">
+                  {/* Location Label */}
+                  <div className="w-32 flex-shrink-0 pr-4">
+                    <div className="text-brand-text-muted text-sm font-medium text-right">
+                      {location.label}
+                    </div>
+                  </div>
+                  
+                  {/* Timeline Line */}
+                  <div className="flex-1 relative" style={{ minWidth: '800px' }}>
+                    <div className="h-0.5 bg-brand-border relative">
+                      {/* Timeline Slots */}
+                      {timelineSlots
+                        .filter(slot => slot.locationId === location.id)
+                        .map((slot) => {
+                          const timeIndex = defaultTimelineConfig.times.findIndex(t => t.id === slot.timeId);
+                          
+                          // Get all slots at this same time and location
+                          const slotsAtSameTime = timelineSlots
+                            .filter(s => s.locationId === location.id && s.timeId === slot.timeId);
+                          
+                          // Find this slot's position among slots at the same time
+                          const slotIndexAtTime = slotsAtSameTime.findIndex(s => s.id === slot.id);
+                          
+                          // Calculate position based on time section width
+                          let leftOffset = 128 + 16; // Spacer width + padding
+                          
+                          // Add width of all previous time sections
+                          for (let i = 0; i < timeIndex; i++) {
+                            const timeId = defaultTimelineConfig.times[i].id;
+                            const maxSlotsAtThisTime = Math.max(
+                              ...defaultTimelineConfig.locations.map(loc => 
+                                timelineSlots.filter(slot => slot.timeId === timeId && slot.locationId === loc.id).length
+                              )
+                            );
+                            const sectionWidth = Math.max(120, maxSlotsAtThisTime * 80 + 40);
+                            leftOffset += sectionWidth;
+                          }
+                          
+                          // Add position within current time section
+                          const slotSpacing = 90; // spacing between slots
+                          leftOffset += 20 + (slotIndexAtTime * slotSpacing); // 20px padding + slot position
+                          
+                          // Convert to percentage of total container width
+                          const containerWidth = 1200;
+                          const finalPosition = (leftOffset / containerWidth) * 100;
+                          
+                          return (
+                            <div
+                              key={slot.id}
+                              className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2"
+                              style={{ left: `${finalPosition}%` }}
+                            >
+                              <DroppableSlot
+                                slot={slot}
+                                onDropSymbol={handleDropSymbol}
+                                placedSymbolId={slot.initialSymbolId}
+                                symbolImageUrls={imageUrls}
+                              />
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -211,31 +271,63 @@ const TimelineView: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Part: Draggable Symbols */}
-        <div className="flex-shrink-0 bg-brand-surface/20 rounded-lg p-4">
-          <h2 className="text-2xl font-oswald text-white mb-4">Symbols</h2>
-          <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 p-2">
-            {visiblePersons.map((p) => (
-              <DraggableSymbol key={p.id} id={p.id} type="person" label={p.name} imageUrl={imageUrls[p.id]} />
-            ))}
-            {visibleItems.map((i) => (
-              <DraggableSymbol key={i.id} id={i.id} type="item" label={i.name} imageUrl={imageUrls[i.id]} />
-            ))}
-            {visibleEvents.map((e) => (
-              <DraggableSymbol key={e.id} id={e.id} type="event" label={e.name} imageUrl={imageUrls[e.id]} />
-            ))}
+        {/* Symbols Section */}
+        <div className="flex-shrink-0 p-4 border-t border-brand-border">
+          <div className="bg-brand-surface/10 rounded-lg p-4">
+            <h2 className="text-xl font-oswald text-white mb-4 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+              <span className="w-3 h-3 rotate-45 bg-green-500"></span>
+              <span className="w-3 h-3 bg-red-500"></span>
+              <span className="ml-2">Available Symbols</span>
+            </h2>
+            
+            <div className="flex flex-nowrap overflow-x-auto gap-6 pb-2">
+              {visiblePersons.length > 0 && (
+                <div className="flex-shrink-0">
+                  <h3 className="text-brand-text-muted text-sm font-medium mb-3">People (Circles)</h3>
+                  <div className="flex gap-4">
+                    {visiblePersons.map((p) => (
+                      <DraggableSymbol key={p.id} id={p.id} type="person" label={p.name} imageUrl={imageUrls[p.id]} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {visibleItems.length > 0 && (
+                <div className="flex-shrink-0">
+                  <h3 className="text-brand-text-muted text-sm font-medium mb-3">Evidence (Diamonds)</h3>
+                  <div className="flex gap-4">
+                    {visibleItems.map((i) => (
+                      <DraggableSymbol key={i.id} id={i.id} type="item" label={i.name} imageUrl={imageUrls[i.id]} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {visibleEvents.length > 0 && (
+                <div className="flex-shrink-0">
+                  <h3 className="text-brand-text-muted text-sm font-medium mb-3">Events (Squares)</h3>
+                  <div className="flex gap-4">
+                    {visibleEvents.map((e) => (
+                      <DraggableSymbol key={e.id} id={e.id} type="event" label={e.name} imageUrl={imageUrls[e.id]} />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Accuse Button */}
-        <div className="flex-shrink-0 mt-4">
+        <div className="flex-shrink-0 p-4">
           <button
-            className={`w-full py-3 rounded-lg text-white font-bold text-lg transition-colors
-              ${allSlotsFilled ? 'bg-brand-primary hover:bg-brand-primary-dark' : 'bg-gray-600 cursor-not-allowed'}`}
+            className={`w-full py-4 rounded-lg text-white font-bold text-lg transition-colors
+              ${allSlotsFilled ? 'bg-brand-primary hover:bg-brand-primary-dark' : 'bg-gray-600 cursor-not-allowed'}
+              ${allSlotsFilled ? 'shadow-lg shadow-brand-primary/20' : ''}`}
             disabled={!allSlotsFilled}
             onClick={() => alert('Accuse button clicked!')} // Placeholder for now
           >
-            Accuse
+            {allSlotsFilled ? 'Submit Timeline' : 'Complete Timeline to Submit'}
           </button>
         </div>
       </div>
