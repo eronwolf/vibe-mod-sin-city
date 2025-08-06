@@ -11,6 +11,7 @@ import { setActiveCard } from '../../store/uiSlice';
 import ImageWithLoader from './ImageWithLoader';
 import { Character, StoryObject, TimelineTag } from '../../types';
 import { useCardImage } from '../../hooks/useCardImage';
+import { useUnlockSystem } from '../../hooks/useUnlockSystem';
 import TagPill from './TagPill';
 import { BrainCircuit, Hammer, Clock, ZoomIn } from 'lucide-react';
 import Button from '../atoms/Button';
@@ -32,6 +33,7 @@ interface TimelineEventCardProps {
 
 const TimelineEventCard: React.FC<TimelineEventCardProps> = React.memo(({ evidence, isExpanded }) => {
     const dispatch = useDispatch<AppDispatch>();
+    const { handleEvidenceTap } = useUnlockSystem();
     const cardData = evidence.details as (Character | StoryObject) | undefined;
     
     // --- Data Fetch & Image Loading ---
@@ -46,6 +48,8 @@ const TimelineEventCard: React.FC<TimelineEventCardProps> = React.memo(({ eviden
     const handleViewDetailsClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent the node's expand/collapse toggle
         if (evidence.cardType === 'object') {
+            // Trigger unlocks when timeline evidence is tapped
+            handleEvidenceTap(evidence.cardId);
             dispatch(setActiveCard({ id: evidence.cardId, type: 'object' }));
         }
     };

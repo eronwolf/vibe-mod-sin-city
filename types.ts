@@ -279,6 +279,8 @@ export interface StoryObject {
   timeToAdd?: number;
   /** Tracks if the object has been unlocked at least once to prevent repeat charges. */
   hasBeenUnlocked?: boolean;
+  /** Unlocks that are triggered when this object is interacted with. */
+  unlocks?: Unlock[];
   components: DataComponent[]; // Holds all historical/forensic data components.
 }
 
@@ -428,6 +430,66 @@ export interface CaseFileData {
   anchors: TimelineAnchor[];
 }
 
+/**
+ * Represents an event in the story timeline.
+ * Events are separate entities that can be unlocked and placed on the timeline.
+ */
+export interface StoryEvent {
+  id: string;
+  name: string;
+  imagePrompt: string;
+  description: string;
+  timestamp: string;
+  locationId: string;
+  /** The amount of time to add to the player's total when this event is unlocked. */
+  timeToAdd?: number;
+  /** Tracks if the event has been unlocked at least once to prevent repeat charges. */
+  hasBeenUnlocked?: boolean;
+  /** The rarity classification of the event. */
+  rarity: EvidenceRarity;
+  /** Optional tags to classify the event for timeline analysis. */
+  tags?: TimelineTag[];
+  components: DataComponent[];
+}
+
+/**
+ * Represents a reference to an entity that can be unlocked.
+ */
+export interface UnlockReference {
+  /** The type of entity being referenced. */
+  type: 'location' | 'sublocation' | 'evidence' | 'character' | 'event';
+  /** The ID of the referenced entity. */
+  ref: string;
+}
+
+/**
+ * Represents an unlock that can be triggered by interacting with evidence.
+ */
+export interface Unlock {
+  /** The type of unlock (what gets revealed). */
+  type: 'location' | 'sublocation' | 'evidence' | 'character' | 'event';
+  /** The ID of the entity being unlocked. */
+  ref: string;
+  /** The amount of time to add when this unlock is triggered. */
+  time: number;
+}
+
+/**
+ * Represents a sublocation within a location.
+ */
+export interface Sublocation {
+  id: string;
+  name: string;
+  description: string;
+  /** The location this sublocation belongs to. */
+  locationId: string;
+  /** Whether this sublocation is initially visible. */
+  isVisible: boolean;
+  /** The amount of time to add when this sublocation is unlocked. */
+  timeToAdd?: number;
+  /** Tracks if the sublocation has been unlocked at least once. */
+  hasBeenUnlocked?: boolean;
+}
 
 /**
  * The root data structure for an entire story, containing all normalized entities.
@@ -437,7 +499,9 @@ export interface StoryData {
   storyInfo: StoryInfo;
   characters: Character[];
   objects: StoryObject[];
+  events: StoryEvent[];
   locations: Location[];
+  sublocations: Sublocation[];
   evidenceGroups: EvidenceGroup[];
   testimonies: Testimony[];
   canonicalTimeline?: CanonicalTimeline;

@@ -7,7 +7,7 @@
  * and decouples it from the application's final data structures.
  */
 
-import { StoryData, Testimony, Hotspot, Character, Location, StoryObject, EvidenceGroup, DataComponent, CanonicalTimeline, EvidenceStack, EvidenceRarity, Bounty, DialogueData, Insight } from '../types';
+import { StoryData, Testimony, Hotspot, Character, Location, StoryObject, StoryEvent, Sublocation, EvidenceGroup, DataComponent, CanonicalTimeline, EvidenceStack, EvidenceRarity, Bounty, DialogueData, Insight } from '../types';
 import { hankBassettPoliceReports } from './HankBassett';
 
 // The raw story data is defined as a large JSON-like object for easy authoring.
@@ -268,7 +268,19 @@ const rawStory = {
       "rarity": "critical",
       "imagePrompt": "The body of an elderly man lying on a hiking trail. A single gunshot wound is visible in his chest. Forensic markers surround the body.",
       "description": "Tom Trembly's body, found on the Mount Tamalpais trail. He was shot through the heart with a .243 Winchester.",
-      "tags": ["victim", "body"]
+      "tags": ["victim", "body"],
+      "unlocks": [
+        {
+          "type": "event",
+          "ref": "event_tom_murder",
+          "time": 20
+        },
+        {
+          "type": "sublocation",
+          "ref": "subloc_tom_body_location",
+          "time": 5
+        }
+      ]
     },
     {
       "id": "obj_carol_body",
@@ -281,7 +293,19 @@ const rawStory = {
       "rarity": "critical",
       "imagePrompt": "The body of an elderly woman lying at the base of a steep cliff. She appears to have fallen from above.",
       "description": "Carol Trembly's body, found at the base of a cliff near the Mount Tamalpais trail. She appears to have fallen while fleeing Tom's murder.",
-      "tags": ["victim", "body"]
+      "tags": ["victim", "body"],
+      "unlocks": [
+        {
+          "type": "event",
+          "ref": "event_carol_fall",
+          "time": 15
+        },
+        {
+          "type": "sublocation",
+          "ref": "subloc_carol_body_location",
+          "time": 5
+        }
+      ]
     },
     {
       "id": "obj_shop_records",
@@ -307,7 +331,14 @@ const rawStory = {
       "rarity": "circumstantial",
       "imagePrompt": "The interior of a secluded cabin. A .243 Winchester rifle is visible on a gun rack. Hunting gear and camping equipment are scattered throughout the cabin.",
       "description": "The cabin contains a .243 Winchester rifle, the same type of weapon used to kill Tom Trembly. This provides a link between Hank Bassett and the murder.",
-      "tags": ["weapon", "cabin"]
+      "tags": ["weapon", "cabin"],
+      "unlocks": [
+        {
+          "type": "sublocation",
+          "ref": "subloc_hank_rifle_rack",
+          "time": 8
+        }
+      ]
     },
     {
       "id": "obj_woodpile",
@@ -321,6 +352,76 @@ const rawStory = {
       "imagePrompt": "A neatly stacked woodpile beside a secluded cabin. A faint trace of blood is visible on one of the logs.",
       "description": "A faint trace of blood is visible on one of the logs in the woodpile. Forensic analysis confirms the blood is Tom Trembly's.",
       "tags": ["blood", "woodpile"]
+    }
+  ],
+  "events": [
+    {
+      "id": "event_tom_murder",
+      "name": "Tom Trembly Murder",
+      "imagePrompt": "A crime scene photo showing Tom Trembly's body on the hiking trail. A single gunshot wound is visible in his chest. The scene is marked with forensic evidence markers.",
+      "description": "Tom Trembly was shot through the heart with a .243 Winchester rifle while hiking on Mount Tamalpais.",
+      "timestamp": "2025-08-13T10:15:00Z",
+      "locationId": "loc_mount_tamalpais",
+      "timeToAdd": 20,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["means", "opportunity"],
+      "components": []
+    },
+    {
+      "id": "event_carol_fall",
+      "name": "Carol Trembly's Fall",
+      "imagePrompt": "A crime scene photo showing Carol Trembly's body at the base of a steep cliff. She appears to have fallen while fleeing from the scene of Tom's murder.",
+      "description": "Carol Trembly fell from a cliff while fleeing the scene of Tom's murder.",
+      "timestamp": "2025-08-13T10:30:00Z",
+      "locationId": "loc_mount_tamalpais",
+      "timeToAdd": 15,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["opportunity"],
+      "components": []
+    },
+    {
+      "id": "event_shop_fire",
+      "name": "Wild Trail Supply Co. Fire",
+      "imagePrompt": "A photograph of the Wild Trail Supply Co. shop after a suspicious fire. The building shows significant damage with smoke damage visible.",
+      "description": "A suspicious fire at Wild Trail Supply Co. that led to Hank Bassett's termination.",
+      "timestamp": "2025-07-15T14:00:00Z",
+      "locationId": "loc_wild_trail_supply_co",
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false,
+      "rarity": "material",
+      "tags": ["motive"],
+      "components": []
+    }
+  ],
+  "sublocations": [
+    {
+      "id": "subloc_tom_body_location",
+      "name": "Tom's Body Location",
+      "description": "The exact spot where Tom Trembly's body was found on the trail.",
+      "locationId": "loc_mount_tamalpais",
+      "isVisible": false,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_carol_body_location",
+      "name": "Carol's Body Location",
+      "description": "The base of the cliff where Carol Trembly's body was found.",
+      "locationId": "loc_mount_tamalpais",
+      "isVisible": false,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_hank_rifle_rack",
+      "name": "Hank's Rifle Rack",
+      "description": "The gun rack in Hank's cabin where the .243 Winchester rifle was found.",
+      "locationId": "loc_hank_cabin",
+      "isVisible": false,
+      "timeToAdd": 8,
+      "hasBeenUnlocked": false
     }
   ],
   "evidenceGroups": [],
@@ -493,6 +594,44 @@ const transformLocationData = (rawData: any): Location[] => {
 };
 
 /**
+ * Transforms the raw event data into the structured `StoryEvent` format.
+ * @param {any[]} rawEvents - The array of raw event objects from the story.
+ * @returns {StoryEvent[]} An array of processed `StoryEvent` objects.
+ */
+const transformEventData = (rawEvents: any[]): StoryEvent[] => {
+    return rawEvents.map((e: any) => ({
+        id: e.id,
+        name: e.name,
+        imagePrompt: e.imagePrompt,
+        description: e.description,
+        timestamp: e.timestamp,
+        locationId: e.locationId,
+        timeToAdd: e.timeToAdd || 0,
+        hasBeenUnlocked: e.hasBeenUnlocked || false,
+        rarity: e.rarity || 'irrelevant',
+        tags: e.tags || [],
+        components: e.components || [],
+    }));
+};
+
+/**
+ * Transforms the raw sublocation data into the structured `Sublocation` format.
+ * @param {any[]} rawSublocations - The array of raw sublocation objects from the story.
+ * @returns {Sublocation[]} An array of processed `Sublocation` objects.
+ */
+const transformSublocationData = (rawSublocations: any[]): Sublocation[] => {
+    return rawSublocations.map((s: any) => ({
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        locationId: s.locationId,
+        isVisible: s.isVisible || false,
+        timeToAdd: s.timeToAdd || 0,
+        hasBeenUnlocked: s.hasBeenUnlocked || false,
+    }));
+};
+
+/**
  * Transforms the raw bounty data into the structured `Bounty` format.
  * @param {any[]} rawBounties - The array of raw bounty objects from the story.
  * @returns {Bounty[]} An array of processed `Bounty` objects.
@@ -522,6 +661,8 @@ const transformStoryData = (rawData: any): StoryData => {
     const objects = transformObjectData(rawData.objects);
     const characters = transformCharacterData(rawData.characters, rawData.objects, testimonies);
     const locations = transformLocationData(rawData);
+    const events = transformEventData(rawData.events || []);
+    const sublocations = transformSublocationData(rawData.sublocations || []);
     const evidenceGroups: EvidenceGroup[] = rawData.evidenceGroups || [];
     const bounties = transformBounties(rawData.bounties || []);
     const canonicalTimeline: CanonicalTimeline | undefined = rawData.canonicalTimeline;
@@ -539,7 +680,9 @@ const transformStoryData = (rawData: any): StoryData => {
         },
         characters,
         objects,
+        events,
         locations,
+        sublocations,
         evidenceGroups,
         testimonies,
         bounties,

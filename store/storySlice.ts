@@ -9,7 +9,7 @@
 
 import { createSlice, PayloadAction, createSelector, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { storyData } from '../data/hayesValleyStory';
-import { Character, StoryObject, Evidence, CardType, Location, Testimony, StoryInfo, StoryData, EvidenceGroup, CanonicalTimeline, EvidenceStack, Bounty, DialogueChunkData } from '../types';
+import { Character, StoryObject, StoryEvent, Sublocation, Evidence, CardType, Location, Testimony, StoryInfo, StoryData, EvidenceGroup, CanonicalTimeline, EvidenceStack, Bounty, DialogueChunkData } from '../types';
 import { RootState, AppDispatch } from './index';
 import { generateImage as generateImageAPI } from '../services/geminiService';
 import { dbService, b64toBlob } from '../services/dbService';
@@ -111,7 +111,9 @@ export const createEvidenceFromTestimony = createAsyncThunk<
 
 const charactersAdapter = createEntityAdapter<Character>();
 const objectsAdapter = createEntityAdapter<StoryObject>();
+const eventsAdapter = createEntityAdapter<StoryEvent>();
 const locationsAdapter = createEntityAdapter<Location>();
+const sublocationsAdapter = createEntityAdapter<Sublocation>();
 const evidenceGroupsAdapter = createEntityAdapter<EvidenceGroup>();
 const bountiesAdapter = createEntityAdapter<Bounty>();
 
@@ -120,7 +122,9 @@ interface StoryState {
   storyInfo: StoryInfo;
   characters: ReturnType<typeof charactersAdapter.getInitialState>;
   objects: ReturnType<typeof objectsAdapter.getInitialState>;
+  events: ReturnType<typeof eventsAdapter.getInitialState>;
   locations: ReturnType<typeof locationsAdapter.getInitialState>;
+  sublocations: ReturnType<typeof sublocationsAdapter.getInitialState>;
   evidenceGroups: ReturnType<typeof evidenceGroupsAdapter.getInitialState>;
   bounties: ReturnType<typeof bountiesAdapter.getInitialState>;
   evidence: Evidence[];
@@ -231,7 +235,9 @@ const createInitialState = (data: StoryData): StoryState => {
     storyInfo: data.storyInfo,
     characters: charactersAdapter.setAll(charactersAdapter.getInitialState(), data.characters),
     objects: objectsAdapter.setAll(objectsAdapter.getInitialState(), data.objects),
+    events: eventsAdapter.setAll(eventsAdapter.getInitialState(), data.events || []),
     locations: locationsAdapter.setAll(locationsAdapter.getInitialState(), data.locations),
+    sublocations: sublocationsAdapter.setAll(sublocationsAdapter.getInitialState(), data.sublocations || []),
     evidenceGroups: evidenceGroupsAdapter.setAll(evidenceGroupsAdapter.getInitialState(), data.evidenceGroups),
     bounties: bountiesAdapter.setAll(bountiesAdapter.getInitialState(), data.bounties),
     evidence: initialEvidence,
@@ -401,6 +407,49 @@ const storySlice = createSlice({
         const { locationId, coords } = action.payload;
         state.dynamicHotspotCoords[locationId] = coords;
     },
+    unlockEntity(state, action: PayloadAction<{ type: 'location' | 'sublocation' | 'evidence' | 'character' | 'event'; ref: string; timeToAdd: number }>) {
+      const { type, ref, timeToAdd } = action.payload;
+      
+      // Add time to player's total
+      state.timeSpent += timeToAdd;
+      
+      // Handle different entity types
+      switch (type) {
+        case 'location':
+          // Locations are always visible, just track the unlock
+          break;
+        case 'sublocation':
+          const sublocation = state.sublocations.entities[ref];
+          if (sublocation && !sublocation.hasBeenUnlocked) {
+            sublocationsAdapter.updateOne(state.sublocations, {
+              id: ref,
+              changes: { isVisible: true, hasBeenUnlocked: true }
+            });
+          }
+          break;
+        case 'evidence':
+          const object = state.objects.entities[ref];
+          if (object && !object.hasBeenUnlocked) {
+            objectsAdapter.updateOne(state.objects, {
+              id: ref,
+              changes: { hasBeenUnlocked: true }
+            });
+          }
+          break;
+        case 'character':
+          // Characters are always visible, just track the unlock
+          break;
+        case 'event':
+          const event = state.events.entities[ref];
+          if (event && !event.hasBeenUnlocked) {
+            eventsAdapter.updateOne(state.events, {
+              id: ref,
+              changes: { hasBeenUnlocked: true }
+            });
+          }
+          break;
+      }
+    },
   },
 });
 
@@ -421,6 +470,7 @@ export const {
     addTimeSpent,
     subtractTimeSpent,
     setDynamicHotspotCoords,
+    unlockEntity,
 } = storySlice.actions;
 
 // --- Base Selectors ---
@@ -455,6 +505,16 @@ export const {
   selectAll: selectAllLocations,
   selectById: selectLocationById,
 } = locationsAdapter.getSelectors((state: RootState) => state.story.locations);
+
+export const {
+  selectAll: selectAllEvents,
+  selectById: selectEventById,
+} = eventsAdapter.getSelectors((state: RootState) => state.story.events);
+
+export const {
+  selectAll: selectAllSublocations,
+  selectById: selectSublocationById,
+} = sublocationsAdapter.getSelectors((state: RootState) => state.story.sublocations);
 
 export const {
     selectById: selectEvidenceGroupById,

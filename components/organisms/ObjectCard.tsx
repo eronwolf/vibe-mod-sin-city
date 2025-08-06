@@ -16,6 +16,7 @@ import BackButton from '../atoms/BackButton';
 import SidebarActionButton from '../atoms/SidebarActionButton';
 import { useADA } from '../../hooks/useADA';
 import { useCardImage } from '../../hooks/useCardImage';
+import { useUnlockSystem } from '../../hooks/useUnlockSystem';
 import { COMPONENT_REGISTRY } from './componentRegistry';
 import RarityBadge from '../molecules/RarityBadge';
 import { Coins } from 'lucide-react';
@@ -26,6 +27,7 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
   const dispatch = useDispatch<AppDispatch>();
   const triggerADA = useADA();
   const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
+  const { handleEvidenceTap } = useUnlockSystem();
   
   // No longer checking for affordability as there is no limit to time spent.
 
@@ -50,8 +52,9 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
       // The state update for tokens and flags happens here
       dispatch(addToTimeline(object.id));
       
-      // Show the reveal modal ONLY on the first unlock
+      // Trigger unlocks when evidence is first tapped
       if (isFirstUnlock) {
+        handleEvidenceTap(object.id);
         dispatch(showModal({ type: 'rarityReveal', props: { objectId: object.id } }));
       }
 

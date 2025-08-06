@@ -20,6 +20,7 @@ import SocialMediaFeedCard from '../organisms/SocialMediaFeedCard';
 import MugshotCard from '../organisms/MugshotCard';
 import CollectionCard from '../organisms/CollectionCard';
 import DialogueCard from '../organisms/DialogueCard';
+import UnlockNotification from '../molecules/UnlockNotification';
 import { useADA } from '../../hooks/useADA';
 import { PlayerAction, ViewType, CardType } from '../../types';
 import { selectCharacterById, selectLocationById, selectObjectById, selectEvidenceGroupById, setHasDiscoveredPaint } from '../../store/storySlice';
@@ -118,6 +119,7 @@ const GameScreen: React.FC = () => {
   return (
     <div className="h-full w-full relative">
       {renderContent()}
+      <UnlockNotification />
     </div>
   );
 };

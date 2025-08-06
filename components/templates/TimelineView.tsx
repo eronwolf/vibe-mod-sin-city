@@ -7,13 +7,14 @@
 import React, { useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { selectAllCharacters, selectAllObjects, selectImageUrls, queueImageGeneration } from '../../store/storySlice';
+import { selectAllCharacters, selectAllObjects, selectAllEvents, selectImageUrls, queueImageGeneration } from '../../store/storySlice';
 import { defaultTimelineConfig, TimelineSlot, TimelineSymbolType } from '../../config/timelineConfig';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
-import { Character, StoryObject } from '../../types';
+import { Character, StoryObject, StoryEvent } from '../../types';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useUnlockSystem } from '../../hooks/useUnlockSystem';
 
 // Define ItemTypes for drag and drop
 const ItemTypes = {
@@ -118,17 +119,22 @@ const TimelineView: React.FC = () => {
 
   const allCharacters = useSelector(selectAllCharacters);
   const allObjects = useSelector(selectAllObjects);
+  const allEvents = useSelector(selectAllEvents);
   const imageUrls = useSelector(selectImageUrls);
+  const { getVisibleTimelineSymbols } = useUnlockSystem();
 
+  // Get visible symbols based on unlock status
+  const { persons: visiblePersons, items: visibleItems, events: visibleEvents } = getVisibleTimelineSymbols();
+  
   // Filter characters for persons (excluding victim, as per typical game logic)
   const persons = allCharacters.filter(c => c.role !== 'victim' && c.role !== 'client');
   // Filter objects for items and events based on category or tags
   const items = allObjects.filter(o => o.category === 'physical' || o.category === 'document');
-  const events = allObjects.filter(o => o.category === 'cctv_sighting' || o.category === 'testimony_fragment');
+  const events = allEvents; // Use the actual events from the store
 
   // Queue image generation for all draggable symbols
   React.useEffect(() => {
-    [...persons, ...items, ...events].forEach(symbol => {
+    [...visiblePersons, ...visibleItems, ...visibleEvents].forEach(symbol => {
       if (!imageUrls[symbol.id]) {
         dispatch(queueImageGeneration({
           cardId: symbol.id,
@@ -137,7 +143,7 @@ const TimelineView: React.FC = () => {
         }));
       }
     });
-  }, [persons, items, events, imageUrls, dispatch]);
+  }, [visiblePersons, visibleItems, visibleEvents, imageUrls, dispatch]);
 
 
   const handleDropSymbol = useCallback((slotId: string, symbolId: string) => {
@@ -209,13 +215,13 @@ const TimelineView: React.FC = () => {
         <div className="flex-shrink-0 bg-brand-surface/20 rounded-lg p-4">
           <h2 className="text-2xl font-oswald text-white mb-4">Symbols</h2>
           <div className="flex flex-nowrap overflow-x-auto overflow-y-hidden gap-4 p-2">
-            {persons.map((p) => (
+            {visiblePersons.map((p) => (
               <DraggableSymbol key={p.id} id={p.id} type="person" label={p.name} imageUrl={imageUrls[p.id]} />
             ))}
-            {items.map((i) => (
+            {visibleItems.map((i) => (
               <DraggableSymbol key={i.id} id={i.id} type="item" label={i.name} imageUrl={imageUrls[i.id]} />
             ))}
-            {events.map((e) => (
+            {visibleEvents.map((e) => (
               <DraggableSymbol key={e.id} id={e.id} type="event" label={e.name} imageUrl={imageUrls[e.id]} />
             ))}
           </div>
