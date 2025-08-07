@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { selectTimeSpent } from '../../store/storySlice';
-import { NotebookPen, Send, ChevronRight, Coins } from 'lucide-react';
+import { NotebookPen, Send, ChevronRight, Hourglass } from 'lucide-react';
 import Button from '../atoms/Button';
 import { GAME_MECHANICS } from '../../config';
 
@@ -108,7 +108,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ suggestedQuestions, isAiRespondin
       </form>
        {/* Persistent Time Addition Indicator */}
        <div className="text-center text-xs text-brand-text-muted mt-2 flex items-center justify-center gap-2">
-          <Coins size={14} className="text-yellow-400" />
+          <Hourglass size={14} className="text-yellow-400" />
           <span>Time added per question: {questionTimeAddition}</span>
         </div>
     </div>

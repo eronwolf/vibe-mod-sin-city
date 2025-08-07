@@ -1,5 +1,5 @@
 import React from 'react';
-import { Coins } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { selectTimeSpent } from '../../store/storySlice';
@@ -14,7 +14,7 @@ const TokenDisplay: React.FC = () => {
 
   return (
     <div className="flex items-center gap-2 bg-brand-surface/80 backdrop-blur-md text-white font-bold py-2 px-4 rounded-full border-2 border-brand-border shadow-lg">
-      <Coins className="text-yellow-400 animate-sparkle-glow" size={20} />
+      <Hourglass className="text-yellow-400 animate-sparkle-glow" size={20} />
       <span className="font-mono text-lg">{timeSpent}</span>
     </div>
   );

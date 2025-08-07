@@ -8,7 +8,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { selectTimeSpent } from '../../store/storySlice';
-import { ChevronRight, Coins } from 'lucide-react';
+import { ChevronRight, Hourglass } from 'lucide-react';
 import { GAME_MECHANICS } from '../../config';
 
 interface InterrogationActionsProps {
@@ -74,7 +74,7 @@ const InterrogationActions: React.FC<InterrogationActionsProps> = ({
               >
                 <span className="font-mono">{q}</span>
                  <div className="flex items-center gap-2 text-yellow-400 font-mono text-xs flex-shrink-0">
-                    <Coins size={14} />
+                    <Hourglass size={14} />
                     <span>{questionTimeAddition}</span>
                 </div>
               </button>

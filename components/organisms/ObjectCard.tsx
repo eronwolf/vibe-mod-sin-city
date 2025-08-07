@@ -19,7 +19,7 @@ import { useCardImage } from '../../hooks/useCardImage';
 import { useUnlockSystem } from '../../hooks/useUnlockSystem';
 import { COMPONENT_REGISTRY } from './componentRegistry';
 import RarityBadge from '../molecules/RarityBadge';
-import { Coins } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import SparkleEffect from '../atoms/SparkleEffect';
 import { RARITY_CONFIG } from '../../config';
 
@@ -165,7 +165,7 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
           <div className="flex items-center gap-4">
             {!object.isEvidence && typeof object.timeToAdd === 'number' && object.timeToAdd > 0 && (
                 <div className="flex items-center gap-2 text-yellow-400 font-mono text-lg" title={`Time Added: ${object.timeToAdd}`}>
-                    <Coins size={20} className="animate-sparkle-glow" />
+                    <Hourglass size={20} className="animate-sparkle-glow" />
                     <span className="font-bold">{object.timeToAdd}</span>
                 </div>
             )}

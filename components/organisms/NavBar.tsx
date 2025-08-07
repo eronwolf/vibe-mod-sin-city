@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { setActiveView } from '../../store/uiSlice';
 import { ViewType, PlayerAction } from '../../types';
-import { Users, Map, BookOpen, Coins } from 'lucide-react';
+import { Users, Map, BookOpen, Hourglass } from 'lucide-react';
 import { useADA } from '../../hooks/useADA';
 import { selectTimeSpent } from '../../store/storySlice';
 
@@ -79,7 +79,7 @@ const NavBar: React.FC = () => {
         ${activeView === 'timeSpent' ? 'bg-brand-primary text-white' : 'text-brand-text-muted hover:bg-white/10'}`}
         aria-label={`Go to Time Spent. Total time: ${timeSpent}`}
       >
-        <Coins size={24} className={activeView === 'timeSpent' ? 'text-white' : 'text-yellow-400'} />
+        <Hourglass size={24} className={activeView === 'timeSpent' ? 'text-white' : 'text-yellow-400'} />
         <span className="font-mono text-lg font-bold">{timeSpent}</span>
       </button>
     </nav>
