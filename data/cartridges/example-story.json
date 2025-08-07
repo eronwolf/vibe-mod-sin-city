@@ -1,0 +1,430 @@
+{
+  "metadata": {
+    "storyId": "example_story_01",
+    "title": "Example Crime Story",
+    "version": "1.0.0",
+    "author": "Story Team",
+    "description": "A simple example story to demonstrate the cartridge structure."
+  },
+  
+  "storyInfo": {
+    "premise": "A crime has been committed and detectives must investigate to find the culprit.",
+    "theme": "Justice and truth prevail through careful investigation.",
+    "mapTitle": "Example City",
+    "mapImagePrompt": "A high-contrast, black and white noir-style map of Example City. Crime scenes are highlighted in red.",
+    "crimeSceneId": "loc_crime_scene"
+  },
+
+  "introSlideshow": [
+    {
+      "id": "intro-1",
+      "imagePrompt": "A vintage photograph showing the beginning of the investigation.",
+      "narration": "The story begins with a crime that needs solving..."
+    },
+    {
+      "id": "intro-2", 
+      "imagePrompt": "A detective examining evidence at the crime scene.",
+      "narration": "Evidence is discovered and the investigation begins..."
+    }
+  ],
+
+  "characters": [
+    {
+      "id": "char_victim_01",
+      "name": "John Doe",
+      "age": "45",
+      "role": "victim",
+      "occupation": "Business Owner",
+      "imagePrompt": "A middle-aged man in business attire.",
+      "bio": "The victim of the crime. A respected business owner in the community.",
+      "isSuspect": false,
+      "statement": "",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "6'0\"",
+            "weight": "180 lbs",
+            "eyes": "Brown",
+            "hair": "Black"
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_suspect_01"],
+        "knownLocations": ["loc_crime_scene"],
+        "associatedObjects": ["obj_victim_body"]
+      }
+    },
+    {
+      "id": "char_suspect_01",
+      "name": "Jane Smith",
+      "age": "35",
+      "role": "suspect",
+      "occupation": "Former Employee",
+      "imagePrompt": "A woman with a determined expression.",
+      "bio": "A former employee with a possible motive.",
+      "isSuspect": true,
+      "statement": "I didn't do it. I was at home all day.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "5'6\"",
+            "weight": "140 lbs",
+            "eyes": "Blue",
+            "hair": "Brown"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Suspect",
+            "persona": "You are a suspect being interviewed by detectives.",
+            "openingStatement": "I didn't do anything wrong.",
+            "suggestedQuestions": [
+              "Where were you on the night of the crime?",
+              "What was your relationship with the victim?",
+              "Do you have any alibi?"
+            ],
+            "slideshowPrompts": [
+              "Body cam footage of suspect being interviewed.",
+              "Close-up of suspect's face during questioning.",
+              "Detective taking notes during interview."
+            ],
+            "dialogue": [
+              {
+                "question": "Where were you on the night of the crime?",
+                "answer": "I was at home watching TV."
+              },
+              {
+                "question": "What was your relationship with the victim?",
+                "answer": "We used to work together. I was fired last month."
+              }
+            ]
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_victim_01"],
+        "knownLocations": ["loc_crime_scene"],
+        "associatedObjects": ["obj_weapon"]
+      }
+    }
+  ],
+
+  "locations": [
+    {
+      "id": "loc_crime_scene",
+      "name": "Crime Scene",
+      "imagePrompt": "A dimly lit office with evidence markers on the floor.",
+      "description": "The primary location where the crime occurred.",
+      "sceneSummary": "The victim was found here with fatal injuries.",
+      "mapCoords": {
+        "top": "50%",
+        "left": "50%"
+      },
+      "lastEventTimestamp": "2025-01-15T20:00:00Z",
+      "lastEventDescription": "Crime Scene Established. Victim: John Doe.",
+      "isInternal": false,
+      "hotspots": [
+        {
+          "id": "hs-loc_crime_scene-0",
+          "label": "Examine Victim",
+          "type": "investigate",
+          "targetCardId": "obj_victim_body",
+          "targetCardType": "object",
+          "aiHint": "the body on the floor"
+        },
+        {
+          "id": "hs-loc_crime_scene-1",
+          "label": "Search Desk",
+          "type": "investigate", 
+          "targetCardId": "obj_desk_contents",
+          "targetCardType": "object",
+          "aiHint": "the desk in the corner"
+        }
+      ]
+    }
+  ],
+
+  "objects": [
+    {
+      "id": "obj_victim_body",
+      "name": "Victim's Body",
+      "unidentifiedDescription": "The body of a middle-aged man.",
+      "category": "physical",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-01-15T20:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "critical",
+      "imagePrompt": "A crime scene photo showing the victim's body.",
+      "description": "The victim's body, found at the crime scene with fatal injuries.",
+      "tags": ["victim", "body"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": [],
+      "unlocks": [
+        {
+          "type": "event",
+          "ref": "event_murder",
+          "time": 20
+        }
+      ]
+    },
+    {
+      "id": "obj_weapon",
+      "name": "Murder Weapon",
+      "unidentifiedDescription": "A weapon found at the scene.",
+      "category": "physical",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-01-15T20:30:00Z",
+      "timeToAdd": 15,
+      "rarity": "critical",
+      "imagePrompt": "A weapon with forensic evidence markers.",
+      "description": "The weapon used in the crime, found near the victim.",
+      "tags": ["weapon", "evidence"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_desk_contents",
+      "name": "Desk Contents",
+      "unidentifiedDescription": "Various items found in the desk.",
+      "category": "document",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-01-15T21:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "material",
+      "imagePrompt": "A desk with papers and personal items scattered about.",
+      "description": "Personal and business documents found in the victim's desk.",
+      "tags": ["document", "personal"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    }
+  ],
+
+  "events": [
+    {
+      "id": "event_murder",
+      "name": "The Murder",
+      "imagePrompt": "A crime scene photo showing the aftermath of the crime.",
+      "description": "The victim was murdered at the crime scene.",
+      "timestamp": "2025-01-15T20:00:00Z",
+      "locationId": "loc_crime_scene",
+      "timeToAdd": 20,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["means", "opportunity"],
+      "components": []
+    }
+  ],
+
+  "sublocations": [
+    {
+      "id": "subloc_victim_location",
+      "name": "Victim's Location",
+      "description": "The exact spot where the victim was found.",
+      "locationId": "loc_crime_scene",
+      "isVisible": false,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    }
+  ],
+
+  "testimonies": [
+    {
+      "id": "testimony-char_suspect_01",
+      "title": "Statement from Jane Smith",
+      "content": "I didn't do it. I was at home all day.",
+      "sourceCharacterId": "char_suspect_01"
+    }
+  ],
+
+  "evidenceGroups": [],
+
+  "bounties": [
+    {
+      "id": "bounty_01",
+      "title": "Find the Weapon",
+      "description": "Locate the murder weapon to advance the case.",
+      "reward": 50
+    }
+  ],
+
+  "canonicalTimeline": {
+    "culpritId": "char_suspect_01",
+    "keyEvents": [
+      {
+        "eventId": "event_murder",
+        "timestamp": "2025-01-15T20:00:00Z",
+        "description": "The victim was murdered"
+      }
+    ]
+  },
+
+  "evidenceStacks": [],
+
+  "caseFile": {
+    "title": "Example Case File",
+    "clues": [
+      {
+        "id": "clue-motive-primary",
+        "eventKey": "MOTIVE_PRIMARY_FIRING",
+        "text": "The victim had recently fired the suspect from their job.",
+        "type": "PRIMARY",
+        "points": 150,
+        "category": "motive"
+      },
+      {
+        "id": "clue-opp-primary",
+        "eventKey": "OPP_PRIMARY_WITNESS",
+        "text": "A witness saw the suspect at the crime scene at the time of the murder.",
+        "type": "PRIMARY",
+        "points": 150,
+        "category": "opportunity"
+      },
+      {
+        "id": "clue-means-primary",
+        "eventKey": "MEANS_PRIMARY_WEAPON",
+        "text": "The murder weapon was found with the suspect's fingerprints.",
+        "type": "PRIMARY",
+        "points": 150,
+        "category": "means"
+      }
+    ],
+    "anchors": [
+      {
+        "id": "motive",
+        "title": "The Motive",
+        "timeLabel": "Days Before The Incident",
+        "primarySlot": {
+          "slotId": "motive-primary",
+          "correctEventKey": "MOTIVE_PRIMARY_FIRING",
+          "placedClueId": null
+        },
+        "supportingSlots": [
+          {
+            "slotId": "motive-support-1",
+            "placedClueId": null
+          }
+        ]
+      },
+      {
+        "id": "opportunity",
+        "title": "The Opportunity",
+        "timeLabel": "Night of The Incident",
+        "primarySlot": {
+          "slotId": "opportunity-primary",
+          "correctEventKey": "OPP_PRIMARY_WITNESS",
+          "placedClueId": null
+        },
+        "supportingSlots": [
+          {
+            "slotId": "opportunity-support-1",
+            "placedClueId": null
+          }
+        ]
+      },
+      {
+        "id": "means",
+        "title": "The Means",
+        "timeLabel": "The Act Itself",
+        "primarySlot": {
+          "slotId": "means-primary",
+          "correctEventKey": "MEANS_PRIMARY_WEAPON",
+          "placedClueId": null
+        },
+        "supportingSlots": [
+          {
+            "slotId": "means-support-1",
+            "placedClueId": null
+          }
+        ]
+      }
+    ]
+  },
+
+  "interviews": {
+    "suspect": {
+      "suspects": [
+        {
+          "question": "What was your relationship with the victim?",
+          "answer": "I used to work for them. I was fired last month."
+        },
+        {
+          "question": "Where were you on the night of the crime?",
+          "answer": "I was at home watching TV. I have no alibi."
+        }
+      ],
+      "events": [
+        {
+          "question": "What do you know about the crime?",
+          "answer": "Nothing. I heard about it on the news."
+        }
+      ]
+    },
+    "witness": {
+      "questions": [
+        {
+          "question": "What did you see that night?",
+          "answer": "I saw someone leaving the building around the time of the crime."
+        },
+        {
+          "question": "Can you describe the person you saw?",
+          "answer": "It was dark, but I think it was a woman."
+        }
+      ]
+    }
+  },
+
+  "characterProfiles": {
+    "char_suspect_01": {
+      "basicInfo": {
+        "name": "Jane Smith",
+        "age": 35,
+        "role": "Suspect",
+        "ethnicity": "Caucasian",
+        "status": "Active",
+        "occupation": "Former Employee"
+      },
+      "physicalProfile": {
+        "description": "A woman of average height with brown hair and blue eyes.",
+        "distinguishingFeatures": "A small scar on her left cheek.",
+        "behavioralTells": "Avoids eye contact when lying.",
+        "mannerisms": "Fidgets with her hands when nervous."
+      },
+      "voiceTone": {
+        "style": "Speaks quickly when nervous, uses short sentences.",
+        "notes": "Defensive tone, often deflects questions."
+      }
+    }
+  },
+
+  "evidenceDetails": {
+    "CRIME_SCENE": {
+      "VictimBody": {
+        "type": "Photo",
+        "description": "Image showing the victim's body at the crime scene."
+      },
+      "Weapon": {
+        "type": "Physical Evidence",
+        "description": "The murder weapon found at the scene."
+      }
+    }
+  },
+
+  "gameMechanics": {
+    "initialPlayerTimeSpent": 0,
+    "milestoneThreshold": 100,
+    "accusationThreshold": 200,
+    "questionTimeAddition": 10,
+    "createTestimonyTimeAddition": 5
+  }
+} 
