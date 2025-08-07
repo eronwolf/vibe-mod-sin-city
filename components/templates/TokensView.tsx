@@ -22,7 +22,7 @@ const TokensView: React.FC = () => {
 
   return (
     <div className="p-4 pb-40 h-full overflow-y-auto">
-      <h1 className="text-4xl font-oswald text-brand-accent mb-2 uppercase">Time Spent Ledger</h1>
+      <h1 className="text-4xl font-oswald text-brand-accent mb-2 uppercase">Evidence</h1>
       
       {/* Time Spent Display */}
       <div className="bg-brand-surface border-2 border-brand-primary p-6 rounded-lg mb-8 flex flex-col items-center justify-center text-center shadow-lg shadow-brand-primary/20">

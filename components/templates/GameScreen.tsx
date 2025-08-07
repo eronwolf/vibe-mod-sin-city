@@ -12,6 +12,7 @@ import GlobalHeader from '../organisms/GlobalHeader';
 import PeopleList from './PeopleList';
 import LocationsList from './LocationsList';
 import TokensView from './TokensView';
+import EvidenceScreen from './EvidenceScreen';
 import TimelineView from './TimelineView';
 import CharacterCard from '../organisms/CharacterCard';
 import ObjectCard from '../organisms/ObjectCard';
@@ -31,7 +32,7 @@ const VIEW_COMPONENTS: { [key in Exclude<ViewType, 'card'>]: React.FC } = {
   locations: LocationsList,
   timeline: TimelineView,
   tokens: TokensView,
-  timeSpent: TokensView, // Assuming TokensView can be used for timeSpent or a new component will be created
+  evidence: EvidenceScreen,
 };
 
 const GameScreen: React.FC = () => {

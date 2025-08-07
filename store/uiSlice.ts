@@ -15,6 +15,8 @@ import { AppDispatch, RootState } from './index';
  */
 export type ModalType =
   | 'purchaseInfo'
+  | 'card'
+  | 'cardDetail' // Add 'cardDetail' to ModalType and remove 'detail'
   | 'interaction'
   | 'assignSuspect'
   | 'introSlideshow'
