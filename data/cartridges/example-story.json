@@ -352,8 +352,8 @@
   },
 
   "interviews": {
-    "suspect": {
-      "suspects": [
+    "char_suspect_01": {
+      "questions": [
         {
           "question": "What was your relationship with the victim?",
           "answer": "I used to work for them. I was fired last month."
@@ -361,24 +361,22 @@
         {
           "question": "Where were you on the night of the crime?",
           "answer": "I was at home watching TV. I have no alibi."
-        }
-      ],
-      "events": [
+        },
         {
           "question": "What do you know about the crime?",
           "answer": "Nothing. I heard about it on the news."
         }
       ]
     },
-    "witness": {
+    "char_victim_01": {
       "questions": [
         {
-          "question": "What did you see that night?",
-          "answer": "I saw someone leaving the building around the time of the crime."
+          "question": "What was your relationship with the suspect?",
+          "answer": "They were a former employee who I had to let go."
         },
         {
-          "question": "Can you describe the person you saw?",
-          "answer": "It was dark, but I think it was a woman."
+          "question": "Did you have any conflicts with them?",
+          "answer": "There were some disagreements about their performance."
         }
       ]
     }

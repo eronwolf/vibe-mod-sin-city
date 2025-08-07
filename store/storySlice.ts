@@ -8,7 +8,7 @@
  */
 
 import { createSlice, PayloadAction, createSelector, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
-import { storyData } from '../data/hayesValleyStory';
+import { loadStoryCartridge as loadCartridgeFromService } from '../services/cartridgeLoader';
 import { Character, StoryObject, StoryEvent, Sublocation, Evidence, CardType, Location, Testimony, StoryInfo, StoryData, EvidenceGroup, CanonicalTimeline, EvidenceStack, Bounty, DialogueChunkData } from '../types';
 import { RootState, AppDispatch } from './index';
 import { generateImage as generateImageAPI } from '../services/geminiService';
@@ -25,6 +25,45 @@ interface ImageGenerationRequest {
   prompt: string;
   colorTreatment: 'monochrome' | 'selectiveColor' | 'map';
 }
+
+/**
+ * An async thunk to load the story cartridge and populate the store
+ */
+export const loadStoryCartridge = createAsyncThunk(
+  'story/loadCartridge',
+  async (cartridgePath: string, { dispatch }) => {
+    try {
+      const storyData = await loadCartridgeFromService(cartridgePath);
+      
+      // Create initial evidence from victim
+      const victim = storyData.characters.find(c => c.role === 'victim');
+      const crimeScene = storyData.storyInfo.crimeSceneId ? storyData.locations.find(l => l.id === storyData.storyInfo.crimeSceneId) : undefined;
+      const initialEvidence: Evidence[] = [];
+      const evidenceLocation = crimeScene || (storyData.locations.length > 0 ? storyData.locations[0] : undefined);
+
+      if (victim && evidenceLocation) {
+        initialEvidence.push({
+          id: 'ev-initial-crime',
+          cardId: victim.id,
+          cardType: 'character',
+          name: `The Death of ${victim.name}`,
+          imagePrompt: victim.imagePrompt,
+          timestampCollected: evidenceLocation.lastEventTimestamp,
+          locationId: evidenceLocation.id,
+        });
+      }
+
+      return {
+        storyData,
+        initialEvidence,
+        totalDiscoverableEvidence: storyData.objects.filter(o => !o.authorCharacterId).length + 1,
+      };
+    } catch (error) {
+      console.error("Failed to load story cartridge:", error);
+      throw error;
+    }
+  }
+);
 
 /**
  * An async thunk to hydrate the image URL cache from IndexedDB on app startup.
@@ -212,66 +251,69 @@ export const processImageGenerationQueue = createAsyncThunk(
 );
 
 
-const createInitialState = (data: StoryData): StoryState => {
-  const victim = data.characters.find(c => c.role === 'victim');
-  const crimeScene = data.storyInfo.crimeSceneId ? data.locations.find(l => l.id === data.storyInfo.crimeSceneId) : undefined;
-  const initialEvidence: Evidence[] = [];
-  const evidenceLocation = crimeScene || (data.locations.length > 0 ? data.locations[0] : undefined);
-
-  if (victim && evidenceLocation) {
-    initialEvidence.push({
-      id: 'ev-initial-crime',
-      cardId: victim.id,
-      cardType: 'character',
-      name: `The Death of ${victim.name}`,
-      imagePrompt: victim.imagePrompt,
-      timestampCollected: evidenceLocation.lastEventTimestamp,
-      locationId: evidenceLocation.id,
-    });
-  }
-
-  const baseInitialState: StoryState = {
-    title: data.title,
-    storyInfo: data.storyInfo,
-    characters: charactersAdapter.setAll(charactersAdapter.getInitialState(), data.characters),
-    objects: objectsAdapter.setAll(objectsAdapter.getInitialState(), data.objects),
-    events: eventsAdapter.setAll(eventsAdapter.getInitialState(), data.events || []),
-    locations: locationsAdapter.setAll(locationsAdapter.getInitialState(), data.locations),
-    sublocations: sublocationsAdapter.setAll(sublocationsAdapter.getInitialState(), data.sublocations || []),
-    evidenceGroups: evidenceGroupsAdapter.setAll(evidenceGroupsAdapter.getInitialState(), data.evidenceGroups),
-    bounties: bountiesAdapter.setAll(bountiesAdapter.getInitialState(), data.bounties),
-    evidence: initialEvidence,
-    testimonies: data.testimonies,
-    canonicalTimeline: data.canonicalTimeline || null,
-    evidenceStacks: data.evidenceStacks || null,
-    imageUrls: {}, // Start with empty URLs, will be hydrated from IndexedDB by a thunk
+// Create an empty initial state that will be populated when the cartridge loads
+const createEmptyInitialState = (): StoryState => {
+  return {
+    title: '',
+    storyInfo: {
+      mapImagePrompt: '',
+      mapTitle: '',
+      crimeSceneId: '',
+    },
+    characters: charactersAdapter.getInitialState(),
+    objects: objectsAdapter.getInitialState(),
+    events: eventsAdapter.getInitialState(),
+    locations: locationsAdapter.getInitialState(),
+    sublocations: sublocationsAdapter.getInitialState(),
+    evidenceGroups: evidenceGroupsAdapter.getInitialState(),
+    bounties: bountiesAdapter.getInitialState(),
+    evidence: [],
+    testimonies: [],
+    canonicalTimeline: null,
+    evidenceStacks: null,
+    imageUrls: {},
     imageLoading: {},
     imageErrors: {},
     imageGenerationQueue: [],
     isProcessingQueue: false,
     hasDiscoveredPaint: false,
     timeSpent: GAME_MECHANICS.INITIAL_PLAYER_TIME_SPENT,
-    // Centralized game configuration for easier balancing.
     milestoneThreshold: GAME_MECHANICS.MILESTONE_THRESHOLD, 
     accusationThreshold: GAME_MECHANICS.ACCUSATION_THRESHOLD,
-    // --- Developer Note on `totalDiscoverableEvidence` ---
-    // This calculates the "denominator" for the case progress bar. It's the total number of
-    // objects that are considered discoverable evidence by the player.
-    // The `!o.authorCharacterId` filter excludes objects that are social media posts, as these are
-    // discovered via the character card, not as independent items.
-    // The `+ 1` accounts for the initial crime event itself, which is also part of the evidence.
-    totalDiscoverableEvidence: data.objects.filter(o => !o.authorCharacterId).length + 1,
+    totalDiscoverableEvidence: 0,
     dynamicHotspotCoords: {},
   };
-
-  return baseInitialState;
 };
 
-const initialState: StoryState = createInitialState(storyData);
+const initialState: StoryState = createEmptyInitialState();
 
 const storySlice = createSlice({
   name: 'story',
   initialState,
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadStoryCartridge.fulfilled, (state, action) => {
+        const { storyData, initialEvidence, totalDiscoverableEvidence } = action.payload;
+        
+        state.title = storyData.title;
+        state.storyInfo = storyData.storyInfo;
+        state.characters = charactersAdapter.setAll(charactersAdapter.getInitialState(), storyData.characters);
+        state.objects = objectsAdapter.setAll(objectsAdapter.getInitialState(), storyData.objects);
+        state.events = eventsAdapter.setAll(eventsAdapter.getInitialState(), storyData.events || []);
+        state.locations = locationsAdapter.setAll(locationsAdapter.getInitialState(), storyData.locations);
+        state.sublocations = sublocationsAdapter.setAll(sublocationsAdapter.getInitialState(), storyData.sublocations || []);
+        state.evidenceGroups = evidenceGroupsAdapter.setAll(evidenceGroupsAdapter.getInitialState(), storyData.evidenceGroups);
+        state.bounties = bountiesAdapter.setAll(bountiesAdapter.getInitialState(), storyData.bounties);
+        state.evidence = initialEvidence;
+        state.testimonies = storyData.testimonies;
+        state.canonicalTimeline = storyData.canonicalTimeline || null;
+        state.evidenceStacks = storyData.evidenceStacks || null;
+        state.totalDiscoverableEvidence = totalDiscoverableEvidence;
+      })
+      .addCase(hydrateImageCache.fulfilled, (state, action) => {
+        // Image cache hydration is handled in the thunk itself
+      });
+  },
   reducers: {
     toggleSuspect(state, action: PayloadAction<{ id: string; isSuspect: boolean }>) {
       const { id, isSuspect } = action.payload;

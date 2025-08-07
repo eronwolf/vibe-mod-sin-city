@@ -44,7 +44,9 @@ import CaseSolvedModal from './components/organisms/modals/CaseSolvedModal';
 import { ModalType, showModal } from './store/uiSlice';
 import { 
   hydrateImageCache,
+  loadStoryCartridge,
 } from './store/storySlice';
+import { loadCaseFileFromCartridge } from './store/caseFileSlice';
 
 /**
  * --- Modal Registry Pattern ---
@@ -74,8 +76,11 @@ const App: React.FC = () => {
   // Select necessary state from the Redux store
   const { activeModal, activeModalProps, introPlayed } = useSelector((state: RootState) => state.ui);
   
-  // On initial app load, hydrate the image URL cache from IndexedDB and check if the intro should play.
+  // On initial app load, load the story cartridge, hydrate the image URL cache from IndexedDB and check if the intro should play.
   useEffect(() => {
+    // Load the example story cartridge
+    dispatch(loadStoryCartridge('./data/cartridges/example-story.json'));
+    dispatch(loadCaseFileFromCartridge('./data/cartridges/example-story.json'));
     dispatch(hydrateImageCache());
     if (!introPlayed) {
       dispatch(showModal({ type: 'introSlideshow' }));

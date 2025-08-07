@@ -11,8 +11,7 @@ import { Character, LineOfInquiryData } from '../../types';
 import ImageWithLoader from '../molecules/ImageWithLoader';
 import { useCardImage } from '../../hooks/useCardImage';
 import { GAME_MECHANICS } from '../../config';
-import { daisyTremblyInterview } from '../../data/DaisyTrembly';
-import { kermitInterview } from '../../data/Kermit';
+import { loadInterviewData } from '../../services/cartridgeLoader';
 import InterviewCard from './InterviewCard';
 
 interface QuestionSelectViewProps {
@@ -25,12 +24,25 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, stat
   const { imageUrl, isLoading } = useCardImage(character, 'selectiveColor');
   const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
   const questionTimeAddition = GAME_MECHANICS.QUESTION_TIME_ADDITION;
-  // No longer checking for affordability as there is no limit to time spent.
-  //const playerTokens = useSelector((state: RootState) => selectPlayerTokens(state));
-  //const questionCost = GAME_MECHANICS.QUESTION_COST;
-  //const canAfford = playerTokens >= GAME_MECHANICS.QUESTION_COST;
   const [selectedQuestion, setSelectedQuestion] = React.useState(null);
   const [selectedAnswer, setSelectedAnswer] = React.useState(null);
+  const [interviewData, setInterviewData] = React.useState<any>(null);
+  const [isLoadingData, setIsLoadingData] = React.useState(true);
+
+  // Load interview data from cartridge
+  React.useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await loadInterviewData('./data/cartridges/example-story.json');
+        setInterviewData(data);
+        setIsLoadingData(false);
+      } catch (error) {
+        console.error('Failed to load interview data:', error);
+        setIsLoadingData(false);
+      }
+    };
+    loadData();
+  }, []);
 
   const renderStatusIcon = (loiId: string) => {
     const loiStatus = status[loiId];
@@ -76,7 +88,7 @@ const QuestionSelectView: React.FC<QuestionSelectViewProps> = ({ character, stat
               }
               // No longer need to add opacity/cursor-not-allowed for affordability
  */}
-            {(character.name === "Daisy Trembly" ? daisyTremblyInterview.suspects : kermitInterview.questions).map((qa, index) => {
+            {!isLoadingData && interviewData && interviewData[character.id]?.questions?.map((qa, index) => {
               return (
                   <button
                       key={index}

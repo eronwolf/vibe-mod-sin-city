@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../store';
 import { hideModal, markIntroAsPlayed } from '../../../store/uiSlice';
 import { queueImageGeneration, processImageGenerationQueue, selectImageUrls, selectImageErrors } from '../../../store/storySlice';
-import { introSlideshowData } from '../../../data/introSlideshowData';
+import { loadIntroSlideshowData } from '../../../services/cartridgeLoader';
 import ImageWithLoader from '../../molecules/ImageWithLoader';
 import { useCardImage } from '../../../hooks/useCardImage';
 import Spinner from '../../atoms/Spinner';
@@ -24,28 +24,47 @@ const IntroSlideshowModal: React.FC = () => {
   const [isPreloading, setIsPreloading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
+  const [slideshowData, setSlideshowData] = useState<any[]>([]);
+  const [isLoadingData, setIsLoadingData] = useState(true);
   
   const timerRef = useRef<number | null>(null);
   const cachedImageUrls = useSelector(selectImageUrls);
   const imageErrors = useSelector(selectImageErrors);
   
-  const totalImages = introSlideshowData.length;
+  // Load slideshow data from cartridge
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const data = await loadIntroSlideshowData('./data/cartridges/example-story.json');
+        setSlideshowData(data);
+        setIsLoadingData(false);
+      } catch (error) {
+        console.error('Failed to load slideshow data:', error);
+        setIsLoadingData(false);
+      }
+    };
+    loadData();
+  }, []);
+  
+  const totalImages = slideshowData.length;
   // Memoized calculation to count how many images for this slideshow have been processed.
   const preloadedImageCount = useMemo(() => {
-    return introSlideshowData.reduce((count, slide) => {
+    return slideshowData.reduce((count, slide) => {
         // An image is considered "processed" and ready to be shown if we have either
         // a valid URL for it or a confirmed error state for it. This prevents the
         // preloader from getting stuck if an image fails to generate.
         return (cachedImageUrls[slide.id] || imageErrors[slide.id]) ? count + 1 : count;
     }, 0);
-  }, [cachedImageUrls, imageErrors]);
+  }, [cachedImageUrls, imageErrors, slideshowData]);
 
   // --- Core Stability Feature: Add all images to a central queue on mount ---
   // On first mount, we dispatch requests for ALL images needed for the slideshow.
   // This adds them to the central, concurrent batch processing queue in storySlice.
   // This is a critical architectural decision for ensuring a smooth cinematic.
   useEffect(() => {
-    const imagesToQueue = introSlideshowData.filter(slide => !cachedImageUrls[slide.id]);
+    if (isLoadingData || slideshowData.length === 0) return;
+    
+    const imagesToQueue = slideshowData.filter(slide => !cachedImageUrls[slide.id]);
     
     if (imagesToQueue.length > 0) {
       imagesToQueue.forEach(slide => {
@@ -62,7 +81,7 @@ const IntroSlideshowModal: React.FC = () => {
       // All images were already in the cache, no need to preload.
       setIsPreloading(false);
     }
-  }, [dispatch, cachedImageUrls]); // This effect runs only once on mount.
+  }, [dispatch, cachedImageUrls, slideshowData, isLoadingData]); // This effect runs only once on mount.
 
   // --- Core UX Feature: Wait for Preloading to Complete ---
   // This effect monitors the number of loaded images. Only when all images for the
@@ -83,9 +102,9 @@ const IntroSlideshowModal: React.FC = () => {
 
   // Effect for advancing the slides automatically
   useEffect(() => {
-    if (isPreloading || isFadingOut) return; // Don't run timer until preloading/fading is done
+    if (isPreloading || isFadingOut || slideshowData.length === 0) return; // Don't run timer until preloading/fading is done
 
-    const isLastSlide = currentIndex === introSlideshowData.length - 1;
+    const isLastSlide = currentIndex === slideshowData.length - 1;
     // The final slide is held for twice as long for dramatic effect.
     const duration = isLastSlide ? SLIDE_DURATION * 2 : SLIDE_DURATION;
 
@@ -103,9 +122,9 @@ const IntroSlideshowModal: React.FC = () => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [currentIndex, isPreloading, isFadingOut, handleClose, totalImages]);
+  }, [currentIndex, isPreloading, isFadingOut, handleClose, slideshowData.length]);
   
-  const currentSlide = introSlideshowData[currentIndex];
+  const currentSlide = slideshowData[currentIndex];
   // `useCardImage` will now instantly fetch from the Redux cache since we preloaded everything.
   const { imageUrl, isLoading: isImageLoading } = useCardImage(currentSlide, 'selectiveColor');
 

@@ -4,8 +4,8 @@
  * It's designed to be a self-contained module for the core puzzle gameplay loop.
  */
 
-import { createSlice, PayloadAction, createEntityAdapter, createSelector } from '@reduxjs/toolkit';
-import { caseFileData } from '../data/caseFileData';
+import { createSlice, PayloadAction, createEntityAdapter, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import { loadCaseFileData } from '../services/cartridgeLoader';
 import { Clue, EvidenceSlot, CaseFileViewMode, TimelineAnchorCategory, TimelineAnchor } from '../types';
 import { RootState } from './index';
 import { showModal } from './uiSlice';
@@ -28,23 +28,37 @@ interface CaseFileState {
   lastIncorrectSlotId: string | null;
 }
 
-// Function to create the initial state from the static case file data.
-const createInitialState = (): CaseFileState => {
-  const allSlots = caseFileData.anchors.flatMap(anchor => [anchor.primarySlot, ...anchor.supportingSlots]);
-
+// Create an empty initial state that will be populated when the cartridge loads
+const createEmptyInitialState = (): CaseFileState => {
   return {
     viewMode: 'workspace',
     activeTab: 'motive',
     selectedClueId: null,
-    clues: cluesAdapter.setAll(cluesAdapter.getInitialState(), caseFileData.clues),
-    slots: slotsAdapter.setAll(slotsAdapter.getInitialState(), allSlots),
-    anchors: caseFileData.anchors,
+    clues: cluesAdapter.getInitialState(),
+    slots: slotsAdapter.getInitialState(),
+    anchors: [],
     score: 0,
     lastIncorrectSlotId: null,
   };
 };
 
-const initialState: CaseFileState = createInitialState();
+/**
+ * Async thunk to load case file data from cartridge
+ */
+export const loadCaseFileFromCartridge = createAsyncThunk(
+  'caseFile/loadCartridge',
+  async (cartridgePath: string) => {
+    try {
+      const caseFileData = await loadCaseFileData(cartridgePath);
+      return caseFileData;
+    } catch (error) {
+      console.error('Failed to load case file data:', error);
+      throw error;
+    }
+  }
+);
+
+const initialState: CaseFileState = createEmptyInitialState();
 
 const caseFileSlice = createSlice({
   name: 'caseFile',
@@ -110,13 +124,21 @@ const caseFileSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // When the "Solve Case" button is clicked (and enabled), show the modal.
-    builder.addCase(showModal, (state, action) => {
-      if (action.payload.type === 'caseSolved') {
-        // This is where you could pass final score to the modal if needed
-        action.payload.props = { score: state.score };
-      }
-    });
+    builder
+      .addCase(loadCaseFileFromCartridge.fulfilled, (state, action) => {
+        const caseFileData = action.payload;
+        const allSlots = caseFileData.anchors.flatMap(anchor => [anchor.primarySlot, ...anchor.supportingSlots]);
+        
+        state.clues = cluesAdapter.setAll(cluesAdapter.getInitialState(), caseFileData.clues);
+        state.slots = slotsAdapter.setAll(slotsAdapter.getInitialState(), allSlots);
+        state.anchors = caseFileData.anchors;
+      })
+      .addCase(showModal, (state, action) => {
+        if (action.payload.type === 'caseSolved') {
+          // This is where you could pass final score to the modal if needed
+          action.payload.props = { score: state.score };
+        }
+      });
   }
 });
 
