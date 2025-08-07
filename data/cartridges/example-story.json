@@ -1,115 +1,442 @@
 {
   "metadata": {
-    "storyId": "example_story_01",
-    "title": "Example Crime Story",
+        "storyId": "wild_trail_murders_01",
+    "title": "The Wild Trail Murders",
     "version": "1.0.0",
     "author": "Story Team",
-    "description": "A simple example story to demonstrate the cartridge structure."
+    "description": "A peaceful retirement turns tragic when a beloved local couple is killed during a hike, revealing deeper tensions involving family estrangement, legacy, and revenge."
   },
   
   "storyInfo": {
-    "premise": "A crime has been committed and detectives must investigate to find the culprit.",
-    "theme": "Justice and truth prevail through careful investigation.",
-    "mapTitle": "Example City",
-    "mapImagePrompt": "A high-contrast, black and white noir-style map of Example City. Crime scenes are highlighted in red.",
-    "crimeSceneId": "loc_crime_scene"
+    "premise": "Tom and Carol Trembly were found dead during a midweek hike near Mount Tamalpais. Tom had been shot through the heart with a .243 Winchester; Carol's body was discovered at the base of a nearby cliff. The case reveals a complex web of resentments, betrayals, and financial disputes, all tied to the recent sale of the family's outdoor shop, Wild Trail Supply Co.",
+    "theme": "A peaceful retirement turns tragic when a beloved local couple is killed during a hike, revealing deeper tensions involving family estrangement, legacy, and revenge.",
+    "mapTitle": "Marin County",
+    "mapImagePrompt": "A topographical map of Marin County showing Mount Tamalpais trails, Wild Trail Supply Co. shop location, and surrounding neighborhoods. Crime scene marked with red X on hiking trail.",
+    "crimeSceneId": "loc_hiking_trail"
   },
 
   "introSlideshow": [
     {
       "id": "intro-1",
-      "imagePrompt": "A vintage photograph showing the beginning of the investigation.",
-      "narration": "The story begins with a crime that needs solving..."
+      "imagePrompt": "A serene morning view of Mount Tamalpais hiking trails with fog rolling through the redwoods.",
+      "narration": "Wednesday, August 13th, 2025. Tom and Carol Trembly set out for their usual midweek hike, a routine they'd cherished for years..."
     },
     {
       "id": "intro-2", 
-      "imagePrompt": "A detective examining evidence at the crime scene.",
-      "narration": "Evidence is discovered and the investigation begins..."
+      "imagePrompt": "Two hikers discovered on a remote trail - one figure lying still, another at the base of a cliff below. Emergency responders arriving at the scene.",
+      "narration": "By noon, both were dead. Tom from a single gunshot wound to the heart. Carol at the bottom of a cliff, having fled in terror..."
+    },
+    {
+      "id": "intro-3",
+      "imagePrompt": "A weathered outdoor supply shop with 'Wild Trail Supply Co.' sign, police tape across the entrance.",
+      "narration": "The investigation would reveal a tangled web of family betrayal, financial disputes, and a devastating act of revenge tied to the recent sale of their beloved shop."
     }
   ],
 
   "characters": [
     {
-      "id": "char_victim_01",
-      "name": "John Doe",
-      "age": "45",
+      "id": "char_victim_tom",
+      "name": "Tom Trembly",
+      "age": "66",
       "role": "victim",
-      "occupation": "Business Owner",
-      "imagePrompt": "A middle-aged man in business attire.",
-      "bio": "The victim of the crime. A respected business owner in the community.",
+      "occupation": "Retired Owner, Wild Trail Supply Co.",
+      "imagePrompt": "A massive man at 6'6\" with a barrel-chested frame and burly gut. Full gray-streaked beard, wearing flannel, work boots, and jeans dusted with sawdust. Sunburned arms, deep creases around his eyes from laughing.",
+      "bio": "Towering at 6'6\" and weighing close to 300 pounds, Tom had a massive, barrel-chested frame. Despite his size, he moved slowly and gently—more like a weathered oak than a threat. Respected in his Marin County community for his kindness and quiet strength. Killed by a single gunshot wound from a .243 Winchester.",
       "isSuspect": false,
       "statement": "",
       "components": [
         {
           "type": "physicalCharacteristics",
           "props": {
-            "height": "6'0\"",
-            "weight": "180 lbs",
-            "eyes": "Brown",
-            "hair": "Black"
+            "height": "6'6\"",
+            "weight": "300 lbs",
+            "eyes": "Blue with deep laugh lines",
+            "hair": "Gray-streaked, full beard"
           }
         }
       ],
       "connections": {
-        "relatedPeople": ["char_suspect_01"],
-        "knownLocations": ["loc_crime_scene"],
-        "associatedObjects": ["obj_victim_body"]
+        "relatedPeople": ["char_victim_carol", "char_suspect_hank", "char_suspect_peter", "char_suspect_oliver", "char_witness_daisy"],
+        "knownLocations": ["loc_crime_scene", "loc_victim_home", "loc_wild_trail_shop"],
+        "associatedObjects": ["obj_tom_body", "obj_autopsy_tom", "obj_victim_dossier_tom", "obj_family_photos", "obj_will_testament", "obj_bill_of_sale", "obj_intervention_letter", "obj_termination_letter"]
       }
     },
     {
-      "id": "char_suspect_01",
-      "name": "Jane Smith",
-      "age": "35",
-      "role": "suspect",
-      "occupation": "Former Employee",
-      "imagePrompt": "A woman with a determined expression.",
-      "bio": "A former employee with a possible motive.",
-      "isSuspect": true,
-      "statement": "I didn't do it. I was at home all day.",
+      "id": "char_victim_carol",
+      "name": "Carol Trembly",
+      "age": "63",
+      "role": "victim",
+      "occupation": "Co-Owner, Wild Trail Supply Co. / Local Baker & Gardener",
+      "imagePrompt": "Small-framed and dainty woman with long silver-gray hair tied back loosely. Wearing flowing blouses, linen pants, and handmade jewelry. Bright blue eyes with a genuine smile, crystal pendant around her neck.",
+      "bio": "Small-framed and delicate, Carol had a light presence that contrasted her husband's size. Her movements were slow and intentional, always attuned to her surroundings. Known for her baking, gardening, and presence at the local farmers market. Died after falling from a cliff while fleeing Tom's murder.",
+      "isSuspect": false,
+      "statement": "",
       "components": [
         {
           "type": "physicalCharacteristics",
           "props": {
-            "height": "5'6\"",
-            "weight": "140 lbs",
-            "eyes": "Blue",
-            "hair": "Brown"
+            "height": "5'5\"",
+            "weight": "125 lbs",
+            "eyes": "Bright blue",
+            "hair": "Long silver-gray"
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_victim_tom", "char_suspect_peter", "char_suspect_oliver", "char_witness_daisy"],
+        "knownLocations": ["loc_crime_scene", "loc_victim_home", "loc_wild_trail_shop"],
+        "associatedObjects": ["obj_carol_body", "obj_autopsy_carol", "obj_victim_dossier_carol", "obj_family_photos", "obj_will_testament", "obj_bill_of_sale", "obj_intervention_letter"]
+      }
+    },
+    {
+      "id": "char_suspect_hank",
+      "name": "Hank Bassett",
+      "age": "51",
+      "role": "suspect",
+      "occupation": "Former Senior Sales Associate, Wild Trail Supply Co.",
+      "imagePrompt": "Lean and weathered man with wiry frame. Long unkempt hair to shoulders, full gray-streaked beard. Worn denim, old flannel layers, sun-bleached work boots. Eagle tattoo on left forearm.",
+      "bio": "Former employee of Wild Trail Supply Co. Fired after being blamed for a suspicious fire at the shop. Felt betrayed by Tom, whom he had worked for over twenty years. Lives alone on the outskirts of town.",
+      "isSuspect": true,
+      "statement": "I haven't left my property in weeks. Not since Tom turned the whole town against me.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "5'10\"",
+            "weight": "160 lbs",
+            "eyes": "Brown with crow's feet",
+            "hair": "Long, unkempt, gray-streaked"
           }
         },
         {
           "type": "dialogue",
           "props": {
             "mode": "interview",
-            "buttonText": "Interview Suspect",
-            "persona": "You are a suspect being interviewed by detectives.",
-            "openingStatement": "I didn't do anything wrong.",
+            "buttonText": "Interview Hank Bassett",
+            "persona": "You are Hank Bassett. Speak in blunt, restrained sentences. You're defensive and guarded. Use short, clipped phrases. Avoid eye contact. Give practical, not emotional answers. Sometimes deflect with 'Don't know much about that' or 'Ain't my business.'",
+            "openingStatement": "Don't know why you're here. Already told you people everything.",
             "suggestedQuestions": [
-              "Where were you on the night of the crime?",
-              "What was your relationship with the victim?",
-              "Do you have any alibi?"
+              "Where were you on the morning of August 13th?",
+              "What was your relationship with Tom Trembly?",
+              "Let's talk about the fire at the shop. What do you know about it?",
+              "How did you feel about being let go after the store was sold?",
+              "When's the last time you saw Tom and Carol?"
             ],
             "slideshowPrompts": [
-              "Body cam footage of suspect being interviewed.",
-              "Close-up of suspect's face during questioning.",
-              "Detective taking notes during interview."
+              "Hank with arms crossed, avoiding eye contact during questioning.",
+              "Close-up of eagle tattoo on forearm as he runs thumb across it nervously.",
+              "Hank smoking hand-rolled cigarette, weight shifted to one leg."
             ],
             "dialogue": [
               {
-                "question": "Where were you on the night of the crime?",
-                "answer": "I was at home watching TV."
+                "question": "Where were you on the morning of August 13th?",
+                "answer": "Home. Like I been every day since the fire. Ain't nobody's business but mine."
               },
               {
-                "question": "What was your relationship with the victim?",
-                "answer": "We used to work together. I was fired last month."
+                "question": "What was your relationship with Tom Trembly?",
+                "answer": "Twenty years. Twenty years I gave that man. Then he goes and... Don't matter now."
+              },
+              {
+                "question": "Let's talk about the fire at the shop. What do you know about it?",
+                "answer": "I didn't start it, if that's what you're asking. I saw the smoke and did what any decent man would do — I put it out. Not that Tom ever believed me."
+              },
+              {
+                "question": "How did you feel about being let go after the store was sold?",
+                "answer": "Felt like getting kicked off your own porch. Twenty-two years and they hand it to Blue Tag like it's nothing. Guess I was just part of the old inventory."
+              },
+              {
+                "question": "When's the last time you saw Tom and Carol?",
+                "answer": "County fair. Tom ran his mouth, I ran out of patience. They dragged me out like some drunk, but I wasn't drunk. I was done."
               }
             ]
           }
         }
       ],
       "connections": {
-        "relatedPeople": ["char_victim_01"],
+        "relatedPeople": ["char_victim_tom", "char_victim_carol"],
+        "knownLocations": ["loc_hank_cabin", "loc_wild_trail_shop", "loc_crime_scene"],
+        "associatedObjects": ["obj_interview_hank", "obj_burned_camo", "obj_jeep", "obj_key_ring", "obj_weapons_inventory_hank", "obj_termination_letter", "obj_shell_casing", "obj_witness_statement_kermit"]
+      }
+    },
+    {
+      "id": "char_suspect_peter",
+      "name": "Peter Lewin",
+      "age": "40",
+      "role": "suspect",
+      "occupation": "Firewatch Ranger, Marin County Department of Forestry",
+      "imagePrompt": "Imposing man at 6'4\" with broad shoulders. Short hair, week's stubble. Wearing canvas pants, layered thermals, worn boots. Faded military tattoo on right shoulder. Carries himself with coiled energy.",
+      "bio": "Carol's son from a previous marriage. Army marksman, dishonorably discharged. Blames Tom and Carol for a fractured childhood. Has a history of violence and instability.",
+      "isSuspect": true,
+      "statement": "I was fishing. Like I do every Wednesday. You don't get it. You weren't there.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "6'4\"",
+            "weight": "210 lbs",
+            "eyes": "Hazel",
+            "hair": "Short, dark"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Peter Lewin",
+            "persona": "You are Peter Lewin. Speak in sharp, reactive bursts. You're emotionally volatile and defensive. Use phrases like 'You don't get it,' 'You weren't there.' Talk fast when emotional, slower when trying to control yourself. Use military references without realizing it.",
+            "openingStatement": "My mother is dead. What more do you want from me?",
+            "suggestedQuestions": [
+              "Can you tell us where you were when your parents were killed?",
+              "What are your thoughts on being excluded from the will?",
+              "Do you have any idea who might've done this?",
+              "What was your relationship with Tom?",
+              "Tell me about your military service."
+            ],
+            "slideshowPrompts": [
+              "Peter's fists clenching as he restrains emotion.",
+              "Peter rubbing back of neck when agitated.",
+              "Tapping thumb against thigh rhythmically during questioning."
+            ],
+            "dialogue": [
+              {
+                "question": "Can you tell us where you were when your parents were killed?",
+                "answer": "Out at the tower. Wednesday's my solo watch."
+              },
+              {
+                "question": "What are your thoughts on being excluded from the will?",
+                "answer": "Doesn't surprise me. Tom never saw me as worth much. Carol… she tried. But by then it was already set in stone."
+              },
+              {
+                "question": "Do you have any idea who might've done this?",
+                "answer": "No. And if I did, I'd say so. I've had enough of the guessing games."
+              },
+              {
+                "question": "What was your relationship with Tom?",
+                "answer": "Tom was never... Look, he made it clear from day one. I wasn't his. Mom tried to make us a family but... You weren't there."
+              },
+              {
+                "question": "Tell me about your military service.",
+                "answer": "Expert marksman. Could hit a target at 800 yards. But that's... that's not who I am anymore. I'm trying to be better."
+              }
+            ]
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_victim_carol", "char_victim_tom", "char_suspect_oliver", "char_witness_daisy"],
+        "knownLocations": ["loc_firewatch_tower", "loc_victim_home"],
+        "associatedObjects": ["obj_interview_peter", "obj_winchester_peter", "obj_trail_cam_stills", "obj_generator_log", "obj_pickup_truck", "obj_will_testament", "obj_victim_dossier_carol"]
+      }
+    },
+    {
+      "id": "char_suspect_oliver",
+      "name": "Oliver Trembly",
+      "age": "34",
+      "role": "suspect",
+      "occupation": "Self-described hunting influencer / Sponsored content creator",
+      "imagePrompt": "Lean man with long narrow face, pale skin. Black hair slicked back, thin mustache. Wearing sleek branded outdoor gear, mirrored sunglasses. Faded uneven tattoos on arms. Often with GoPro harness.",
+      "bio": "Tom and Carol's son. Former addict, now a hunting enthusiast. Expected to inherit the family business before it was sold. Publicly argued with his parents weeks before the murder.",
+      "isSuspect": true,
+      "statement": "I was on a solo hunting trip. No cell service. This is devastating. I should have been there.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "6'0\"",
+            "weight": "175 lbs",
+            "eyes": "Brown",
+            "hair": "Black, slicked back"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Oliver Trembly",
+            "persona": "You are Oliver Trembly. Speak with charm, control, and calculation. Use sarcasm and passive aggression as defense. Turn questions back on the interrogator. Never give more than you have to. Can shift from charming to vicious if pushed.",
+            "openingStatement": "My parents are dead and you're treating me like a suspect? Is this really how you handle grieving families?",
+            "suggestedQuestions": [
+              "Where were you on the day of your parents' deaths?",
+              "Were you aware you were included in their will?",
+              "Do you have any idea who might've done this?",
+              "Tell me about the argument with your parents.",
+              "Do you own any firearms?"
+            ],
+            "slideshowPrompts": [
+              "Oliver maintaining strong eye contact to dominate conversation.",
+              "Adjusting his collar when things get tense.",
+              "Wide gestures and performative empathy while speaking."
+            ],
+            "dialogue": [
+              {
+                "question": "Where were you on the day of your parents' deaths?",
+                "answer": "Out in Del Norte, filming solo content. I told people I was off-grid for the weekend — it's kind of the point. You don't get the big bucks by livestreaming from your mom's couch."
+              },
+              {
+                "question": "Were you aware you were included in their will?",
+                "answer": "Yeah, a couple hundred K split between me and Daisy. Not exactly a retirement fund, but hey — better than nothing, right? Look, I'm not crying over the payout if that's what you're fishing for."
+              },
+              {
+                "question": "Do you have any idea who might've done this?",
+                "answer": "Hank. No question. Guy snapped when Dad fired him. Probably still smells like pine needles and old gun oil. You think I'm the problem? I'm just the one still standing."
+              },
+              {
+                "question": "Tell me about the argument with your parents.",
+                "answer": "We had a disagreement about the shop. They sold my birthright. But arguing doesn't make someone a killer, does it, Detective?"
+              },
+              {
+                "question": "Do you own any firearms?",
+                "answer": "I'm a hunting influencer. Of course I own firearms. All registered, all legal. Unlike some people's accusations."
+              }
+            ]
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_victim_tom", "char_victim_carol", "char_suspect_peter", "char_witness_daisy"],
+        "knownLocations": ["loc_oliver_home", "loc_victim_home", "loc_wild_trail_shop"],
+        "associatedObjects": ["obj_gun_safe_inventory", "obj_trophy_wall", "obj_drug_paraphernalia", "obj_oliver_laptop", "obj_9mm_unregistered", "obj_marijuana_bag", "obj_will_testament", "obj_intervention_letter", "obj_bill_of_sale"]
+      }
+    },
+    {
+      "id": "char_witness_daisy",
+      "name": "Daisy Trembly",
+      "age": "31",
+      "role": "witness",
+      "occupation": "Residential Real Estate Agent, Marin County",
+      "imagePrompt": "Petite woman with black hair in loose braid. Light freckles, kind dark eyes. Wearing flats, knit cardigan in earth tones. Small pendant that belonged to her mother.",
+      "bio": "Tom and Carol's daughter. The only family member without a contentious relationship with the victims. Graceful and kind even in grief.",
+      "isSuspect": false,
+      "statement": "They were wonderful parents. I can't imagine who would... I just wish I'd called them that morning.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "5'4\"",
+            "weight": "120 lbs",
+            "eyes": "Dark brown",
+            "hair": "Black"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Daisy Trembly",
+            "persona": "You are Daisy Trembly. Speak with genuine warmth and empathy. Choose words carefully. Use phrases like 'I just feel like...' or 'if that makes sense.' Never interrupt. Sometimes trail off when uncomfortable.",
+            "openingStatement": "I'll help however I can. They deserve justice... if that makes sense.",
+            "suggestedQuestions": [
+              "What was Peter's relationship like with your mom and Tom?",
+              "How did Oliver get along with your parents?",
+              "What can you tell me about Hank's relationship with your parents?",
+              "What do you know about the fire at the store?",
+              "How did everyone take the news that the store was being sold?",
+              "Do you know anything about your parents' will?"
+            ],
+            "slideshowPrompts": [
+              "Daisy clasping hands when nervous.",
+              "Rubbing thumb across ring finger while holding back tears.",
+              "Leaning in thoughtfully as she listens to questions."
+            ],
+            "dialogue": [
+              {
+                "question": "What was Peter's relationship like with your mom and Tom?",
+                "answer": "It was rocky… with both of them, but especially Tom. He never felt like he belonged in this family. Mom tried, I know she did, but Peter's pain ran deep. He's been distant ever since they sold the shop and he found out he wasn't getting anything."
+              },
+              {
+                "question": "How did Oliver get along with your parents?",
+                "answer": "Oliver's always been… intense. They loved him, but he made it really hard sometimes. When they told him he wouldn't be running the store, he exploded. We were all there—it got ugly. He thinks the shop was his birthright or something."
+              },
+              {
+                "question": "What can you tell me about Hank's relationship with your parents?",
+                "answer": "Mom adored Hank. I think she saw something gentle in him. Dad… not so much. After the fire, everything changed. Dad accused him, publicly. But honestly? I don't think Hank did it. I think it was Oliver."
+              },
+              {
+                "question": "What do you know about the fire at the store?",
+                "answer": "It was awful. It happened late at night — Dad said Hank was already there, trying to put it out. But then Dad changed his mind and blamed him. I don't know why. I always thought… it might've been Oliver. He was drinking a lot around then."
+              },
+              {
+                "question": "How did everyone take the news that the store was being sold?",
+                "answer": "It was hard. That shop was everything to Dad. But he and Mom were ready to move on. Peter didn't care — he hadn't been around. But Oliver… he was furious. Thought he deserved to take over, even though no one trusted him with it."
+              },
+              {
+                "question": "Do you know anything about your parents' will?",
+                "answer": "They updated it a few months ago. Me and Oliver were included. Peter wasn't. It caused a lot of tension. Mom tried to soften it, but Peter saw it as just more proof they never wanted him."
+              }
+            ]
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_victim_tom", "char_victim_carol", "char_suspect_oliver", "char_suspect_peter", "char_suspect_hank"],
+        "knownLocations": ["loc_victim_home", "loc_police_station", "loc_wild_trail_shop"],
+        "associatedObjects": ["obj_interview_daisy", "obj_will_testament", "obj_family_photos", "obj_bill_of_sale", "obj_intervention_letter"]
+      }
+    },
+    {
+      "id": "char_witness_kermit",
+      "name": "Kermit",
+      "age": "Mid-60s",
+      "role": "witness",
+      "occupation": "Unemployed / Off-grid resident",
+      "imagePrompt": "Lean, wiry man with deeply tanned weathered skin. White hair in long uneven dreadlocks, tangled beard. Layered clashing colors - ripped thermals, dusty pants. Piercing gray eyes. Necklace of carved bones.",
+      "bio": "Lives in the woods near the trail system. Known to local hikers and law enforcement. Claims to have heard shouting and a gunshot near the trail that afternoon.",
+      "isSuspect": false,
+      "statement": "The trees saw it all. The thunder came without clouds. The lady bird flew toward the cliff.",
+      "components": [
+        {
+          "type": "physicalCharacteristics",
+          "props": {
+            "height": "5'8\"",
+            "weight": "140 lbs",
+            "eyes": "Piercing gray",
+            "hair": "White dreadlocks"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Kermit",
+            "persona": "You are Kermit. Speak in rambling, disjointed sentences with wild metaphors. Use animal references and trail talk. Mix poetic nonsense with eerie insight. Talk to yourself even when others are present.",
+            "openingStatement": "The trees told me you'd come. They whisper about the blood on the trail.",
+            "suggestedQuestions": [
+              "What did you hear that day?",
+              "Did you see anyone?",
+              "Do you think it was someone from town?",
+              "Where were you when you heard the gunshot?",
+              "Have you seen Hank Bassett lately?"
+            ],
+            "slideshowPrompts": [
+              "Kermit gesturing wildly with both hands while speaking.",
+              "Tilting head sharply as if listening to something.",
+              "Fidgeting with stones and feathers from his pockets."
+            ],
+            "dialogue": [
+              {
+                "question": "What did you hear that day?",
+                "answer": "One shot. Clean. Carried all the way past the ridge. Then a woman cried out — sharp and scared. And not long after… a man yelled. Not loud, but like his guts dropped out."
+              },
+              {
+                "question": "Did you see anyone?",
+                "answer": "A figure, just past the cliff bend. Tall, wide-shouldered. Stood there starin' down like he'd lost something. Couldn't see his face, but his arm caught the light — looked like a bird inked in flight. Desert eagle, I call it."
+              },
+              {
+                "question": "Do you think it was someone from town?",
+                "answer": "Could've been. Or not. These woods have a memory, you know. Could've been a ghost. Could've been yesterday, walkin' around in a man's coat."
+              },
+              {
+                "question": "Where were you when you heard the gunshot?",
+                "answer": "Thunder without rain. The tall one fell like a tree. The small bird tried to fly but... gravity is cruel to birds without wings."
+              }
+            ]
+          }
+        }
+      ],
+      "connections": {
+        "relatedPeople": ["char_suspect_hank"],
         "knownLocations": ["loc_crime_scene"],
-        "associatedObjects": ["obj_weapon"]
+        "associatedObjects": ["obj_witness_statement_kermit"]
       }
     }
   ],
@@ -117,33 +444,393 @@
   "locations": [
     {
       "id": "loc_crime_scene",
-      "name": "Crime Scene",
-      "imagePrompt": "A dimly lit office with evidence markers on the floor.",
-      "description": "The primary location where the crime occurred.",
-      "sceneSummary": "The victim was found here with fatal injuries.",
+      "name": "Crime Scene - Mount Tamalpais Trail",
+      "imagePrompt": "A winding hiking trail through redwood forest with multiple evidence markers. Police tape cordons off areas near the trail bend and cliff edge.",
+      "description": "The hiking trail where Tom and Carol Trembly were killed. Multiple areas of investigation including the main trail, cliff, and nearby hunting blind.",
+      "sceneSummary": "Tom was shot here at 10:15 AM on August 13th. Carol fled and fell from the nearby cliff moments later.",
       "mapCoords": {
-        "top": "50%",
-        "left": "50%"
+        "top": "45%",
+        "left": "60%"
       },
-      "lastEventTimestamp": "2025-01-15T20:00:00Z",
-      "lastEventDescription": "Crime Scene Established. Victim: John Doe.",
+      "lastEventTimestamp": "2025-08-13T10:15:00Z",
+      "lastEventDescription": "Double homicide - Tom Trembly shot, Carol Trembly fell from cliff.",
       "isInternal": false,
       "hotspots": [
         {
-          "id": "hs-loc_crime_scene-0",
-          "label": "Examine Victim",
+          "id": "hs-crime-trail",
+          "label": "Examine Tom's Body",
           "type": "investigate",
-          "targetCardId": "obj_victim_body",
+          "targetCardId": "obj_tom_body",
           "targetCardType": "object",
-          "aiHint": "the body on the floor"
+          "aiHint": "body on the trail where Tom was shot"
         },
         {
-          "id": "hs-loc_crime_scene-1",
-          "label": "Search Desk",
-          "type": "investigate", 
-          "targetCardId": "obj_desk_contents",
+          "id": "hs-crime-cliff",
+          "label": "Investigate Cliff Edge",
+          "type": "investigate",
+          "targetCardId": "obj_carol_body",
           "targetCardType": "object",
-          "aiHint": "the desk in the corner"
+          "aiHint": "cliff edge and Carol's body below"
+        },
+        {
+          "id": "hs-crime-blind",
+          "label": "Search Hunting Blind",
+          "type": "investigate",
+          "targetCardId": "obj_shell_casing",
+          "targetCardType": "object",
+          "aiHint": "concealed hunting blind near trail bend"
+        },
+        {
+          "id": "hs-crime-trailhead",
+          "label": "Interview Witness",
+          "type": "investigate",
+          "targetCardId": "obj_witness_statement_kermit",
+          "targetCardType": "object",
+          "aiHint": "trail head where Kermit was found"
+        }
+      ]
+    },
+    {
+      "id": "loc_police_station",
+      "name": "Marin County Police Station",
+      "imagePrompt": "A modern police station building with parking lot full of patrol cars. American flag flying outside.",
+      "description": "The local police station handling the Trembly murder investigation. Contains morgue, offices, and interview rooms.",
+      "sceneSummary": "Central hub for the investigation. Autopsy reports, case files, and witness interviews conducted here.",
+      "mapCoords": {
+        "top": "65%",
+        "left": "45%"
+      },
+      "lastEventTimestamp": "2025-08-14T09:00:00Z",
+      "lastEventDescription": "Investigation headquarters established. Lead detective assigned.",
+      "isInternal": true,
+      "hotspots": [
+        {
+          "id": "hs-station-morgue-tom",
+          "label": "Review Tom's Autopsy",
+          "type": "investigate",
+          "targetCardId": "obj_autopsy_tom",
+          "targetCardType": "object",
+          "aiHint": "morgue autopsy report for Tom Trembly"
+        },
+        {
+          "id": "hs-station-morgue-carol",
+          "label": "Review Carol's Autopsy",
+          "type": "investigate",
+          "targetCardId": "obj_autopsy_carol",
+          "targetCardType": "object",
+          "aiHint": "morgue autopsy report for Carol Trembly"
+        },
+        {
+          "id": "hs-station-case",
+          "label": "Read Case Summary",
+          "type": "investigate",
+          "targetCardId": "obj_police_report",
+          "targetCardType": "object",
+          "aiHint": "office case summary report"
+        },
+        {
+          "id": "hs-station-dossier-tom",
+          "label": "Tom's Background File",
+          "type": "investigate",
+          "targetCardId": "obj_victim_dossier_tom",
+          "targetCardType": "object",
+          "aiHint": "victim dossier on Tom Trembly"
+        },
+        {
+          "id": "hs-station-dossier-carol",
+          "label": "Carol's Background File",
+          "type": "investigate",
+          "targetCardId": "obj_victim_dossier_carol",
+          "targetCardType": "object",
+          "aiHint": "victim dossier on Carol Trembly"
+        },
+        {
+          "id": "hs-station-interview",
+          "label": "Interview Daisy Trembly",
+          "type": "investigate",
+          "targetCardId": "obj_interview_daisy",
+          "targetCardType": "object",
+          "aiHint": "interview room with Daisy Trembly"
+        }
+      ]
+    },
+    {
+      "id": "loc_victim_home",
+      "name": "Trembly Residence",
+      "imagePrompt": "A comfortable two-story craftsman home with well-maintained garden. Carol's flowers still blooming in window boxes.",
+      "description": "Tom and Carol's family home. Contains family photos, important documents, and personal effects.",
+      "sceneSummary": "The victims' residence. Key evidence includes the will, business documents, and family correspondence.",
+      "mapCoords": {
+        "top": "70%",
+        "left": "40%"
+      },
+      "lastEventTimestamp": "2025-08-13T14:00:00Z",
+      "lastEventDescription": "Police search conducted. Multiple evidence items collected.",
+      "isInternal": true,
+      "hotspots": [
+        {
+          "id": "hs-home-photos",
+          "label": "Examine Family Photos",
+          "type": "investigate",
+          "targetCardId": "obj_family_photos",
+          "targetCardType": "object",
+          "aiHint": "living room family photographs"
+        },
+        {
+          "id": "hs-home-will",
+          "label": "Read Will & Testament",
+          "type": "investigate",
+          "targetCardId": "obj_will_testament",
+          "targetCardType": "object",
+          "aiHint": "office will and testament documents"
+        },
+        {
+          "id": "hs-home-bill",
+          "label": "Review Bill of Sale",
+          "type": "investigate",
+          "targetCardId": "obj_bill_of_sale",
+          "targetCardType": "object",
+          "aiHint": "office bill of sale for Wild Trail Supply Co"
+        },
+        {
+          "id": "hs-home-letter",
+          "label": "Find Intervention Letter",
+          "type": "investigate",
+          "targetCardId": "obj_intervention_letter",
+          "targetCardType": "object",
+          "aiHint": "bedroom unsent letter to Oliver"
+        },
+        {
+          "id": "hs-home-pistol",
+          "label": "Check Registered Pistol",
+          "type": "investigate",
+          "targetCardId": "obj_registered_9mm",
+          "targetCardType": "object",
+          "aiHint": "bedroom drawer with locked pistol"
+        }
+      ]
+    },
+    {
+      "id": "loc_wild_trail_shop",
+      "name": "Wild Trail Supply Co.",
+      "imagePrompt": "A rustic outdoor equipment shop with wooden exterior and hand-painted sign. Scorch marks visible on one wall from recent fire damage.",
+      "description": "The Trembly family's outdoor equipment shop, recently sold to Blue Tag Sporting Goods. Site of the suspicious fire.",
+      "sceneSummary": "The shop at the center of the conflict. Evidence of the fire, weapons inventory, and employment records found here.",
+      "mapCoords": {
+        "top": "75%",
+        "left": "35%"
+      },
+      "lastEventTimestamp": "2025-08-11T23:30:00Z",
+      "lastEventDescription": "Break-in discovered. Winchester rifle reported missing.",
+      "isInternal": true,
+      "hotspots": [
+        {
+          "id": "hs-shop-rifles",
+          "label": "Examine Rifle Display",
+          "type": "investigate",
+          "targetCardId": "obj_rifle_wall",
+          "targetCardType": "object",
+          "aiHint": "showroom rifle wall display"
+        },
+        {
+          "id": "hs-shop-ammo",
+          "label": "Check Ammunition Stock",
+          "type": "investigate",
+          "targetCardId": "obj_ammunition_shelf",
+          "targetCardType": "object",
+          "aiHint": "showroom ammunition shelf inventory"
+        },
+        {
+          "id": "hs-shop-termination",
+          "label": "Find Termination Letter",
+          "type": "investigate",
+          "targetCardId": "obj_termination_letter",
+          "targetCardType": "object",
+          "aiHint": "office termination letter for Hank Bassett"
+        },
+        {
+          "id": "hs-shop-computer",
+          "label": "Access Store Computer",
+          "type": "investigate",
+          "targetCardId": "obj_store_computer",
+          "targetCardType": "object",
+          "aiHint": "office computer with logs and emails"
+        }
+      ]
+    },
+    {
+      "id": "loc_oliver_home",
+      "name": "Oliver Trembly's House",
+      "imagePrompt": "A modern single-story home with attached garage. Expensive outdoor gear visible through windows. GoPro mounts on the porch.",
+      "description": "Oliver's residence. Contains hunting equipment, evidence of drug use, and digital records.",
+      "sceneSummary": "The suspect's home reveals his lifestyle - hunting obsession, drug paraphernalia, and unregistered weapons.",
+      "mapCoords": {
+        "top": "68%",
+        "left": "50%"
+      },
+      "lastEventTimestamp": "2025-08-14T11:00:00Z",
+      "lastEventDescription": "Search warrant executed. Multiple items seized.",
+      "isInternal": true,
+      "hotspots": [
+        {
+          "id": "hs-oliver-safe",
+          "label": "Open Gun Safe",
+          "type": "investigate",
+          "targetCardId": "obj_gun_safe_inventory",
+          "targetCardType": "object",
+          "aiHint": "garage gun safe with multiple weapons"
+        },
+        {
+          "id": "hs-oliver-trophy",
+          "label": "Examine Trophy Wall",
+          "type": "investigate",
+          "targetCardId": "obj_trophy_wall",
+          "targetCardType": "object",
+          "aiHint": "garage wall with hunting trophies"
+        },
+        {
+          "id": "hs-oliver-drugs",
+          "label": "Document Drug Items",
+          "type": "investigate",
+          "targetCardId": "obj_drug_paraphernalia",
+          "targetCardType": "object",
+          "aiHint": "living room drug paraphernalia"
+        },
+        {
+          "id": "hs-oliver-laptop",
+          "label": "Search Laptop",
+          "type": "investigate",
+          "targetCardId": "obj_oliver_laptop",
+          "targetCardType": "object",
+          "aiHint": "living room laptop computer"
+        },
+        {
+          "id": "hs-oliver-pistol",
+          "label": "Find Unregistered Pistol",
+          "type": "investigate",
+          "targetCardId": "obj_9mm_unregistered",
+          "targetCardType": "object",
+          "aiHint": "bedroom drawer with illegal firearm"
+        },
+        {
+          "id": "hs-oliver-marijuana",
+          "label": "Find Marijuana",
+          "type": "investigate",
+          "targetCardId": "obj_marijuana_bag",
+          "targetCardType": "object",
+          "aiHint": "bedroom marijuana stash"
+        }
+      ]
+    },
+    {
+      "id": "loc_firewatch_tower",
+      "name": "Firewatch Tower Lookout 6",
+      "imagePrompt": "A tall forest service fire lookout tower rising above the tree line. Peter's pickup truck parked at the base.",
+      "description": "Peter Lewin's workplace. His alibi location during the murders, with supporting evidence.",
+      "sceneSummary": "Peter's firewatch station. Trail cameras and generator logs confirm his presence during the murder timeframe.",
+      "mapCoords": {
+        "top": "30%",
+        "left": "65%"
+      },
+      "lastEventTimestamp": "2025-08-13T10:15:00Z",
+      "lastEventDescription": "Peter confirmed on duty during murder timeframe.",
+      "isInternal": false,
+      "hotspots": [
+        {
+          "id": "hs-tower-interview",
+          "label": "Interview Peter Lewin",
+          "type": "investigate",
+          "targetCardId": "obj_interview_peter",
+          "targetCardType": "object",
+          "aiHint": "tower interview with Peter Lewin"
+        },
+        {
+          "id": "hs-tower-rifle",
+          "label": "Examine Peter's Rifle",
+          "type": "investigate",
+          "targetCardId": "obj_winchester_peter",
+          "targetCardType": "object",
+          "aiHint": "tower storage Winchester rifle"
+        },
+        {
+          "id": "hs-tower-trail-cam",
+          "label": "Review Trail Cam Footage",
+          "type": "investigate",
+          "targetCardId": "obj_trail_cam_stills",
+          "targetCardType": "object",
+          "aiHint": "base trail camera images"
+        },
+        {
+          "id": "hs-tower-generator",
+          "label": "Check Generator Log",
+          "type": "investigate",
+          "targetCardId": "obj_generator_log",
+          "targetCardType": "object",
+          "aiHint": "base generator power logs"
+        },
+        {
+          "id": "hs-tower-truck",
+          "label": "Inspect Pickup Truck",
+          "type": "investigate",
+          "targetCardId": "obj_pickup_truck",
+          "targetCardType": "object",
+          "aiHint": "base parking area pickup truck"
+        }
+      ]
+    },
+    {
+      "id": "loc_hank_cabin",
+      "name": "Hank Bassett's Cabin",
+      "imagePrompt": "A rundown cabin deep in the woods. Old Jeep parked outside. Smoke rising from a burn barrel in the yard.",
+      "description": "Hank's isolated property on the outskirts of town. Key evidence found in burn barrel.",
+      "sceneSummary": "The actual culprit's residence. Burned clothing and a key to the shop's back door found here.",
+      "mapCoords": {
+        "top": "25%",
+        "left": "70%"
+      },
+      "lastEventTimestamp": "2025-08-14T15:00:00Z",
+      "lastEventDescription": "Search conducted. Burned evidence discovered.",
+      "isInternal": false,
+      "hotspots": [
+        {
+          "id": "hs-hank-burned",
+          "label": "Search Burn Barrel",
+          "type": "investigate",
+          "targetCardId": "obj_burned_camo",
+          "targetCardType": "object",
+          "aiHint": "outside burn barrel with charred remains"
+        },
+        {
+          "id": "hs-hank-jeep",
+          "label": "Check Jeep",
+          "type": "investigate",
+          "targetCardId": "obj_jeep",
+          "targetCardType": "object",
+          "aiHint": "outside registered Jeep vehicle"
+        },
+        {
+          "id": "hs-hank-interview",
+          "label": "Interview Hank Bassett",
+          "type": "investigate",
+          "targetCardId": "obj_interview_hank",
+          "targetCardType": "object",
+          "aiHint": "outside interview with Hank Bassett"
+        },
+        {
+          "id": "hs-hank-keys",
+          "label": "Find Key Ring",
+          "type": "investigate",
+          "targetCardId": "obj_key_ring",
+          "targetCardType": "object",
+          "aiHint": "inside cabin key ring"
+        },
+        {
+          "id": "hs-hank-weapons",
+          "label": "Check Weapons",
+          "type": "investigate",
+          "targetCardId": "obj_weapons_inventory_hank",
+          "targetCardType": "object",
+          "aiHint": "inside cabin weapons collection"
         }
       ]
     }
@@ -151,60 +838,597 @@
 
   "objects": [
     {
-      "id": "obj_victim_body",
-      "name": "Victim's Body",
-      "unidentifiedDescription": "The body of a middle-aged man.",
+      "id": "obj_tom_body",
+      "name": "Tom Trembly's Body",
+      "unidentifiedDescription": "A large man collapsed on the hiking trail.",
       "category": "physical",
       "locationFoundId": "loc_crime_scene",
-      "timestamp": "2025-01-15T20:00:00Z",
-      "timeToAdd": 10,
-      "rarity": "critical",
-      "imagePrompt": "A crime scene photo showing the victim's body.",
-      "description": "The victim's body, found at the crime scene with fatal injuries.",
-      "tags": ["victim", "body"],
-      "isEvidence": false,
-      "assignedToSuspectIds": [],
-      "hasBeenUnlocked": false,
-      "components": [],
-      "unlocks": [
-        {
-          "type": "event",
-          "ref": "event_murder",
-          "time": 20
-        }
-      ]
-    },
-    {
-      "id": "obj_weapon",
-      "name": "Murder Weapon",
-      "unidentifiedDescription": "A weapon found at the scene.",
-      "category": "physical",
-      "locationFoundId": "loc_crime_scene",
-      "timestamp": "2025-01-15T20:30:00Z",
+      "timestamp": "2025-08-13T10:15:00Z",
       "timeToAdd": 15,
       "rarity": "critical",
-      "imagePrompt": "A weapon with forensic evidence markers.",
-      "description": "The weapon used in the crime, found near the victim.",
-      "tags": ["weapon", "evidence"],
+      "imagePrompt": "Crime scene photo showing Tom Trembly collapsed on the trail with visible chest wound. Police markers around the body.",
+      "description": "Tom Trembly's body on the hiking trail. Single gunshot wound through the heart. Clean entry and exit wounds suggest high-powered rifle from distance.",
+      "tags": ["victim", "body", "gunshot"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_carol_body",
+      "name": "Carol Trembly's Body",
+      "unidentifiedDescription": "A woman's body at the base of the cliff.",
+      "category": "physical",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-08-13T10:20:00Z",
+      "timeToAdd": 15,
+      "rarity": "critical",
+      "imagePrompt": "Carol's body at the bottom of a rocky gorge. Visible injuries from the fall.",
+      "description": "Carol Trembly's body at the base of the cliff. Fractured spine and skull from fall. Dirt and foliage embedded in skin indicates she was running when she fell.",
+      "tags": ["victim", "body", "fall"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_shell_casing",
+      "name": "Shell Casing - .243 Winchester",
+      "unidentifiedDescription": "A spent rifle casing.",
+      "category": "physical",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-08-13T10:15:00Z",
+      "timeToAdd": 20,
+      "rarity": "critical",
+      "imagePrompt": "A spent .243 Winchester shell casing on the ground near a hunting blind. Evidence marker next to it.",
+      "description": "Spent .243 Winchester casing found near the hunting blind off the trail. Matches the caliber that killed Tom Trembly. Fresh ejection marks.",
+      "tags": ["weapon", "evidence", "ballistics"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_witness_statement_kermit",
+      "name": "Witness Statement - Kermit",
+      "unidentifiedDescription": "A witness account from a local hermit.",
+      "category": "document",
+      "locationFoundId": "loc_crime_scene",
+      "timestamp": "2025-08-13T11:30:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Handwritten police notes from Kermit's witness statement.",
+      "description": "Kermit heard one clean shot, then a woman's scream, then a man yelling. Saw a tall figure with what he calls a 'desert eagle' tattoo standing at the cliff edge.",
+      "tags": ["witness", "testimony", "tattoo"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_autopsy_tom",
+      "name": "Autopsy Report - Tom Trembly",
+      "unidentifiedDescription": "Medical examiner's report.",
+      "category": "document",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-14T08:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Official autopsy report with diagrams showing bullet trajectory.",
+      "description": "Single gunshot wound through the heart. Clean entry/exit. Death was instantaneous. Trajectory suggests shooter was at elevated position approximately 150 yards away.",
+      "tags": ["autopsy", "medical", "gunshot"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_autopsy_carol",
+      "name": "Autopsy Report - Carol Trembly",
+      "unidentifiedDescription": "Medical examiner's report.",
+      "category": "document",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-14T08:30:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Official autopsy report showing injuries from fall.",
+      "description": "Fractured spine and skull from approximately 40-foot fall. Dirt and foliage embedded in skin and clothing. Defensive wounds on hands from grabbing at branches during fall.",
+      "tags": ["autopsy", "medical", "fall"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_police_report",
+      "name": "Police Report - Case Summary",
+      "unidentifiedDescription": "Official case documentation.",
+      "category": "document",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-13T18:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Police case file with crime scene photos and initial findings.",
+      "description": "Initial summary of the double homicide. Timeline, list of suspects (Hank Bassett, Peter Lewin, Oliver Trembly), and preliminary evidence catalog.",
+      "tags": ["police", "summary", "timeline"],
       "isEvidence": false,
       "assignedToSuspectIds": [],
       "hasBeenUnlocked": false,
       "components": []
     },
     {
-      "id": "obj_desk_contents",
-      "name": "Desk Contents",
-      "unidentifiedDescription": "Various items found in the desk.",
+      "id": "obj_victim_dossier_tom",
+      "name": "Victim Dossier - Tom Trembly",
+      "unidentifiedDescription": "Background information file.",
       "category": "document",
-      "locationFoundId": "loc_crime_scene",
-      "timestamp": "2025-01-15T21:00:00Z",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-13T16:00:00Z",
       "timeToAdd": 5,
-      "rarity": "material",
-      "imagePrompt": "A desk with papers and personal items scattered about.",
-      "description": "Personal and business documents found in the victim's desk.",
-      "tags": ["document", "personal"],
+      "rarity": "common",
+      "imagePrompt": "Police file with Tom's photo and background information.",
+      "description": "Background on Tom Trembly. Age 66, owned Wild Trail Supply Co. for 30 years. Recently sold to Blue Tag. Married to Carol for 35 years. Known conflicts with Hank Bassett and son Oliver.",
+      "tags": ["victim", "background", "profile"],
       "isEvidence": false,
       "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_victim_dossier_carol",
+      "name": "Victim Dossier - Carol Trembly",
+      "unidentifiedDescription": "Background information file.",
+      "category": "document",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-13T16:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Police file with Carol's photo and background information.",
+      "description": "Background on Carol Trembly. Age 63, co-owner of Wild Trail Supply Co. Active in community, farmers markets. Mother to Peter (from previous marriage), Oliver, and Daisy. Known to be sympathetic to Hank.",
+      "tags": ["victim", "background", "profile"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_interview_daisy",
+      "name": "Interview - Daisy Trembly",
+      "unidentifiedDescription": "Witness interview transcript.",
+      "category": "document",
+      "locationFoundId": "loc_police_station",
+      "timestamp": "2025-08-14T10:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "material",
+      "imagePrompt": "Interview room with Daisy Trembly speaking to detectives.",
+      "description": "Daisy provides insights on family dynamics. Suspects Oliver started the shop fire, not Hank. Describes tensions over the will and shop sale. Notes her mother adored Hank.",
+      "tags": ["interview", "witness", "family"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_family_photos",
+      "name": "Family Photos",
+      "unidentifiedDescription": "Collection of family photographs.",
+      "category": "document",
+      "locationFoundId": "loc_victim_home",
+      "timestamp": "2025-08-13T14:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Three framed family photos showing Tom, Carol, and their children at various ages.",
+      "description": "Photos showing family dynamics over the years. Peter often standing apart. Oliver prominently featured during shop events. Recent photos show tension in body language.",
+      "tags": ["family", "photos", "relationships"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_will_testament",
+      "name": "Will & Testament",
+      "unidentifiedDescription": "Legal document.",
+      "category": "document",
+      "locationFoundId": "loc_victim_home",
+      "timestamp": "2025-05-01T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Legal document showing estate distribution.",
+      "description": "Updated three months ago. Estate divided between Oliver and Daisy. Peter explicitly excluded. Approximately $200,000 each after debts.",
+      "tags": ["will", "inheritance", "motive"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver", "char_suspect_peter"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_bill_of_sale",
+      "name": "Bill of Sale - Blue Tag Sporting Goods",
+      "unidentifiedDescription": "Business contract.",
+      "category": "document",
+      "locationFoundId": "loc_victim_home",
+      "timestamp": "2025-07-15T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Contract showing Wild Trail Supply Co. sold to Blue Tag chain.",
+      "description": "Contract finalizing sale of Wild Trail Supply Co. to Blue Tag Sporting Goods. Sale price: $1.2 million. Closed July 15th, 2025. Oliver's name notably absent from any succession planning.",
+      "tags": ["business", "sale", "motive"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver", "char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_intervention_letter",
+      "name": "Intervention Letter - Oliver",
+      "unidentifiedDescription": "Unsent personal letter.",
+      "category": "document",
+      "locationFoundId": "loc_victim_home",
+      "timestamp": "2025-08-10T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Handwritten letter addressing Oliver's drug use.",
+      "description": "Unsent letter from Tom and Carol to Oliver confronting his drug use and erratic behavior. Mentions disappointment about the shop and concern for his future. Dated three days before murders.",
+      "tags": ["family", "drugs", "conflict"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_registered_9mm",
+      "name": "Registered 9mm Pistol",
+      "unidentifiedDescription": "Locked firearm in bedroom.",
+      "category": "physical",
+      "locationFoundId": "loc_victim_home",
+      "timestamp": "2025-08-13T14:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "9mm pistol locked in bedroom drawer.",
+      "description": "Tom's registered 9mm pistol, locked in bedroom drawer. Fully loaded, unfired. Not connected to the crime but shows Tom had home defense weapons.",
+      "tags": ["weapon", "registered", "unrelated"],
+      "isEvidence": false,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_rifle_wall",
+      "name": "Rifle Wall Photo",
+      "unidentifiedDescription": "Display of hunting rifles.",
+      "category": "document",
+      "locationFoundId": "loc_wild_trail_shop",
+      "timestamp": "2025-08-11T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Photo of rifle display wall showing five rifles, one mount empty.",
+      "description": "Five rifles on display including a .243 Winchester matching the murder weapon. Photo taken during inventory shows all rifles present. Current display missing the .243.",
+      "tags": ["weapon", "rifle", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_ammunition_shelf",
+      "name": "Ammunition Shelf",
+      "unidentifiedDescription": "Store ammunition inventory.",
+      "category": "physical",
+      "locationFoundId": "loc_wild_trail_shop",
+      "timestamp": "2025-08-11T00:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Shelf with various ammunition boxes, gap where .243 rounds should be.",
+      "description": "Various calibers in stock. Notably missing: entire box of .243 Winchester rounds. Inventory shows they should be present.",
+      "tags": ["ammunition", "missing", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_termination_letter",
+      "name": "Termination Letter - Hank Bassett",
+      "unidentifiedDescription": "Employment termination document.",
+      "category": "document",
+      "locationFoundId": "loc_wild_trail_shop",
+      "timestamp": "2025-06-24T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Official termination letter on Wild Trail letterhead.",
+      "description": "Letter terminating Hank Bassett's employment after 22 years. Reason: 'Suspected arson and breach of trust.' Signed by Tom Trembly. Dated two days after the fire.",
+      "tags": ["employment", "termination", "motive"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_store_computer",
+      "name": "Store Computer Log",
+      "unidentifiedDescription": "Business computer records.",
+      "category": "digital",
+      "locationFoundId": "loc_wild_trail_shop",
+      "timestamp": "2025-08-11T23:30:00Z",
+      "timeToAdd": 15,
+      "rarity": "material",
+      "imagePrompt": "Computer screen showing employee access logs and emails.",
+      "description": "Employee access records show Hank's keycard was never returned. Last email from Tom to insurance about fire claim. Oliver's name appears in multiple angry emails about the sale.",
+      "tags": ["digital", "access", "records"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank", "char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_gun_safe_inventory",
+      "name": "Gun Safe Inventory",
+      "unidentifiedDescription": "Collection of firearms.",
+      "category": "physical",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "material",
+      "imagePrompt": "Open gun safe showing AR-15, Winchester rifle, and Desert Eagle handgun.",
+      "description": "Oliver's gun collection: AR-15, Winchester .30-06 (not .243), and a Desert Eagle handgun. All registered. The Desert Eagle is notable given Kermit's 'desert eagle' witness statement.",
+      "tags": ["weapons", "firearms", "desert eagle"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_trophy_wall",
+      "name": "Trophy Wall Photo",
+      "unidentifiedDescription": "Hunting trophies display.",
+      "category": "document",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Wall covered in mounted animal heads and hunting memorabilia.",
+      "description": "Mounted deer, elk, and bear heads. Photos of Oliver with kills. Demonstrates extensive hunting experience and marksmanship. Ego wall for social media content.",
+      "tags": ["hunting", "trophies", "experience"],
+      "isEvidence": false,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_drug_paraphernalia",
+      "name": "Drug Paraphernalia Photo",
+      "unidentifiedDescription": "Drug use evidence.",
+      "category": "document",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Glass pipe, torch lighter, and residue on coffee table.",
+      "description": "Glass methamphetamine pipe, torch lighter, and crystalline residue on living room table. Confirms ongoing drug use despite claims of recovery.",
+      "tags": ["drugs", "meth", "addiction"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_oliver_laptop",
+      "name": "Oliver's Laptop",
+      "unidentifiedDescription": "Personal computer.",
+      "category": "digital",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 20,
+      "rarity": "material",
+      "imagePrompt": "Laptop showing browser history and social media.",
+      "description": "Browser history shows research on Winchester rifles, inheritance law, and fire accelerants (dated before shop fire). Deleted emails expressing rage about shop sale. Social media shows him 'off-grid' during murders.",
+      "tags": ["digital", "research", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_9mm_unregistered",
+      "name": "Unregistered 9mm Pistol",
+      "unidentifiedDescription": "Illegal firearm.",
+      "category": "physical",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "9mm pistol with filed serial numbers in bedroom drawer.",
+      "description": "Unregistered 9mm pistol with filed serial numbers found in Oliver's bedroom. Not the murder weapon but shows illegal activity and paranoia.",
+      "tags": ["weapon", "illegal", "unregistered"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_marijuana_bag",
+      "name": "Marijuana Bag",
+      "unidentifiedDescription": "Personal drug stash.",
+      "category": "physical",
+      "locationFoundId": "loc_oliver_home",
+      "timestamp": "2025-08-14T11:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Plastic bag with marijuana next to the bed.",
+      "description": "Personal marijuana stash found in bedroom. Legal in California but shows ongoing substance use alongside harder drugs.",
+      "tags": ["drugs", "marijuana", "personal"],
+      "isEvidence": false,
+      "assignedToSuspectIds": ["char_suspect_oliver"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_interview_peter",
+      "name": "Interview - Peter Lewin",
+      "unidentifiedDescription": "Suspect interview transcript.",
+      "category": "document",
+      "locationFoundId": "loc_firewatch_tower",
+      "timestamp": "2025-08-14T13:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "material",
+      "imagePrompt": "Peter being interviewed at the firewatch tower.",
+      "description": "Peter claims he was on solo watch at tower during murders. Defensive but cooperative. Expert marksman. Excluded from will. Says 'I've had enough of the guessing games.'",
+      "tags": ["interview", "alibi", "suspect"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_peter"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_winchester_peter",
+      "name": "Winchester Rifle (Peter's)",
+      "unidentifiedDescription": "Hunting rifle in tower storage.",
+      "category": "physical",
+      "locationFoundId": "loc_firewatch_tower",
+      "timestamp": "2025-08-14T13:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Winchester rifle locked in tower storage cabinet.",
+      "description": "Peter's Winchester rifle, locked in tower storage. Same make as murder weapon but different caliber (.30-06, not .243). Recently cleaned but not recently fired.",
+      "tags": ["weapon", "rifle", "alibi"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_peter"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_trail_cam_stills",
+      "name": "Trail Cam Stills",
+      "unidentifiedDescription": "Automated camera footage.",
+      "category": "document",
+      "locationFoundId": "loc_firewatch_tower",
+      "timestamp": "2025-08-13T10:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "critical",
+      "imagePrompt": "Three trail camera photos showing Peter at the tower during murder timeframe.",
+      "description": "Motion-activated trail camera shows Peter at Lookout 6 at 9:45 AM, 10:15 AM, and 10:45 AM on August 13th. Provides alibi for murder timeframe.",
+      "tags": ["alibi", "photo", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_generator_log",
+      "name": "Generator Log",
+      "unidentifiedDescription": "Power usage records.",
+      "category": "document",
+      "locationFoundId": "loc_firewatch_tower",
+      "timestamp": "2025-08-13T00:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Generator log showing continuous power during murder window.",
+      "description": "Automated generator log proves tower was powered and occupied during murder window. Supports Peter's alibi of being on duty.",
+      "tags": ["alibi", "technical", "logs"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_pickup_truck",
+      "name": "Pickup Truck Photo",
+      "unidentifiedDescription": "Vehicle at tower base.",
+      "category": "document",
+      "locationFoundId": "loc_firewatch_tower",
+      "timestamp": "2025-08-14T13:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Peter's pickup truck parked at tower base, covered in dust.",
+      "description": "Peter's truck at tower base. Layer of dust and pollen indicates it hasn't moved in days. Supports his claim of being at tower since Monday.",
+      "tags": ["vehicle", "alibi", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": [],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_burned_camo",
+      "name": "Burned Camouflage Remains",
+      "unidentifiedDescription": "Charred fabric in burn barrel.",
+      "category": "physical",
+      "locationFoundId": "loc_hank_cabin",
+      "timestamp": "2025-08-13T11:00:00Z",
+      "timeToAdd": 20,
+      "rarity": "critical",
+      "imagePrompt": "Partially burned camouflage clothing in barrel with melted synthetic fabric.",
+      "description": "Burned camouflage clothing found in Hank's burn barrel. Fabric partially melted. Pattern matches clothing seen in shop's last CCTV footage of Hank.",
+      "tags": ["evidence", "burned", "clothing"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_jeep",
+      "name": "Registered Jeep",
+      "unidentifiedDescription": "Old vehicle outside cabin.",
+      "category": "physical",
+      "locationFoundId": "loc_hank_cabin",
+      "timestamp": "2025-08-14T15:00:00Z",
+      "timeToAdd": 5,
+      "rarity": "common",
+      "imagePrompt": "Old, muddy Jeep parked outside cabin.",
+      "description": "Hank's registered Jeep. Muddy, old, but functional. Fresh mud on tires suggests recent use despite his claims of not leaving property.",
+      "tags": ["vehicle", "transportation", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_interview_hank",
+      "name": "Interview - Hank Bassett",
+      "unidentifiedDescription": "Suspect interview transcript.",
+      "category": "document",
+      "locationFoundId": "loc_hank_cabin",
+      "timestamp": "2025-08-14T15:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "material",
+      "imagePrompt": "Hank being interviewed outside his cabin, defensive posture.",
+      "description": "Hank is abrasive and bitter. Denies involvement but dodges specifics. Claims he hasn't left property in weeks. Mentions being 'done' after county fair confrontation.",
+      "tags": ["interview", "suspect", "defensive"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_key_ring",
+      "name": "Key Ring",
+      "unidentifiedDescription": "Set of keys inside cabin.",
+      "category": "physical",
+      "locationFoundId": "loc_hank_cabin",
+      "timestamp": "2025-08-14T15:00:00Z",
+      "timeToAdd": 15,
+      "rarity": "critical",
+      "imagePrompt": "Key ring with multiple keys including one marked with Wild Trail logo.",
+      "description": "Key ring found in cabin. One key matches the back door of Wild Trail Supply Co. Explains how the .243 rifle was stolen without forced entry.",
+      "tags": ["keys", "access", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
+      "hasBeenUnlocked": false,
+      "components": []
+    },
+    {
+      "id": "obj_weapons_inventory_hank",
+      "name": "Weapons Inventory (Hank)",
+      "unidentifiedDescription": "Collection of weapons.",
+      "category": "physical",
+      "locationFoundId": "loc_hank_cabin",
+      "timestamp": "2025-08-14T15:00:00Z",
+      "timeToAdd": 10,
+      "rarity": "material",
+      "imagePrompt": "Crossbow, shotgun, and pistol displayed. Empty rifle rack.",
+      "description": "Hank's weapons: crossbow, shotgun, and a pistol. Notably missing any .243 rifle. Empty spot in gun rack suggests something was recently removed.",
+      "tags": ["weapons", "missing", "evidence"],
+      "isEvidence": true,
+      "assignedToSuspectIds": ["char_suspect_hank"],
       "hasBeenUnlocked": false,
       "components": []
     }
@@ -212,16 +1436,81 @@
 
   "events": [
     {
-      "id": "event_murder",
-      "name": "The Murder",
-      "imagePrompt": "A crime scene photo showing the aftermath of the crime.",
-      "description": "The victim was murdered at the crime scene.",
-      "timestamp": "2025-01-15T20:00:00Z",
-      "locationId": "loc_crime_scene",
+      "id": "event_ownership_transfer",
+      "name": "Ownership Transfer",
+      "imagePrompt": "Legal documents being signed at a lawyer's office. Tom and Carol looking relieved, while a Blue Tag executive shakes hands.",
+      "description": "Tom and Carol Trembly finalize the sale of Wild Trail Supply Co. to Blue Tag Sporting Goods. Hank Bassett, longtime employee, is let go after over two decades of service.",
+      "timestamp": "2025-06-29T14:00:00Z",
+      "locationId": "loc_wild_trail_shop",
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false,
+      "rarity": "material",
+      "tags": ["business", "sale", "motive"],
+      "components": []
+    },
+    {
+      "id": "event_shop_fire",
+      "name": "The Fire",
+      "imagePrompt": "Wild Trail Supply Co. back storage shed engulfed in flames at night. Hank with a fire extinguisher trying to control the blaze.",
+      "description": "In a drunken rage, Oliver Trembly sets fire to the back storage shed of Wild Trail. Hank, living nearby, sees the flames and rushes to help put it out. Tom arrives with firefighters and, seeing Hank on-site, wrongly assumes he is responsible.",
+      "timestamp": "2025-07-03T23:00:00Z",
+      "locationId": "loc_wild_trail_shop",
       "timeToAdd": 20,
       "hasBeenUnlocked": false,
       "rarity": "critical",
-      "tags": ["means", "opportunity"],
+      "tags": ["fire", "accusation", "motive"],
+      "components": []
+    },
+    {
+      "id": "event_county_fair",
+      "name": "Public Confrontation (Marin County Fair)",
+      "imagePrompt": "Crowded county fair. Tom and Hank in heated argument near a vendor booth. Security officers approaching.",
+      "description": "Hank overhears Tom blaming him for the fire. The two get into a heated argument in front of a crowd. Security intervenes. Hank is removed from the fairgrounds—humiliated and enraged.",
+      "timestamp": "2025-07-18T19:00:00Z",
+      "locationId": "loc_county_fair",
+      "timeToAdd": 15,
+      "hasBeenUnlocked": false,
+      "rarity": "material",
+      "tags": ["confrontation", "public", "motive"],
+      "components": []
+    },
+    {
+      "id": "event_weapon_theft",
+      "name": "Acquiring the Weapon",
+      "imagePrompt": "Dark interior of Wild Trail Supply Co. at night. A shadowy figure removing a rifle from the wall display.",
+      "description": "Hank uses a hidden spare key to enter Wild Trail Supply Co. after hours. He removes a .243 Winchester rifle from the gun rack and exits unnoticed.",
+      "timestamp": "2025-07-24T02:00:00Z",
+      "locationId": "loc_wild_trail_shop",
+      "timeToAdd": 20,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["theft", "weapon", "premeditation"],
+      "components": []
+    },
+    {
+      "id": "event_murders",
+      "name": "The Murders",
+      "imagePrompt": "Split scene: Tom collapsing on the trail with a gunshot wound, Carol running in panic toward a cliff edge.",
+      "description": "Hank sets up in a blind 50 yards off-trail. At 10:15 AM, he shoots Tom through the heart. Carol flees in terror and accidentally falls to her death from a nearby cliff. Kermit the hermit, birdwatching nearby, spots a man peering over the cliff—he can't see the face, but clearly sees an eagle tattoo on the man's forearm.",
+      "timestamp": "2025-08-13T10:15:00Z",
+      "locationId": "loc_crime_scene",
+      "timeToAdd": 25,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["murder", "shooting", "witness"],
+      "components": []
+    },
+    {
+      "id": "event_coverup",
+      "name": "The Cover-Up",
+      "imagePrompt": "Wild Trail Supply Co. interior. A rifle being carefully placed back on the wall display rack.",
+      "description": "Hank returns the Winchester rifle to Wild Trail to avoid suspicion. The weapon has been cleaned but forensic evidence may remain.",
+      "timestamp": "2025-08-13T10:45:00Z",
+      "locationId": "loc_wild_trail_shop",
+      "timeToAdd": 15,
+      "hasBeenUnlocked": false,
+      "rarity": "critical",
+      "tags": ["coverup", "evidence", "deception"],
       "components": []
     }
   ],
