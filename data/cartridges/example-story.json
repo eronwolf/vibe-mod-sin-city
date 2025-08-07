@@ -1517,12 +1517,174 @@
 
   "sublocations": [
     {
-      "id": "subloc_victim_location",
-      "name": "Victim's Location",
-      "description": "The exact spot where the victim was found.",
+      "id": "subloc_crime_trail",
+      "name": "Trail",
+      "description": "The exact spot on the hiking trail where Tom Trembly was shot. Blood stains and evidence markers indicate where he fell.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_crime_cliff",
+      "name": "Cliff",
+      "description": "The cliff edge where Carol Trembly fell to her death while fleeing. Disturbed earth and broken branches mark her path.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_crime_blind",
+      "name": "Blind",
+      "description": "A concealed hunting blind approximately 50 yards off the main trail. Perfect vantage point for the shooter. Shell casing found here.",
       "locationId": "loc_crime_scene",
       "isVisible": false,
+      "timeToAdd": 15,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_crime_trailhead",
+      "name": "Trail Head",
+      "description": "The entrance to the trail system where Kermit the Hermit was found and interviewed by police.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
       "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_station_morgue",
+      "name": "Morgue",
+      "description": "The medical examiner's facility where autopsies were performed on both victims.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_station_office",
+      "name": "Office",
+      "description": "Detective's office containing case files, victim dossiers, and investigation notes.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_station_interview",
+      "name": "Interview Room",
+      "description": "Standard police interview room where witnesses and suspects are questioned.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_living",
+      "name": "Living Room",
+      "description": "The Tremblys' comfortable living room filled with family photos and memories.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_office",
+      "name": "Office",
+      "description": "Tom's home office containing important documents including the will and business papers.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_bedroom",
+      "name": "Bedroom",
+      "description": "The master bedroom where personal items and the unsent intervention letter were found.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_shop_showroom",
+      "name": "Show Room",
+      "description": "The main retail area of Wild Trail Supply Co. with rifle displays and ammunition shelves.",
+      "locationId": "loc_wild_trail_shop",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_shop_office",
+      "name": "Office",
+      "description": "The shop's back office containing employment records, computer systems, and business documents.",
+      "locationId": "loc_wild_trail_shop",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_garage",
+      "name": "Garage",
+      "description": "Oliver's garage containing his gun safe and hunting trophy display.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_living",
+      "name": "Living Room",
+      "description": "Oliver's living room where drug paraphernalia and his laptop were discovered.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_bedroom",
+      "name": "Bedroom",
+      "description": "Oliver's bedroom containing illegal firearms and drug stash.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_tower_top",
+      "name": "Tower",
+      "description": "The observation deck of Firewatch Tower Lookout 6 where Peter was on duty.",
+      "locationId": "loc_firewatch_tower",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_tower_base",
+      "name": "Base",
+      "description": "The ground level area around the tower including parking and equipment storage.",
+      "locationId": "loc_firewatch_tower",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_hank_outside",
+      "name": "Outside",
+      "description": "The yard area around Hank's cabin including the burn barrel and vehicle parking.",
+      "locationId": "loc_hank_cabin",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_hank_inside",
+      "name": "Inside",
+      "description": "The interior of Hank's cabin where his key ring and weapons were found.",
+      "locationId": "loc_hank_cabin",
+      "isVisible": true,
+      "timeToAdd": 10,
       "hasBeenUnlocked": false
     }
   ],
