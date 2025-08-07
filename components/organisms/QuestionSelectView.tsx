@@ -6,7 +6,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { selectTimeSpent } from '../../store/storySlice';
-import { ChevronRight, X, CheckCircle, ShieldQuestion, Coins } from 'lucide-react';
+import { ChevronRight, X, CheckCircle, ShieldQuestion, Hourglass } from 'lucide-react';
 import { Character, LineOfInquiryData } from '../../types';
 import ImageWithLoader from '../molecules/ImageWithLoader';
 import { useCardImage } from '../../hooks/useCardImage';

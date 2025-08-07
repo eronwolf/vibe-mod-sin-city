@@ -6,7 +6,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { selectTimeSpent, selectBounties, subtractTimeSpent } from '../../store/storySlice';
-import { Coins } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import BountyCard from '../molecules/BountyCard';
 import Button from '../atoms/Button';
 import { TOKENS_VIEW_COPY } from '../../config';
@@ -28,7 +28,7 @@ const TokensView: React.FC = () => {
       <div className="bg-brand-surface border-2 border-brand-primary p-6 rounded-lg mb-8 flex flex-col items-center justify-center text-center shadow-lg shadow-brand-primary/20">
         <p className="font-oswald text-brand-text-muted uppercase tracking-wider mb-2">Total Time Spent</p>
         <div className="flex items-center gap-4">
-          <Coins className="text-yellow-400 animate-sparkle-glow" size={40} />
+          <Hourglass className="text-yellow-400 animate-sparkle-glow" size={40} />
           <span className="font-mono text-6xl text-white font-bold">{timeSpent}</span>
         </div>
       </div>

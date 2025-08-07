@@ -3,7 +3,7 @@
  * @description A card component representing a single bounty or mini-game that the player can undertake to earn tokens.
  */
 import React from 'react';
-import { Coins } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 import Button from '../atoms/Button';
 
 interface BountyCardProps {
@@ -20,7 +20,7 @@ const BountyCard: React.FC<BountyCardProps> = ({ title, description, reward, onC
         <h3 className="font-oswald text-lg text-white uppercase">{title}</h3>
         <p className="text-sm text-brand-text-muted mb-3">{description}</p>
         <div className="flex items-center gap-2 text-yellow-400 font-bold">
-          <Coins size={16} />
+          <Hourglass size={16} />
           <span>{reward} Time Reduction</span>
         </div>
       </div>

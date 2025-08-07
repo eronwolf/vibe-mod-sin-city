@@ -5,7 +5,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { Lightbulb, Coins } from 'lucide-react';
+import { Lightbulb, Hourglass } from 'lucide-react';
 import { DialogueChunkData } from '../../types';
 import { GAME_MECHANICS } from '../../config';
 import { selectTimeSpent } from '../../store/storySlice';
@@ -64,7 +64,7 @@ const InterrogationDialogueChunk: React.FC<InterrogationDialogueChunkProps> = ({
                   <div className="flex items-center gap-4">
                     {!isEvidence && (
                         <div className="flex items-center gap-2 text-yellow-400 font-mono text-base" title={`Time Added: ${timeToAdd}`}>
-                            <Coins size={18} />
+                            <Hourglass size={18} />
                             <span className="font-bold">{timeToAdd}</span>
                         </div>
                     )}

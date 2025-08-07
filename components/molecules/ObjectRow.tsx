@@ -10,7 +10,7 @@ import { AppDispatch } from '../../store';
 import { setActiveCard } from '../../store/uiSlice';
 import ImageWithLoader from './ImageWithLoader';
 import { useCardImage } from '../../hooks/useCardImage';
-import { Coins } from 'lucide-react';
+import { Hourglass } from 'lucide-react';
 
 const ObjectRow: React.FC<{ object: StoryObject }> = React.memo(({ object }) => {
     const dispatch = useDispatch<AppDispatch>();
