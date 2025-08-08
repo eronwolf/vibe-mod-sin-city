@@ -229,8 +229,8 @@
       "description": "The hiking trail where Tom and Carol Trembly were killed. Multiple areas of investigation including the main trail, cliff, and nearby hunting blind.",
       "sceneSummary": "Tom was shot here at 10:15 AM on August 13th. Carol fled and fell from the nearby cliff moments later.",
       "mapCoords": {
-        "top": "45%",
-        "left": "60%"
+       "top": "50%",
+       "left": "55%"
       },
       "lastEventTimestamp": "2025-08-13T10:15:00Z",
       "lastEventDescription": "Double homicide - Tom Trembly shot, Carol Trembly fell from cliff.",
@@ -343,12 +343,12 @@
       "description": "The local police station handling the Trembly murder investigation. Contains morgue, offices, and interview rooms.",
       "sceneSummary": "Central hub for the investigation. Autopsy reports, case files, and witness interviews conducted here.",
       "mapCoords": {
-        "top": "65%",
-        "left": "45%"
+       "top": "58%",
+       "left": "38%"
       },
       "lastEventTimestamp": "2025-08-14T09:00:00Z",
       "lastEventDescription": "Investigation headquarters established. Lead detective assigned.",
-      "isInternal": true,
+      "isInternal": false,
        "hotspots": [
         {
           "id": "hs-station-morgue-tom",
@@ -408,12 +408,12 @@
       "description": "Tom and Carol's family home. Contains family photos, important documents, and personal effects.",
       "sceneSummary": "The victims' residence. Key evidence includes the will, business documents, and family correspondence.",
       "mapCoords": {
-        "top": "70%",
-        "left": "40%"
+       "top": "75%",
+       "left": "45%"
       },
       "lastEventTimestamp": "2025-08-13T14:00:00Z",
       "lastEventDescription": "Police search conducted. Multiple evidence items collected.",
-      "isInternal": true,
+      "isInternal": false,
       "hotspots": [
         {
           "id": "hs-home-photos",
@@ -465,12 +465,12 @@
       "description": "The Trembly family's outdoor equipment shop, recently sold to Blue Tag Sporting Goods. Site of the suspicious fire.",
       "sceneSummary": "The shop at the center of the conflict. Evidence of the fire, weapons inventory, and employment records found here.",
       "mapCoords": {
-        "top": "75%",
-        "left": "35%"
+       "top": "80%",
+       "left": "25%"
       },
       "lastEventTimestamp": "2025-08-11T23:30:00Z",
       "lastEventDescription": "Break-in discovered. Winchester rifle reported missing.",
-      "isInternal": true,
+      "isInternal": false,
       "hotspots": [
         {
           "id": "hs-shop-rifles",
@@ -514,12 +514,12 @@
       "description": "Oliver's residence. Contains hunting equipment, evidence of drug use, and digital records.",
       "sceneSummary": "The suspect's home reveals his lifestyle - hunting obsession, drug paraphernalia, and unregistered weapons.",
       "mapCoords": {
-        "top": "68%",
-        "left": "50%"
+       "top": "65%",
+       "left": "49%"
       },
       "lastEventTimestamp": "2025-08-14T11:00:00Z",
       "lastEventDescription": "Search warrant executed. Multiple items seized.",
-      "isInternal": true,
+      "isInternal": false,
       "hotspots": [
         {
           "id": "hs-oliver-safe",
