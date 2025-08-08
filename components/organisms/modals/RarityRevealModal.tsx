@@ -48,9 +48,9 @@ const RarityRevealModal: React.FC<RarityRevealModalProps> = ({ objectId }) => {
     return null;
   }
   
-  const config = RARITY_CONFIG[object.rarity];
-  // CSS custom property to pass the dynamic glow color to the animation.
-  const glowStyle = { '--glow-color': config.color } as React.CSSProperties;
+  const config = object?.rarity ? (RARITY_CONFIG[object.rarity] ?? { color: '#888', label: '', flavorText: '', glowClass: '' }) : null;
+  // CSS custom property to pass the dynamic glow color to the animation, if available
+  const glowStyle = config ? ({ '--glow-color': config.color } as React.CSSProperties) : undefined;
 
   return (
     <div
@@ -64,9 +64,9 @@ const RarityRevealModal: React.FC<RarityRevealModalProps> = ({ objectId }) => {
       >
         <div 
             className={`w-full h-auto aspect-[3/4] bg-brand-surface rounded-xl border-4 transition-all duration-1000
-                ${stage === 'initial' ? 'border-transparent' : `border-[${config.color}]`}
+                ${stage === 'initial' ? 'border-transparent' : config ? `border-[${config.color}]` : 'border-transparent'}
                 ${stage === 'glowing' ? 'animate-reveal-glow' : ''}
-                ${stage === 'revealed' && object.rarity === 'legendary' ? config.glowClass : ''}
+                ${stage === 'revealed' && config ? config.glowClass : ''}
             `}
         >
           <ImageWithLoader 
@@ -77,7 +77,7 @@ const RarityRevealModal: React.FC<RarityRevealModalProps> = ({ objectId }) => {
           />
         </div>
         
-        {stage === 'revealed' && (
+        {stage === 'revealed' && config && (
             <div className="absolute inset-x-0 bottom-0 text-center p-6 bg-gradient-to-t from-black via-black/90 to-transparent animate-fade-in">
                 <div className="flex justify-center mb-2">
                      <div

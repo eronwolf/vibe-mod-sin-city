@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { selectAllCharacters, selectAllObjects, selectAllEvents, selectImageUrls, queueImageGeneration } from '../../store/storySlice';
 import { defaultTimelineConfig, TimelineSlot, TimelineSymbolType } from '../../config/timelineConfig';
+import { addToTimeline } from '../../store/storySlice';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { TouchBackend } from 'react-dnd-touch-backend';
@@ -151,7 +152,14 @@ const TimelineView: React.FC = () => {
         slot.id === slotId ? { ...slot, initialSymbolId: symbolId } : slot
       )
     );
-  }, []);
+    // Attempt to add the dropped symbol to the timeline as a new evidence item.
+    // If the symbolId does not correspond to an object in the cartridge, the reducer
+    // will safely no-op.
+    // This ensures the timeline data stays in sync with the UI interactions.
+    // We dispatch after state update to avoid any stale state usage.
+    // Access dispatch from outer scope.
+    dispatch(addToTimeline(symbolId));
+  }, [dispatch]);
 
   const allSlotsFilled = timelineSlots.every(slot => slot.initialSymbolId !== undefined);
 

@@ -1,18 +1,20 @@
 {
   "metadata": {
-    "storyId": "wild_trail_murders_01",
+        "storyId": "wild_trail_murders_01",
     "title": "The Wild Trail Murders",
     "version": "1.0.0",
     "author": "Story Team",
     "description": "A peaceful retirement turns tragic when a beloved local couple is killed during a hike, revealing deeper tensions involving family estrangement, legacy, and revenge."
   },
+  
   "storyInfo": {
     "premise": "Tom and Carol Trembly were found dead during a midweek hike near Mount Tamalpais. Tom had been shot through the heart with a .243 Winchester; Carol's body was discovered at the base of a nearby cliff. The case reveals a complex web of resentments, betrayals, and financial disputes, all tied to the recent sale of the family's outdoor shop, Wild Trail Supply Co.",
     "theme": "A peaceful retirement turns tragic when a beloved local couple is killed during a hike, revealing deeper tensions involving family estrangement, legacy, and revenge.",
     "mapTitle": "Marin County",
     "mapImagePrompt": "A topographical map of Marin County showing Mount Tamalpais trails, Wild Trail Supply Co. shop location, and surrounding neighborhoods. Crime scene marked with red X on hiking trail.",
-    "crimeSceneId": "loc_crime_scene"
+    "crimeSceneId": "loc_hiking_trail"
   },
+
   "introSlideshow": [
     {
       "id": "intro-1",
@@ -20,7 +22,7 @@
       "narration": "Wednesday, August 13th, 2025. Tom and Carol Trembly set out for their usual midweek hike, a routine they'd cherished for years..."
     },
     {
-      "id": "intro-2",
+      "id": "intro-2", 
       "imagePrompt": "Two hikers discovered on a remote trail - one figure lying still, another at the base of a cliff below. Emergency responders arriving at the scene.",
       "narration": "By noon, both were dead. Tom from a single gunshot wound to the heart. Carol at the bottom of a cliff, having fled in terror..."
     },
@@ -30,6 +32,7 @@
       "narration": "The investigation would reveal a tangled web of family betrayal, financial disputes, and a devastating act of revenge tied to the recent sale of their beloved shop."
     }
   ],
+
   "characters": [
     {
       "id": "char_victim_tom",
@@ -104,6 +107,49 @@
             "eyes": "Brown with crow's feet",
             "hair": "Long, unkempt, gray-streaked"
           }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Hank Bassett",
+            "persona": "You are Hank Bassett. Speak in blunt, restrained sentences. You're defensive and guarded. Use short, clipped phrases. Avoid eye contact. Give practical, not emotional answers. Sometimes deflect with 'Don't know much about that' or 'Ain't my business.'",
+            "openingStatement": "Don't know why you're here. Already told you people everything.",
+            "suggestedQuestions": [
+              "Where were you on the morning of August 13th?",
+              "What was your relationship with Tom Trembly?",
+              "Let's talk about the fire at the shop. What do you know about it?",
+              "How did you feel about being let go after the store was sold?",
+              "When's the last time you saw Tom and Carol?"
+            ],
+            "slideshowPrompts": [
+              "Hank with arms crossed, avoiding eye contact during questioning.",
+              "Close-up of eagle tattoo on forearm as he runs thumb across it nervously.",
+              "Hank smoking hand-rolled cigarette, weight shifted to one leg."
+            ],
+            "dialogue": [
+              {
+                "question": "Where were you on the morning of August 13th?",
+                "answer": "Home. Like I been every day since the fire. Ain't nobody's business but mine."
+              },
+              {
+                "question": "What was your relationship with Tom Trembly?",
+                "answer": "Twenty years. Twenty years I gave that man. Then he goes and... Don't matter now."
+              },
+              {
+                "question": "Let's talk about the fire at the shop. What do you know about it?",
+                "answer": "I didn't start it, if that's what you're asking. I saw the smoke and did what any decent man would do — I put it out. Not that Tom ever believed me."
+              },
+              {
+                "question": "How did you feel about being let go after the store was sold?",
+                "answer": "Felt like getting kicked off your own porch. Twenty-two years and they hand it to Blue Tag like it's nothing. Guess I was just part of the old inventory."
+              },
+              {
+                "question": "When's the last time you saw Tom and Carol?",
+                "answer": "County fair. Tom ran his mouth, I ran out of patience. They dragged me out like some drunk, but I wasn't drunk. I was done."
+              }
+            ]
+          }
         }
       ],
       "connections": {
@@ -130,6 +176,49 @@
             "weight": "210 lbs",
             "eyes": "Hazel",
             "hair": "Short, dark"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Peter Lewin",
+            "persona": "You are Peter Lewin. Speak in sharp, reactive bursts. You're emotionally volatile and defensive. Use phrases like 'You don't get it,' 'You weren't there.' Talk fast when emotional, slower when trying to control yourself. Use military references without realizing it.",
+            "openingStatement": "My mother is dead. What more do you want from me?",
+            "suggestedQuestions": [
+              "Can you tell us where you were when your parents were killed?",
+              "What are your thoughts on being excluded from the will?",
+              "Do you have any idea who might've done this?",
+              "What was your relationship with Tom?",
+              "Tell me about your military service."
+            ],
+            "slideshowPrompts": [
+              "Peter's fists clenching as he restrains emotion.",
+              "Peter rubbing back of neck when agitated.",
+              "Tapping thumb against thigh rhythmically during questioning."
+            ],
+            "dialogue": [
+              {
+                "question": "Can you tell us where you were when your parents were killed?",
+                "answer": "Out at the tower. Wednesday's my solo watch."
+              },
+              {
+                "question": "What are your thoughts on being excluded from the will?",
+                "answer": "Doesn't surprise me. Tom never saw me as worth much. Carol… she tried. But by then it was already set in stone."
+              },
+              {
+                "question": "Do you have any idea who might've done this?",
+                "answer": "No. And if I did, I'd say so. I've had enough of the guessing games."
+              },
+              {
+                "question": "What was your relationship with Tom?",
+                "answer": "Tom was never... Look, he made it clear from day one. I wasn't his. Mom tried to make us a family but... You weren't there."
+              },
+              {
+                "question": "Tell me about your military service.",
+                "answer": "Expert marksman. Could hit a target at 800 yards. But that's... that's not who I am anymore. I'm trying to be better."
+              }
+            ]
           }
         }
       ],
@@ -158,6 +247,49 @@
             "eyes": "Brown",
             "hair": "Black, slicked back"
           }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Oliver Trembly",
+            "persona": "You are Oliver Trembly. Speak with charm, control, and calculation. Use sarcasm and passive aggression as defense. Turn questions back on the interrogator. Never give more than you have to. Can shift from charming to vicious if pushed.",
+            "openingStatement": "My parents are dead and you're treating me like a suspect? Is this really how you handle grieving families?",
+            "suggestedQuestions": [
+              "Where were you on the day of your parents' deaths?",
+              "Were you aware you were included in their will?",
+              "Do you have any idea who might've done this?",
+              "Tell me about the argument with your parents.",
+              "Do you own any firearms?"
+            ],
+            "slideshowPrompts": [
+              "Oliver maintaining strong eye contact to dominate conversation.",
+              "Adjusting his collar when things get tense.",
+              "Wide gestures and performative empathy while speaking."
+            ],
+            "dialogue": [
+              {
+                "question": "Where were you on the day of your parents' deaths?",
+                "answer": "Out in Del Norte, filming solo content. I told people I was off-grid for the weekend — it's kind of the point. You don't get the big bucks by livestreaming from your mom's couch."
+              },
+              {
+                "question": "Were you aware you were included in their will?",
+                "answer": "Yeah, a couple hundred K split between me and Daisy. Not exactly a retirement fund, but hey — better than nothing, right? Look, I'm not crying over the payout if that's what you're fishing for."
+              },
+              {
+                "question": "Do you have any idea who might've done this?",
+                "answer": "Hank. No question. Guy snapped when Dad fired him. Probably still smells like pine needles and old gun oil. You think I'm the problem? I'm just the one still standing."
+              },
+              {
+                "question": "Tell me about the argument with your parents.",
+                "answer": "We had a disagreement about the shop. They sold my birthright. But arguing doesn't make someone a killer, does it, Detective?"
+              },
+              {
+                "question": "Do you own any firearms?",
+                "answer": "I'm a hunting influencer. Of course I own firearms. All registered, all legal. Unlike some people's accusations."
+              }
+            ]
+          }
         }
       ],
       "connections": {
@@ -184,6 +316,54 @@
             "weight": "120 lbs",
             "eyes": "Dark brown",
             "hair": "Black"
+          }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Daisy Trembly",
+            "persona": "You are Daisy Trembly. Speak with genuine warmth and empathy. Choose words carefully. Use phrases like 'I just feel like...' or 'if that makes sense.' Never interrupt. Sometimes trail off when uncomfortable.",
+            "openingStatement": "I'll help however I can. They deserve justice... if that makes sense.",
+            "suggestedQuestions": [
+              "What was Peter's relationship like with your mom and Tom?",
+              "How did Oliver get along with your parents?",
+              "What can you tell me about Hank's relationship with your parents?",
+              "What do you know about the fire at the store?",
+              "How did everyone take the news that the store was being sold?",
+              "Do you know anything about your parents' will?"
+            ],
+            "slideshowPrompts": [
+              "Daisy clasping hands when nervous.",
+              "Rubbing thumb across ring finger while holding back tears.",
+              "Leaning in thoughtfully as she listens to questions."
+            ],
+            "dialogue": [
+              {
+                "question": "What was Peter's relationship like with your mom and Tom?",
+                "answer": "It was rocky… with both of them, but especially Tom. He never felt like he belonged in this family. Mom tried, I know she did, but Peter's pain ran deep. He's been distant ever since they sold the shop and he found out he wasn't getting anything."
+              },
+              {
+                "question": "How did Oliver get along with your parents?",
+                "answer": "Oliver's always been… intense. They loved him, but he made it really hard sometimes. When they told him he wouldn't be running the store, he exploded. We were all there—it got ugly. He thinks the shop was his birthright or something."
+              },
+              {
+                "question": "What can you tell me about Hank's relationship with your parents?",
+                "answer": "Mom adored Hank. I think she saw something gentle in him. Dad… not so much. After the fire, everything changed. Dad accused him, publicly. But honestly? I don't think Hank did it. I think it was Oliver."
+              },
+              {
+                "question": "What do you know about the fire at the store?",
+                "answer": "It was awful. It happened late at night — Dad said Hank was already there, trying to put it out. But then Dad changed his mind and blamed him. I don't know why. I always thought… it might've been Oliver. He was drinking a lot around then."
+              },
+              {
+                "question": "How did everyone take the news that the store was being sold?",
+                "answer": "It was hard. That shop was everything to Dad. But he and Mom were ready to move on. Peter didn't care — he hadn't been around. But Oliver… he was furious. Thought he deserved to take over, even though no one trusted him with it."
+              },
+              {
+                "question": "Do you know anything about your parents' will?",
+                "answer": "They updated it a few months ago. Me and Oliver were included. Peter wasn't. It caused a lot of tension. Mom tried to soften it, but Peter saw it as just more proof they never wanted him."
+              }
+            ]
           }
         }
       ],
@@ -212,6 +392,45 @@
             "eyes": "Piercing gray",
             "hair": "White dreadlocks"
           }
+        },
+        {
+          "type": "dialogue",
+          "props": {
+            "mode": "interview",
+            "buttonText": "Interview Kermit",
+            "persona": "You are Kermit. Speak in rambling, disjointed sentences with wild metaphors. Use animal references and trail talk. Mix poetic nonsense with eerie insight. Talk to yourself even when others are present.",
+            "openingStatement": "The trees told me you'd come. They whisper about the blood on the trail.",
+            "suggestedQuestions": [
+              "What did you hear that day?",
+              "Did you see anyone?",
+              "Do you think it was someone from town?",
+              "Where were you when you heard the gunshot?",
+              "Have you seen Hank Bassett lately?"
+            ],
+            "slideshowPrompts": [
+              "Kermit gesturing wildly with both hands while speaking.",
+              "Tilting head sharply as if listening to something.",
+              "Fidgeting with stones and feathers from his pockets."
+            ],
+            "dialogue": [
+              {
+                "question": "What did you hear that day?",
+                "answer": "One shot. Clean. Carried all the way past the ridge. Then a woman cried out — sharp and scared. And not long after… a man yelled. Not loud, but like his guts dropped out."
+              },
+              {
+                "question": "Did you see anyone?",
+                "answer": "A figure, just past the cliff bend. Tall, wide-shouldered. Stood there starin' down like he'd lost something. Couldn't see his face, but his arm caught the light — looked like a bird inked in flight. Desert eagle, I call it."
+              },
+              {
+                "question": "Do you think it was someone from town?",
+                "answer": "Could've been. Or not. These woods have a memory, you know. Could've been a ghost. Could've been yesterday, walkin' around in a man's coat."
+              },
+              {
+                "question": "Where were you when you heard the gunshot?",
+                "answer": "Thunder without rain. The tall one fell like a tree. The small bird tried to fly but... gravity is cruel to birds without wings."
+              }
+            ]
+          }
         }
       ],
       "connections": {
@@ -221,6 +440,7 @@
       }
     }
   ],
+
   "locations": [
     {
       "id": "loc_crime_scene",
@@ -237,102 +457,36 @@
       "isInternal": false,
       "hotspots": [
         {
-          "id": "hs-nav-to-subloc_crime_trail",
-          "label": "Explore Trail",
-          "type": "move",
-          "targetCardId": "subloc_crime_trail",
-          "targetCardType": "location"
+          "id": "hs-crime-trail",
+          "label": "Examine Tom's Body",
+          "type": "investigate",
+          "targetCardId": "obj_tom_body",
+          "targetCardType": "object",
+          "aiHint": "body on the trail where Tom was shot"
         },
         {
-          "id": "hs-nav-to-subloc_crime_cliff",
-          "label": "Explore Cliff",
-          "type": "move",
-          "targetCardId": "subloc_crime_cliff",
-          "targetCardType": "location"
+          "id": "hs-crime-cliff",
+          "label": "Investigate Cliff Edge",
+          "type": "investigate",
+          "targetCardId": "obj_carol_body",
+          "targetCardType": "object",
+          "aiHint": "cliff edge and Carol's body below"
         },
         {
-          "id": "hs-nav-to-subloc_crime_blind",
-          "label": "Explore Blind",
-          "type": "move",
-          "targetCardId": "subloc_crime_blind",
-          "targetCardType": "location"
+          "id": "hs-crime-blind",
+          "label": "Search Hunting Blind",
+          "type": "investigate",
+          "targetCardId": "obj_shell_casing",
+          "targetCardType": "object",
+          "aiHint": "concealed hunting blind near trail bend"
         },
         {
-          "id": "hs-nav-to-subloc_crime_trailhead",
-          "label": "Explore Trail Head",
-          "type": "move",
-          "targetCardId": "subloc_crime_trailhead",
-          "targetCardType": "location"
-        }
-      ],
-      "sublocations": [
-        {
-          "id": "subloc_crime_trail",
-          "name": "Trail",
-          "description": "The exact spot on the hiking trail where Tom Trembly was shot. Blood stains and evidence markers indicate where he fell.",
-          "imagePrompt": "A view of the Trail within Crime Scene - Mount Tamalpais Trail.",
-          "sceneSummary": "The exact spot on the hiking trail where Tom Trembly was shot. Blood stains and evidence markers indicate where he fell.",
-          "hotspots": [
-            {
-              "id": "hs-crime-trail",
-              "label": "Examine Tom's Body",
-              "type": "investigate",
-              "targetCardId": "obj_tom_body",
-              "targetCardType": "object",
-              "aiHint": "body on the trail where Tom was shot"
-            }
-          ]
-        },
-        {
-          "id": "subloc_crime_cliff",
-          "name": "Cliff",
-          "description": "The cliff edge where Carol Trembly fell to her death while fleeing. Disturbed earth and broken branches mark her path.",
-          "imagePrompt": "A view of the Cliff within Crime Scene - Mount Tamalpais Trail.",
-          "sceneSummary": "The cliff edge where Carol Trembly fell to her death while fleeing. Disturbed earth and broken branches mark her path.",
-          "hotspots": [
-            {
-              "id": "hs-crime-cliff",
-              "label": "Investigate Cliff Edge",
-              "type": "investigate",
-              "targetCardId": "obj_carol_body",
-              "targetCardType": "object",
-              "aiHint": "cliff edge and Carol's body below"
-            }
-          ]
-        },
-        {
-          "id": "subloc_crime_blind",
-          "name": "Blind",
-          "description": "A concealed hunting blind approximately 50 yards off the main trail. Perfect vantage point for the shooter. Shell casing found here.",
-          "imagePrompt": "A view of the Blind within Crime Scene - Mount Tamalpais Trail.",
-          "sceneSummary": "A concealed hunting blind approximately 50 yards off the main trail. Perfect vantage point for the shooter. Shell casing found here.",
-          "hotspots": [
-            {
-              "id": "hs-crime-blind",
-              "label": "Search Hunting Blind",
-              "type": "investigate",
-              "targetCardId": "obj_shell_casing",
-              "targetCardType": "object",
-              "aiHint": "concealed hunting blind near trail bend"
-            }
-          ]
-        },
-        {
-          "id": "subloc_crime_trailhead",
-          "name": "Trail Head",
-          "description": "The entrance to the trail system where Kermit the Hermit was found and interviewed by police.",
-          "imagePrompt": "A view of the Trail Head within Crime Scene - Mount Tamalpais Trail.",
-          "sceneSummary": "The entrance to the trail system where Kermit the Hermit was found and interviewed by police.",
-          "hotspots": [
-            {
-              "id": "hs-crime-trailhead",
-              "label": "Interview Witness",
-              "type": "investigate",
-              "targetCardId": "obj_witness_statement_kermit",
-              "targetCardType": "object",
-              "aiHint": "trail head where Kermit was found"
-            }
-          ]
+          "id": "hs-crime-trailhead",
+          "label": "Interview Witness",
+          "type": "investigate",
+          "targetCardId": "obj_witness_statement_kermit",
+          "targetCardType": "object",
+          "aiHint": "trail head where Kermit was found"
         }
       ]
     },
@@ -349,7 +503,7 @@
       "lastEventTimestamp": "2025-08-14T09:00:00Z",
       "lastEventDescription": "Investigation headquarters established. Lead detective assigned.",
       "isInternal": true,
-       "hotspots": [
+      "hotspots": [
         {
           "id": "hs-station-morgue-tom",
           "label": "Review Tom's Autopsy",
@@ -398,8 +552,7 @@
           "targetCardType": "object",
           "aiHint": "interview room with Daisy Trembly"
         }
-      ],
-      "sublocations": []
+      ]
     },
     {
       "id": "loc_victim_home",
@@ -455,8 +608,7 @@
           "targetCardType": "object",
           "aiHint": "bedroom drawer with locked pistol"
         }
-      ],
-      "sublocations": []
+      ]
     },
     {
       "id": "loc_wild_trail_shop",
@@ -504,8 +656,7 @@
           "targetCardType": "object",
           "aiHint": "office computer with logs and emails"
         }
-      ],
-      "sublocations": []
+      ]
     },
     {
       "id": "loc_oliver_home",
@@ -569,8 +720,7 @@
           "targetCardType": "object",
           "aiHint": "bedroom marijuana stash"
         }
-      ],
-      "sublocations": []
+      ]
     },
     {
       "id": "loc_firewatch_tower",
@@ -626,8 +776,7 @@
           "targetCardType": "object",
           "aiHint": "base parking area pickup truck"
         }
-      ],
-      "sublocations": []
+      ]
     },
     {
       "id": "loc_hank_cabin",
@@ -683,10 +832,10 @@
           "targetCardType": "object",
           "aiHint": "inside cabin weapons collection"
         }
-      ],
-      "sublocations": []
+      ]
     }
   ],
+
   "objects": [
     {
       "id": "obj_tom_body",
@@ -1284,6 +1433,7 @@
       "components": []
     }
   ],
+
   "events": [
     {
       "id": "event_ownership_transfer",
@@ -1364,231 +1514,216 @@
       "components": []
     }
   ],
-  "interviews": {
-    "char_suspect_hank": {
-      "mode": "interview",
-      "buttonText": "Interview Hank Bassett",
-      "persona": "You are Hank Bassett. Speak in blunt, restrained sentences. You're defensive and guarded. Use short, clipped phrases. Avoid eye contact. Give practical, not emotional answers. Sometimes deflect with 'Don't know much about that' or 'Ain't my business.'",
-      "openingStatement": "Don't know why you're here. Already told you people everything.",
-      "suggestedQuestions": [
-        "Where were you on the morning of August 13th?",
-        "What was your relationship with Tom Trembly?",
-        "Let's talk about the fire at the shop. What do you know about it?",
-        "How did you feel about being let go after the store was sold?",
-        "When's the last time you saw Tom and Carol?"
-      ],
-      "slideshowPrompts": [
-        "Hank with arms crossed, avoiding eye contact during questioning.",
-        "Close-up of eagle tattoo on forearm as he runs thumb across it nervously.",
-        "Hank smoking hand-rolled cigarette, weight shifted to one leg."
-      ],
-      "questions": [
-        {
-          "question": "Where were you on the morning of August 13th?",
-          "answer": "Home. Like I been every day since the fire. Ain't nobody's business but mine."
-        },
-        {
-          "question": "What was your relationship with Tom Trembly?",
-          "answer": "Twenty years. Twenty years I gave that man. Then he goes and... Don't matter now."
-        },
-        {
-          "question": "Let's talk about the fire at the shop. What do you know about it?",
-          "answer": "I didn't start it, if that's what you're asking. I saw the smoke and did what any decent man would do — I put it out. Not that Tom ever believed me."
-        },
-        {
-          "question": "How did you feel about being let go after the store was sold?",
-          "answer": "Felt like getting kicked off your own porch. Twenty-two years and they hand it to Blue Tag like it's nothing. Guess I was just part of the old inventory."
-        },
-        {
-          "question": "When's the last time you saw Tom and Carol?",
-          "answer": "County fair. Tom ran his mouth, I ran out of patience. They dragged me out like some drunk, but I wasn't drunk. I was done."
-        }
-      ]
+
+  "sublocations": [
+    {
+      "id": "subloc_crime_trail",
+      "name": "Trail",
+      "description": "The exact spot on the hiking trail where Tom Trembly was shot. Blood stains and evidence markers indicate where he fell.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
     },
-    "char_suspect_peter": {
-      "mode": "interview",
-      "buttonText": "Interview Peter Lewin",
-      "persona": "You are Peter Lewin. Speak in sharp, reactive bursts. You're emotionally volatile and defensive. Use phrases like 'You don't get it,' 'You weren't there.' Talk fast when emotional, slower when trying to control yourself. Use military references without realizing it.",
-      "openingStatement": "My mother is dead. What more do you want from me?",
-      "suggestedQuestions": [
-        "Can you tell us where you were when your parents were killed?",
-        "What are your thoughts on being excluded from the will?",
-        "Do you have any idea who might've done this?",
-        "What was your relationship with Tom?",
-        "Tell me about your military service."
-      ],
-      "slideshowPrompts": [
-        "Peter's fists clenching as he restrains emotion.",
-        "Peter rubbing back of neck when agitated.",
-        "Tapping thumb against thigh rhythmically during questioning."
-      ],
-      "questions": [
-        {
-          "question": "Can you tell us where you were when your parents were killed?",
-          "answer": "Out at the tower. Wednesday's my solo watch."
-        },
-        {
-          "question": "What are your thoughts on being excluded from the will?",
-          "answer": "Doesn't surprise me. Tom never saw me as worth much. Carol… she tried. But by then it was already set in stone."
-        },
-        {
-          "question": "Do you have any idea who might've done this?",
-          "answer": "No. And if I did, I'd say so. I've had enough of the guessing games."
-        },
-        {
-          "question": "What was your relationship with Tom?",
-          "answer": "Tom was never... Look, he made it clear from day one. I wasn't his. Mom tried to make us a family but... You weren't there."
-        },
-        {
-          "question": "Tell me about your military service.",
-          "answer": "Expert marksman. Could hit a target at 800 yards. But that's... that's not who I am anymore. I'm trying to be better."
-        }
-      ]
+    {
+      "id": "subloc_crime_cliff",
+      "name": "Cliff",
+      "description": "The cliff edge where Carol Trembly fell to her death while fleeing. Disturbed earth and broken branches mark her path.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
     },
-    "char_suspect_oliver": {
-      "mode": "interview",
-      "buttonText": "Interview Oliver Trembly",
-      "persona": "You are Oliver Trembly. Speak with charm, control, and calculation. Use sarcasm and passive aggression as defense. Turn questions back on the interrogator. Never give more than you have to. Can shift from charming to vicious if pushed.",
-      "openingStatement": "My parents are dead and you're treating me like a suspect? Is this really how you handle grieving families?",
-      "suggestedQuestions": [
-        "Where were you on the day of your parents' deaths?",
-        "Were you aware you were included in their will?",
-        "Do you have any idea who might've done this?",
-        "Tell me about the argument with your parents.",
-        "Do you own any firearms?"
-      ],
-      "slideshowPrompts": [
-        "Oliver maintaining strong eye contact to dominate conversation.",
-        "Adjusting his collar when things get tense.",
-        "Wide gestures and performative empathy while speaking."
-      ],
-      "questions": [
-        {
-          "question": "Where were you on the day of your parents' deaths?",
-          "answer": "Out in Del Norte, filming solo content. I told people I was off-grid for the weekend — it's kind of the point. You don't get the big bucks by livestreaming from your mom's couch."
-        },
-        {
-          "question": "Were you aware you were included in their will?",
-          "answer": "Yeah, a couple hundred K split between me and Daisy. Not exactly a retirement fund, but hey — better than nothing, right? Look, I'm not crying over the payout if that's what you're fishing for."
-        },
-        {
-          "question": "Do you have any idea who might've done this?",
-          "answer": "Hank. No question. Guy snapped when Dad fired him. Probably still smells like pine needles and old gun oil. You think I'm the problem? I'm just the one still standing."
-        },
-        {
-          "question": "Tell me about the argument with your parents.",
-          "answer": "We had a disagreement about the shop. They sold my birthright. But arguing doesn't make someone a killer, does it, Detective?"
-        },
-        {
-          "question": "Do you own any firearms?",
-          "answer": "I'm a hunting influencer. Of course I own firearms. All registered, all legal. Unlike some people's accusations."
-        }
-      ]
+    {
+      "id": "subloc_crime_blind",
+      "name": "Blind",
+      "description": "A concealed hunting blind approximately 50 yards off the main trail. Perfect vantage point for the shooter. Shell casing found here.",
+      "locationId": "loc_crime_scene",
+      "isVisible": false,
+      "timeToAdd": 15,
+      "hasBeenUnlocked": false
     },
-    "char_witness_daisy": {
-      "mode": "interview",
-      "buttonText": "Interview Daisy Trembly",
-      "persona": "You are Daisy Trembly. Speak with genuine warmth and empathy. Choose words carefully. Use phrases like 'I just feel like...' or 'if that makes sense.' Never interrupt. Sometimes trail off when uncomfortable.",
-      "openingStatement": "I'll help however I can. They deserve justice... if that makes sense.",
-      "suggestedQuestions": [
-        "What was Peter's relationship like with your mom and Tom?",
-        "How did Oliver get along with your parents?",
-        "What can you tell me about Hank's relationship with your parents?",
-        "What do you know about the fire at the store?",
-        "How did everyone take the news that the store was being sold?",
-        "Do you know anything about your parents' will?"
-      ],
-      "slideshowPrompts": [
-        "Daisy clasping hands when nervous.",
-        "Rubbing thumb across ring finger while holding back tears.",
-        "Leaning in thoughtfully as she listens to questions."
-      ],
-      "questions": [
-        {
-          "question": "What was Peter's relationship like with your mom and Tom?",
-          "answer": "It was rocky… with both of them, but especially Tom. He never felt like he belonged in this family. Mom tried, I know she did, but Peter's pain ran deep. He's been distant ever since they sold the shop and he found out he wasn't getting anything."
-        },
-        {
-          "question": "How did Oliver get along with your parents?",
-          "answer": "Oliver's always been… intense. They loved him, but he made it really hard sometimes. When they told him he wouldn't be running the store, he exploded. We were all there—it got ugly. He thinks the shop was his birthright or something."
-        },
-        {
-          "question": "What can you tell me about Hank's relationship with your parents?",
-          "answer": "Mom adored Hank. I think she saw something gentle in him. Dad… not so much. After the fire, everything changed. Dad accused him, publicly. But honestly? I don't think Hank did it. I think it was Oliver."
-        },
-        {
-          "question": "What do you know about the fire at the store?",
-          "answer": "It was awful. It happened late at night — Dad said Hank was already there, trying to put it out. But then Dad changed his mind and blamed him. I don't know why. I always thought… it might've been Oliver. He was drinking a lot around then."
-        },
-        {
-          "question": "How did everyone take the news that the store was being sold?",
-          "answer": "It was hard. That shop was everything to Dad. But he and Mom were ready to move on. Peter didn't care — he hadn't been around. But Oliver… he was furious. Thought he deserved to take over, even though no one trusted him with it."
-        },
-        {
-          "question": "Do you know anything about your parents' will?",
-          "answer": "They updated it a few months ago. Me and Oliver were included. Peter wasn't. It caused a lot of tension. Mom tried to soften it, but Peter saw it as just more proof they never wanted him."
-        }
-      ]
+    {
+      "id": "subloc_crime_trailhead",
+      "name": "Trail Head",
+      "description": "The entrance to the trail system where Kermit the Hermit was found and interviewed by police.",
+      "locationId": "loc_crime_scene",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
     },
-    "char_witness_kermit": {
-      "mode": "interview",
-      "buttonText": "Interview Kermit",
-      "persona": "You are Kermit. Speak in rambling, disjointed sentences with wild metaphors. Use animal references and trail talk. Mix poetic nonsense with eerie insight. Talk to yourself even when others are present.",
-      "openingStatement": "The trees told me you'd come. They whisper about the blood on the trail.",
-      "suggestedQuestions": [
-        "What did you hear that day?",
-        "Did you see anyone?",
-        "Do you think it was someone from town?",
-        "Where were you when you heard the gunshot?",
-        "Have you seen Hank Bassett lately?"
-      ],
-      "slideshowPrompts": [
-        "Kermit gesturing wildly with both hands while speaking.",
-        "Tilting head sharply as if listening to something.",
-        "Fidgeting with stones and feathers from his pockets."
-      ],
-      "questions": [
-        {
-          "question": "What did you hear that day?",
-          "answer": "One shot. Clean. Carried all the way past the ridge. Then a woman cried out — sharp and scared. And not long after… a man yelled. Not loud, but like his guts dropped out."
-        },
-        {
-          "question": "Did you see anyone?",
-          "answer": "A figure, just past the cliff bend. Tall, wide-shouldered. Stood there starin' down like he'd lost something. Couldn't see his face, but his arm caught the light — looked like a bird inked in flight. Desert eagle, I call it."
-        },
-        {
-          "question": "Do you think it was someone from town?",
-          "answer": "Could've been. Or not. These woods have a memory, you know. Could've been a ghost. Could've been yesterday, walkin' around in a man's coat."
-        },
-        {
-          "question": "Where were you when you heard the gunshot?",
-          "answer": "Thunder without rain. The tall one fell like a tree. The small bird tried to fly but... gravity is cruel to birds without wings."
-        }
-      ]
+    {
+      "id": "subloc_station_morgue",
+      "name": "Morgue",
+      "description": "The medical examiner's facility where autopsies were performed on both victims.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_station_office",
+      "name": "Office",
+      "description": "Detective's office containing case files, victim dossiers, and investigation notes.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_station_interview",
+      "name": "Interview Room",
+      "description": "Standard police interview room where witnesses and suspects are questioned.",
+      "locationId": "loc_police_station",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_living",
+      "name": "Living Room",
+      "description": "The Tremblys' comfortable living room filled with family photos and memories.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_office",
+      "name": "Office",
+      "description": "Tom's home office containing important documents including the will and business papers.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_home_bedroom",
+      "name": "Bedroom",
+      "description": "The master bedroom where personal items and the unsent intervention letter were found.",
+      "locationId": "loc_victim_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_shop_showroom",
+      "name": "Show Room",
+      "description": "The main retail area of Wild Trail Supply Co. with rifle displays and ammunition shelves.",
+      "locationId": "loc_wild_trail_shop",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_shop_office",
+      "name": "Office",
+      "description": "The shop's back office containing employment records, computer systems, and business documents.",
+      "locationId": "loc_wild_trail_shop",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_garage",
+      "name": "Garage",
+      "description": "Oliver's garage containing his gun safe and hunting trophy display.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_living",
+      "name": "Living Room",
+      "description": "Oliver's living room where drug paraphernalia and his laptop were discovered.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_oliver_bedroom",
+      "name": "Bedroom",
+      "description": "Oliver's bedroom containing illegal firearms and drug stash.",
+      "locationId": "loc_oliver_home",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_tower_top",
+      "name": "Tower",
+      "description": "The observation deck of Firewatch Tower Lookout 6 where Peter was on duty.",
+      "locationId": "loc_firewatch_tower",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_tower_base",
+      "name": "Base",
+      "description": "The ground level area around the tower including parking and equipment storage.",
+      "locationId": "loc_firewatch_tower",
+      "isVisible": true,
+      "timeToAdd": 5,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_hank_outside",
+      "name": "Outside",
+      "description": "The yard area around Hank's cabin including the burn barrel and vehicle parking.",
+      "locationId": "loc_hank_cabin",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
+    },
+    {
+      "id": "subloc_hank_inside",
+      "name": "Inside",
+      "description": "The interior of Hank's cabin where his key ring and weapons were found.",
+      "locationId": "loc_hank_cabin",
+      "isVisible": true,
+      "timeToAdd": 10,
+      "hasBeenUnlocked": false
     }
-  },
+  ],
+
+  "testimonies": [
+    {
+      "id": "testimony-char_suspect_01",
+      "title": "Statement from Jane Smith",
+      "content": "I didn't do it. I was at home all day.",
+      "sourceCharacterId": "char_suspect_01"
+    }
+  ],
+
+  "evidenceGroups": [],
+
+  "bounties": [
+    {
+      "id": "bounty_01",
+      "title": "Find the Weapon",
+      "description": "Locate the murder weapon to advance the case.",
+      "reward": 50
+    }
+  ],
+
   "canonicalTimeline": {
-    "culpritId": "char_suspect_hank",
+    "culpritId": "char_suspect_01",
     "keyEvents": [
       {
-        "eventId": "event_murders",
-        "timestamp": "2025-08-13T10:15:00Z",
+        "eventId": "event_murder",
+        "timestamp": "2025-01-15T20:00:00Z",
         "description": "The victim was murdered"
-      },
-       {
-        "eventId": "event_shop_fire",
-        "timestamp": "2025-07-03T23:00:00Z",
-        "description": "The shop fire that led to Hank's termination"
-      },
-      {
-        "eventId": "event_weapon_theft",
-        "timestamp": "2025-07-24T02:00:00Z",
-        "description": "Hank stole the murder weapon from the shop"
       }
     ]
   },
+
+  "evidenceStacks": [],
+
   "caseFile": {
-    "title": "The Wild Trail Murders Case File",
+    "title": "Example Case File",
     "clues": [
       {
         "id": "clue-motive-primary",
@@ -1666,19 +1801,79 @@
       }
     ]
   },
+
+  "interviews": {
+    "char_suspect_01": {
+      "questions": [
+        {
+          "question": "What was your relationship with the victim?",
+          "answer": "I used to work for them. I was fired last month."
+        },
+        {
+          "question": "Where were you on the night of the crime?",
+          "answer": "I was at home watching TV. I have no alibi."
+        },
+        {
+          "question": "What do you know about the crime?",
+          "answer": "Nothing. I heard about it on the news."
+        }
+      ]
+    },
+    "char_victim_01": {
+      "questions": [
+        {
+          "question": "What was your relationship with the suspect?",
+          "answer": "They were a former employee who I had to let go."
+        },
+        {
+          "question": "Did you have any conflicts with them?",
+          "answer": "There were some disagreements about their performance."
+        }
+      ]
+    }
+  },
+
+  "characterProfiles": {
+    "char_suspect_01": {
+      "basicInfo": {
+        "name": "Jane Smith",
+        "age": 35,
+        "role": "Suspect",
+        "ethnicity": "Caucasian",
+        "status": "Active",
+        "occupation": "Former Employee"
+      },
+      "physicalProfile": {
+        "description": "A woman of average height with brown hair and blue eyes.",
+        "distinguishingFeatures": "A small scar on her left cheek.",
+        "behavioralTells": "Avoids eye contact when lying.",
+        "mannerisms": "Fidgets with her hands when nervous."
+      },
+      "voiceTone": {
+        "style": "Speaks quickly when nervous, uses short sentences.",
+        "notes": "Defensive tone, often deflects questions."
+      }
+    }
+  },
+
+  "evidenceDetails": {
+    "CRIME_SCENE": {
+      "VictimBody": {
+        "type": "Photo",
+        "description": "Image showing the victim's body at the crime scene."
+      },
+      "Weapon": {
+        "type": "Physical Evidence",
+        "description": "The murder weapon found at the scene."
+      }
+    }
+  },
+
   "gameMechanics": {
     "initialPlayerTimeSpent": 0,
     "milestoneThreshold": 100,
     "accusationThreshold": 200,
     "questionTimeAddition": 10,
     "createTestimonyTimeAddition": 5
-  },
-  "bounties": [
-    {
-      "id": "bounty_01",
-      "title": "Find the Weapon",
-      "description": "Locate the murder weapon to advance the case.",
-      "reward": 50
-    }
-  ]
-}
+  }
+} 

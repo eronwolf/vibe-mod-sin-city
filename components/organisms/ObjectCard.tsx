@@ -28,6 +28,8 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
   const triggerADA = useADA();
   const timeSpent = useSelector((state: RootState) => selectTimeSpent(state));
   const { handleEvidenceTap } = useUnlockSystem();
+  // Derive whether this object is currently on the timeline from the store
+  const isOnTimelineFromStore = useSelector((state: RootState) => !!state.story.evidence?.some(e => e.cardId === object.id));
   
   // No longer checking for affordability as there is no limit to time spent.
 
@@ -42,33 +44,25 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
    * @param {boolean} isAdding - True if the item is being added to the timeline.
    */
   const handleEvidenceToggle = (isAdding: boolean) => {
+    // Use live store state to determine if it's currently on the timeline
+    const currentlyOn = !!isOnTimelineFromStore;
     if (isAdding) {
-      if (object.isEvidence) return; // Don't do anything if it's already on the timeline
+      if (currentlyOn) return; // already on timeline, no-op
 
       const isFirstUnlock = !object.hasBeenUnlocked;
-
-      // No longer checking for affordability as there is no limit to time spent.
-      
-      // The state update for tokens and flags happens here
       dispatch(addToTimeline(object.id));
-      
-      // Trigger unlocks when evidence is first tapped
       if (isFirstUnlock) {
         handleEvidenceTap(object.id);
         dispatch(showModal({ type: 'rarityReveal', props: { objectId: object.id } }));
       }
-
-      // Dispatch other UI updates
       dispatch(checkMilestoneProgress());
       dispatch(addNewlyAddedEvidenceId(`ev-${object.id}`));
-
       const actionText = `has added the ${object.name} to the evidence timeline.`;
       triggerADA(PlayerAction.ADD_TO_TIMELINE, actionText, object.imagePrompt);
-      
     } else {
+      if (!currentlyOn) return; // nothing to remove
       dispatch(removeFromTimeline(object.id));
       const actionText = `has removed the ${object.name} from the timeline.`;
-      // Note: We use ADD_TO_TIMELINE here as well, as ADA's context is about timeline changes in general.
       triggerADA(PlayerAction.ADD_TO_TIMELINE, actionText, object.imagePrompt);
     }
   };
@@ -171,9 +165,9 @@ const ObjectCard: React.FC<{ object: StoryObject }> = ({ object }) => {
             )}
             <ToggleButton
               accessibleLabel={`Toggle ${object.name} on timeline`}
-              toggled={object.isEvidence}
+              toggled={isOnTimelineFromStore}
               onToggle={handleEvidenceToggle}
-              disabled={object.isEvidence} // Only disable if already evidence
+              disabled={false} // Allow toggling on/off; removal is via the same toggle
             />
           </div>
         </div>

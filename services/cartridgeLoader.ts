@@ -314,30 +314,59 @@ const transformObjectData = (rawObjects: any[]): StoryObject[] => {
  * Transforms location data from the cartridge format to the application format
  */
 const transformLocationData = (rawData: any): Location[] => {
-  return rawData.locations.map((l: any) => {
-    const itemHotspots: Hotspot[] = (l.hotspots || []).map((h: any, index: number) => ({
-      id: h.id || `hs-${l.id}-${index}`,
-      label: h.label,
-      type: h.type || 'investigate',
-      targetCardId: h.targetCardId,
-      targetCardType: h.targetCardType,
-      coords: h.coords,
-      aiHint: h.aiHint,
-    }));
-    
-    return {
+  const allLocations: Location[] = [];
+
+  rawData.locations.forEach((l: any) => {
+    // Add the main location
+    allLocations.push({
       id: l.id,
       name: l.name,
       imagePrompt: l.imagePrompt,
       description: l.description,
-      hotspots: itemHotspots,
+      hotspots: (l.hotspots || []).map((h: any, index: number) => ({
+        id: h.id || `hs-${l.id}-${index}`,
+        label: h.label,
+        type: h.type || 'investigate',
+        targetCardId: h.targetCardId,
+        targetCardType: h.targetCardType,
+        coords: h.coords,
+        aiHint: h.aiHint,
+      })),
       mapCoords: l.mapCoords || { top: '50%', left: '50%' },
       lastEventTimestamp: l.lastEventTimestamp,
       lastEventDescription: l.lastEventDescription,
       sceneSummary: l.sceneSummary,
       isInternal: l.isInternal || false,
-    };
+    });
+
+    // Add sublocations, marking them as internal
+    if (l.sublocations) {
+      l.sublocations.forEach((sl: any) => {
+        allLocations.push({
+          id: sl.id,
+          name: sl.name,
+          imagePrompt: sl.imagePrompt,
+          description: sl.description,
+          hotspots: (sl.hotspots || []).map((h: any, index: number) => ({
+            id: h.id || `hs-${sl.id}-${index}`,
+            label: h.label,
+            type: h.type || 'investigate',
+            targetCardId: h.targetCardId,
+            targetCardType: h.targetCardType,
+            coords: h.coords,
+            aiHint: h.aiHint,
+          })),
+          mapCoords: { top: '0', left: '0' }, // Sublocations don't appear on the main map
+          lastEventTimestamp: sl.lastEventTimestamp || l.lastEventTimestamp,
+          lastEventDescription: sl.lastEventDescription || l.lastEventDescription,
+          sceneSummary: sl.sceneSummary,
+          isInternal: true, // Mark sublocations as internal
+        });
+      });
+    }
   });
+
+  return allLocations;
 };
 
 /**

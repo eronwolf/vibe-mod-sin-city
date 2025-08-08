@@ -322,10 +322,12 @@ const storySlice = createSlice({
           charactersAdapter.updateOne(state.characters, { id, changes: { isSuspect } });
       }
     },
-    addToTimeline(state, action: PayloadAction<string>) {
+  addToTimeline(state, action: PayloadAction<string>) {
       const id = action.payload;
       const item = state.objects.entities[id];
-      if (!item || item.isEvidence) return; // Exit if no item or already evidence
+      if (!item) return; // Exit if no item
+      // Do not duplicate: if it's already in the timeline, skip
+      if (state.evidence.some(e => e.cardId === id)) return;
 
       // --- ECONOMY LOGIC REFACTOR ---
       // This logic now correctly handles one-time costs for unlocking evidence.
