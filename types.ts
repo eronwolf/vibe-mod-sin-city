@@ -323,6 +323,8 @@ export interface Evidence {
   imagePrompt: string;
   timestampCollected: string;
   locationId: string;
+  x?: number; // Optional x-coordinate for positioning on the evidence board
+  y?: number; // Optional y-coordinate for positioning on the evidence board
 }
 
 /**
@@ -512,7 +514,7 @@ export interface StoryData {
 /**
  * Defines the main views the player can navigate between.
  */
-export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'timeSpent' | 'tokens';
+export type ViewType = 'people' | 'locations' | 'timeline' | 'card' | 'evidence' | 'tokens';
 
 /**
  * Enumerates player actions for context-aware AI analysis.

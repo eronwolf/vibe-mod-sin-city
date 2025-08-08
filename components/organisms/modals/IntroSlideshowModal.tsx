@@ -128,12 +128,12 @@ const IntroSlideshowModal: React.FC = () => {
   // `useCardImage` will now instantly fetch from the Redux cache since we preloaded everything.
   const { imageUrl, isLoading: isImageLoading } = useCardImage(currentSlide, 'selectiveColor');
 
-  const isLastSlide = currentIndex === introSlideshowData.length - 1;
+  const isLastSlide = currentIndex === slideshowData.length - 1;
   const slideDuration = isLastSlide ? SLIDE_DURATION * 2 : SLIDE_DURATION;
   const animationName = `progress-${currentIndex}`;
   const animationKeyframes = `@keyframes ${animationName} { from { width: 0% } to { width: 100% } }`;
 
-  if (isPreloading) {
+  if (isLoadingData || isPreloading || !slideshowData.length) {
     return (
       <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center p-8 text-center animate-fade-in">
         <Spinner />
@@ -151,7 +151,7 @@ const IntroSlideshowModal: React.FC = () => {
        {/* Header with progress bars and skip button */}
        <header className={`absolute top-0 left-0 right-0 p-4 z-30 flex items-center gap-4 transition-opacity duration-300 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
             <div className="flex-1 flex gap-1">
-                {introSlideshowData.map((_, index) => (
+                {slideshowData.map((_, index) => (
                     <div key={index} className="flex-1 h-1 bg-white/30 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-white"
@@ -173,7 +173,7 @@ const IntroSlideshowModal: React.FC = () => {
       <div className={`w-full h-full relative select-none transition-opacity duration-300 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
         {/* Image fills the entire container */}
         <div className="w-full h-full bg-brand-surface">
-            <ImageWithLoader imageUrl={imageUrl} isLoading={isImageLoading} alt="Introductory slide" objectFit="cover" />
+            {currentSlide && <ImageWithLoader imageUrl={imageUrl} isLoading={isImageLoading} alt="Introductory slide" objectFit="cover" />}
         </div>
 
         {/* Gradient overlay for text legibility */}
@@ -182,9 +182,11 @@ const IntroSlideshowModal: React.FC = () => {
         {/* Text container positioned at the bottom, over the image and gradient */}
         <div className="absolute bottom-0 left-0 right-0 p-8 pb-16 md:pb-24 text-center z-20">
             {/* Animate the text itself for a nicer transition */}
-            <p className="text-white text-xl md:text-2xl leading-relaxed md:leading-loose drop-shadow-lg animate-fade-in">
-              {currentSlide.narration}
-            </p>
+            {currentSlide && (
+              <p className="text-white text-xl md:text-2xl leading-relaxed md:leading-loose drop-shadow-lg animate-fade-in">
+                {currentSlide.narration}
+              </p>
+            )}
         </div>
       </div>
     </div>

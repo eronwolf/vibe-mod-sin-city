@@ -25,6 +25,8 @@
 
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { RootState, AppDispatch } from './store';
 import GameScreen from './components/templates/GameScreen';
 import NavBar from './components/organisms/NavBar';
@@ -42,6 +44,7 @@ import PhaseCompleteModal from './components/organisms/modals/PhaseCompleteModal
 import InsightUnlockedModal from './components/organisms/modals/InsightUnlockedModal';
 import CaseSolvedModal from './components/organisms/modals/CaseSolvedModal';
 import { ModalType, showModal } from './store/uiSlice';
+import CardDetailModal from './components/organisms/modals/CardDetailModal'; // Import CardDetailModal
 import { 
   hydrateImageCache,
   loadStoryCartridge,
@@ -65,6 +68,7 @@ const MODAL_COMPONENTS: { [key in ModalType]?: React.FC<any> } = {
   phaseComplete: PhaseCompleteModal,
   insightUnlocked: InsightUnlockedModal,
   caseSolved: CaseSolvedModal,
+  cardDetail: CardDetailModal, // Add CardDetailModal to the registry
 };
 
 /**
@@ -108,16 +112,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative h-screen w-screen max-w-md mx-auto flex flex-col bg-brand-bg overflow-hidden font-mono shadow-2xl shadow-black">
-      {/* <CountdownTimer /> */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden relative">
-        <GameScreen />
-      </main>
-      <NavBar />
-      
-      {/* Render the active modal if there is one */}
-      {renderModal()}
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div className="relative h-screen w-screen max-w-md mx-auto flex flex-col bg-brand-bg overflow-hidden font-mono shadow-2xl shadow-black">
+        {/* <CountdownTimer /> */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden relative">
+          <GameScreen />
+        </main>
+        <NavBar />
+        
+        {/* Render the active modal if there is one */}
+        {renderModal()}
+      </div>
+    </DndProvider>
   );
 };
 

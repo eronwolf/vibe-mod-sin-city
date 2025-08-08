@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../store';
 import { setActiveView } from '../../store/uiSlice';
 import { ViewType, PlayerAction } from '../../types';
-import { Users, Map, BookOpen, Hourglass } from 'lucide-react';
+import { Users, Map, BookOpen, Hourglass, ClipboardList } from 'lucide-react';
 import { useADA } from '../../hooks/useADA';
 import { selectTimeSpent } from '../../store/storySlice';
 
@@ -73,15 +73,13 @@ const NavBar: React.FC = () => {
         onClick={handleNavClick}
         notificationCount={timelineMessages.length}
       />
-       <button
-        onClick={() => handleNavClick('timeSpent')}
-        className={`flex items-center justify-center w-full transition-colors duration-200 h-full relative px-2 gap-2 bg-brand-surface border-l-2 border-brand-border shadow-inner shadow-black/50
-        ${activeView === 'timeSpent' ? 'bg-brand-primary text-white' : 'text-brand-text-muted hover:bg-white/10'}`}
-        aria-label={`Go to Time Spent. Total time: ${timeSpent}`}
-      >
-        <Hourglass size={24} className={activeView === 'timeSpent' ? 'text-white' : 'text-yellow-400'} />
-        <span className="font-mono text-lg font-bold">{timeSpent}</span>
-      </button>
+       <NavButton
+        view="evidence"
+        label="Evidence"
+        icon={<ClipboardList size={24} />}
+        isActive={activeView === 'evidence'}
+        onClick={handleNavClick}
+      />
     </nav>
   );
 };

@@ -494,6 +494,14 @@ const storySlice = createSlice({
           break;
       }
     },
+    setEvidencePosition(state, action: PayloadAction<{ id: string; x: number; y: number }>) {
+      const { id, x, y } = action.payload;
+      const evidenceIndex = state.evidence.findIndex(ev => ev.id === id);
+      if (evidenceIndex !== -1) {
+        state.evidence[evidenceIndex].x = x;
+        state.evidence[evidenceIndex].y = y;
+      }
+    },
   },
 });
 
@@ -515,6 +523,7 @@ export const {
     subtractTimeSpent,
     setDynamicHotspotCoords,
     unlockEntity,
+    setEvidencePosition,
 } = storySlice.actions;
 
 // --- Base Selectors ---
